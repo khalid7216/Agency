@@ -3,6 +3,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
+  FaShieldAlt,
+  FaCode,
+  FaVideo,
+  FaChevronDown,
   FaEnvelope,
   FaGithub,
   FaLinkedin,
@@ -12,7 +16,7 @@ import {
 const otherMembers = [
   {
     initials: "AK",
-    name: "TEAM MEMBER",
+    name: "Ali Khan",
     role: "Video Editor — Premiere Pro & After Effects",
     badge: "Video Production",
     description: "Handles cinematic video production, color grading, motion graphics, and professional edits using Premiere Pro and After Effects.",
@@ -20,10 +24,12 @@ const otherMembers = [
     avatarBg: "from-[#7C3AED]/30 to-[#0D1120]",
     borderClass: "border-t-2 border-t-blue-500",
     hoverShadow: "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
+    imageSrc: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+    alt: "Alex Khan",
   },
   {
     initials: "SR",
-    name: "TEAM MEMBER",
+    name: "Sara Raza",
     role: "Video Editor — Premiere Pro & After Effects",
     badge: "Video Production",
     description: "Specializes in brand videos, promotional content, and social media video production with professional post-production workflow.",
@@ -31,10 +37,12 @@ const otherMembers = [
     avatarBg: "from-pink-500/30 to-[#0D1120]",
     borderClass: "border-t-2 border-t-pink-500",
     hoverShadow: "hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]",
+    imageSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face",
+    alt: "Sara Raza",
   },
   {
     initials: "MR",
-    name: "TEAM MEMBER",
+    name: " Saleem Haider",
     role: "CapCut Editor — AI Animated Videos",
     badge: "Video Editor",
     description: "Creates AI-powered animated videos and viral short-form content using CapCut. Specializes in modern trending formats.",
@@ -42,10 +50,12 @@ const otherMembers = [
     avatarBg: "from-blue-500/30 to-[#0D1120]",
     borderClass: "border-t-2 border-t-blue-500",
     hoverShadow: "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
+    imageSrc: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face",
+    alt: "Mike Riaz",
   },
   {
     initials: "ZA",
-    name: "TEAM MEMBER",
+    name: "Waniya ",
     role: "CapCut Editor — AI Animated Videos",
     badge: "Video Editor",
     description: "Produces AI animated videos and engaging short-form content optimized for social media platforms.",
@@ -53,11 +63,14 @@ const otherMembers = [
     avatarBg: "from-pink-500/30 to-[#0D1120]",
     borderClass: "border-t-2 border-t-pink-500",
     hoverShadow: "hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]",
+    imageSrc: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face",
+    alt: "Zoe Ahmed",
   },
 ];
 
 export default function Team() {
   const [scrolled, setScrolled] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -76,23 +89,117 @@ export default function Team() {
       </div>
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 flex justify-center px-6 py-4">
-        <div className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? 'bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]' : 'bg-[#0D1120]/80 backdrop-blur-sm'}`}>
-          
-          {/* Logo */}
-          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">Khalid Sanawer</div>
-          
-          {/* Center Links */}
-          <div className="hidden md:flex items-center gap-1">
-            <a href="/" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
-            <a href="/services" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Services</a>
-            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
-            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition font-semibold text-white bg-white/10">Team</a>
-            <a href="/#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
+      <nav className="sticky top-4 z-50 flex justify-center px-6">
+        <div
+          className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
+        >
+          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
+            Khalid Sanawer
           </div>
-          
-          {/* Contact Button */}
-          <a href="/#contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+
+          <div className="hidden md:flex items-center gap-1">
+            <a
+              href="/"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Home
+            </a>
+            <div
+              className="relative"
+              onMouseEnter={() => setServicesOpen(true)}
+              onMouseLeave={() => setServicesOpen(false)}
+            >
+              <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
+                Services
+                <FaChevronDown className="w-2 h-2 text-gray-400" />
+              </button>
+              {servicesOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
+                  <a
+                    href="/vapt"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]">
+                      <FaShieldAlt className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">VAPT</div>
+                      <div className="text-xs text-gray-500">
+                        Security Testing
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="/services#webdev"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                      <FaCode className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">
+                        Web Development
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Next.js & MERN Stack
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="/services#video"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400">
+                      <FaVideo className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">
+                        Video Production
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Premiere Pro & CapCut
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              )}
+            </div>
+            <a
+              href="/services"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Pricing
+            </a>
+            <a
+              href="/portfolio"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Portfolio
+            </a>
+            <a
+              href="/blog"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Blog
+            </a>
+            <a
+              href="/team"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Team
+            </a>
+            <a
+              href="/#about"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              About
+            </a>
+          </div>
+
+          <a
+            href="/contact"
+            className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
+          >
             Contact
           </a>
         </div>
@@ -108,15 +215,15 @@ export default function Team() {
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full blur-[100px] bg-[#7C3AED]/40 -z-10" />
 
           {/* Far Left: MR (angled left) */}
-          <div className="w-28 h-36 rounded-2xl bg-gradient-to-b from-blue-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[-12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-blue-500/50 cursor-pointer select-none">
+          <div className="relative overflow-hidden w-28 h-36 rounded-2xl bg-gradient-to-b from-blue-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[-12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-blue-500/50 cursor-pointer select-none">
             <span className="text-sm opacity-50 font-normal mb-1">Editor</span>
-            <span>MR</span>
+            <Image src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" alt="Saleem Haider" fill className="object-cover" />
           </div>
 
           {/* Mid Left: AK (angled left) */}
-          <div className="w-32 h-40 rounded-2xl bg-gradient-to-b from-[#7C3AED]/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[-6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-[#7C3AED]/50 cursor-pointer select-none">
+          <div className="relative overflow-hidden w-32 h-40 rounded-2xl bg-gradient-to-b from-[#7C3AED]/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[-6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-[#7C3AED]/50 cursor-pointer select-none">
             <span className="text-xs opacity-50 font-normal mb-1">Production</span>
-            <span>AK</span>
+            <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Ali Khan" fill className="object-cover" />
           </div>
 
           {/* Center: Khalid (largest, front/center) */}
@@ -135,15 +242,15 @@ export default function Team() {
           </div>
 
           {/* Mid Right: SR (angled right) */}
-          <div className="w-32 h-40 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
+          <div className="relative overflow-hidden w-32 h-40 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
             <span className="text-xs opacity-50 font-normal mb-1">Production</span>
-            <span>SR</span>
+            <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="Sara Raza" fill className="object-cover" />
           </div>
 
           {/* Far Right: ZA (angled right) */}
-          <div className="w-28 h-36 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
+          <div className="relative overflow-hidden w-28 h-36 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
             <span className="text-sm opacity-50 font-normal mb-1">Editor</span>
-            <span>ZA</span>
+            <Image src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Waniya" fill className="object-cover" />
           </div>
         </div>
 
@@ -225,9 +332,7 @@ export default function Team() {
                 className={`bg-[#0D1120] rounded-2xl p-6 border border-white/5 ${member.borderClass} flex flex-col text-center transition-all duration-300 hover:-translate-y-1 ${member.hoverShadow}`}
               >
                 {/* Avatar */}
-                <div className={`w-20 h-20 rounded-2xl mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-white bg-gradient-to-b ${member.avatarBg} border border-white/10`}>
-                  {member.initials}
-                </div>
+                <Image src={member.imageSrc} alt={member.alt} width={80} height={80} className="rounded-2xl object-cover mx-auto mb-4" />
 
                 {/* Badge */}
                 <div>

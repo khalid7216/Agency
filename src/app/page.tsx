@@ -13,6 +13,8 @@ import {
   FaTwitter,
   FaVideo,
 } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
+import { motion } from 'framer-motion';
 
 
 const services = [
@@ -104,6 +106,7 @@ const testimonials = [
     tag: "VAPT",
     avatarWrap: "bg-[#7C3AED]/20 text-[#C4B5FD] border-[#7C3AED]/30",
     tagStyle: "bg-[#7C3AED]/10 border border-[#7C3AED]/25 text-[#C4B5FD]",
+    avatarSrc: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
   },
   {
     stars: 5,
@@ -114,6 +117,7 @@ const testimonials = [
     tag: "Web Dev",
     avatarWrap: "bg-blue-500/20 text-blue-300 border-blue-500/30",
     tagStyle: "bg-blue-500/10 border border-blue-500/25 text-blue-300",
+    avatarSrc: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
   },
   {
     stars: 5,
@@ -124,11 +128,24 @@ const testimonials = [
     tag: "Video",
     avatarWrap: "bg-pink-500/20 text-pink-300 border-pink-500/30",
     tagStyle: "bg-pink-500/10 border border-pink-500/25 text-pink-300",
+    avatarSrc: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=100&h=100&fit=crop&crop=face",
   },
 ];
 
+const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ duration: 0.5, ease: 'easeOut', delay }}
+  >
+    {children}
+  </motion.div>
+);
+
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -148,22 +165,116 @@ export default function Home() {
       </div>
 
       <nav className="sticky top-4 z-50 flex justify-center px-6">
-        <div className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? 'bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]' : 'bg-[#0D1120]/80 backdrop-blur-sm'}`}>
-          
-          {/* Logo */}
-          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">Khalid Sanawer</div>
-          
-          {/* Center Links */}
-          <div className="hidden md:flex items-center gap-1">
-            <a href="#" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
-            <a href="/services" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Services</a>
-            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
-            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Team</a>
-            <a href="#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
+        <div
+          className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
+        >
+          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
+            Khalid Sanawer
           </div>
-          
-          {/* Contact Button */}
-          <a href="#contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+
+          <div className="hidden md:flex items-center gap-1">
+            <a
+              href="/"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Home
+            </a>
+            <div
+              className="relative"
+              onMouseEnter={() => setServicesOpen(true)}
+              onMouseLeave={() => setServicesOpen(false)}
+            >
+              <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
+                Services
+                <FaChevronDown className="w-2 h-2 text-gray-400" />
+              </button>
+              {servicesOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
+                  <a
+                    href="/vapt"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]">
+                      <FaShieldAlt className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">VAPT</div>
+                      <div className="text-xs text-gray-500">
+                        Security Testing
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="/services#webdev"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                      <FaCode className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">
+                        Web Development
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Next.js & MERN Stack
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="/services#video"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400">
+                      <FaVideo className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">
+                        Video Production
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Premiere Pro & CapCut
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              )}
+            </div>
+            <a
+              href="/services"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Pricing
+            </a>
+            <a
+              href="/portfolio"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Portfolio
+            </a>
+            <a
+              href="/blog"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Blog
+            </a>
+            <a
+              href="/team"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Team
+            </a>
+            <a
+              href="/#about"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              About
+            </a>
+          </div>
+
+          <a
+            href="/contact"
+            className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
+          >
             Contact
           </a>
         </div>
@@ -174,7 +285,11 @@ export default function Home() {
         <div className="absolute left-1/2 top-10 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-[#7C3AED]/20 blur-[110px]" />
 
         <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="max-w-2xl text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
             <p className="mb-4 text-lg font-semibold text-[#C4B5FD]">Hey, I&apos;m Khalid 👋</p>
             <div className="mb-4 inline-flex items-center rounded-full border border-[#7C3AED]/30 bg-[#7C3AED]/10 px-4 py-2 text-sm text-[#DDD6FE]">
               🟢 Open to freelance & security engagements
@@ -202,8 +317,13 @@ export default function Home() {
                 View Portfolio
               </a>
             </div>
-          </div>
+          </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.3 }}
+          >
           <div className="relative w-72 h-72 mx-auto">
             <div className="absolute -inset-4 bg-[#7C3AED]/20 blur-3xl rounded-full" />
             <div className="relative w-72 h-72 rounded-full overflow-hidden border-2 border-[#7C3AED]/40 shadow-[0_0_40px_rgba(124,58,237,0.3)]">
@@ -218,6 +338,7 @@ export default function Home() {
               🟢 Available for work
             </div>
           </div>
+          </motion.div>
         </div>
       </section>
 
@@ -229,12 +350,12 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            {services.map((service) => {
+            {services.map((service, index) => {
               const Icon = service.icon;
 
               return (
+                <FadeUp key={service.title} delay={index * 0.1}>
                 <article
-                  key={service.title}
                   className={`flex min-h-[285px] flex-col ${service.layout} rounded-xl border border-white/10 ${service.border} bg-white/[0.035] p-7 transition hover:-translate-y-1 hover:bg-white/[0.055]`}
                 >
                   <div className={`mb-6 flex h-14 w-14 self-center items-center justify-center rounded-xl ${service.iconWrap}`}>
@@ -253,6 +374,7 @@ export default function Home() {
                   </div>
                   <p className="mt-auto pt-7 text-sm font-semibold text-[#C4B5FD]">{service.metric}</p>
                 </article>
+                </FadeUp>
               );
             })}
           </div>
@@ -260,6 +382,7 @@ export default function Home() {
       </section>
 
       <section className="border-y border-white/5 bg-white/[0.025] px-6 py-16">
+        <FadeUp delay={0}>
         <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-left lg:text-center">
@@ -268,6 +391,7 @@ export default function Home() {
             </div>
           ))}
         </div>
+        </FadeUp>
       </section>
 
       <section id="portfolio" className="px-6 py-24">
@@ -278,8 +402,9 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            {projects.map((project) => (
-              <a href="/portfolio" className="block group/card h-full" key={project.title}>
+            {projects.map((project, index) => (
+              <FadeUp key={project.title} delay={index * 0.1}>
+              <a href="/portfolio" className="block group/card h-full">
                 <article
                   className={`rounded-xl border border-white/10 ${project.border} ${project.glow} bg-white/[0.035] p-8 transition hover:-translate-y-1 hover:bg-white/[0.055] h-full`}
                 >
@@ -366,6 +491,7 @@ export default function Home() {
                   </div>
                 </article>
               </a>
+              </FadeUp>
             ))}
           </div>
 
@@ -381,12 +507,13 @@ export default function Home() {
       </section>
 
       <section id="about" className="border-y border-white/5 bg-white/[0.025] px-6 py-24">
+        <FadeUp delay={0}>
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">About</p>
             <h2 className="text-4xl font-bold md:text-5xl">Security Researcher. Developer. Creator.</h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-300">
-              Khalid Sanawer is a Karachi-based security researcher and full-stack developer
+              Khalid Sanawer is a Pakistan-based security researcher and full-stack developer
               focused on practical results: finding vulnerabilities, building reliable web apps,
               and creating polished digital content. His work spans VAPT, Next.js production
               builds, brand websites, and video editing workflows for modern online businesses.
@@ -413,6 +540,7 @@ export default function Home() {
             })}
           </div>
         </div>
+        </FadeUp>
       </section>
 
       <section id="testimonials" className="border-t border-white/5 bg-[#080D1A] px-6 py-20">
@@ -424,17 +552,15 @@ export default function Home() {
 
           <div className="items-start grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
             {testimonials.map((testimonial, i) => (
+              <FadeUp key={i} delay={i * 0.1}>
               <article
-                key={i}
                 className={`flex flex-col bg-[#0D1120] rounded-2xl p-6 border border-white/5 backdrop-blur-sm hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] transition duration-300 ${
                   i === 0 ? "md:mt-8 mt-0" : i === 1 ? "md:mt-0 mt-0" : "md:mt-8 mt-0"
                 }`}
               >
                 {/* TOP: Name + Role + Avatar on same line */}
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-[#7C3AED]/20 flex items-center justify-center text-sm font-bold text-white shrink-0">
-                    {testimonial.initials}
-                  </div>
+                  <Image src={testimonial.avatarSrc} alt={testimonial.name} width={40} height={40} className="rounded-full object-cover shrink-0" />
                   <div className="text-left">
                     <h4 className="font-semibold text-white text-sm">{testimonial.name}</h4>
                     <p className="text-gray-500 text-xs">{testimonial.role}</p>
@@ -461,6 +587,7 @@ export default function Home() {
                   </span>
                 </div>
               </article>
+              </FadeUp>
             ))}
           </div>
         </div>

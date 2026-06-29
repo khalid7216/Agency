@@ -1,10 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaShieldAlt, FaCode, FaVideo, FaCheck, FaTwitter, FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import { FaShieldAlt, FaCode, FaVideo, FaCheck, FaChevronDown, FaTwitter, FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import { motion } from 'framer-motion';
+
+const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ duration: 0.5, ease: 'easeOut', delay }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default function Services() {
   const [scrolled, setScrolled] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -24,22 +37,116 @@ export default function Services() {
 
       {/* Navigation */}
       <nav className="sticky top-4 z-50 flex justify-center px-6">
-        <div className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? 'bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]' : 'bg-[#0D1120]/80 backdrop-blur-sm'}`}>
-          
-          {/* Logo */}
-          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">Khalid Sanawer</div>
-          
-          {/* Center Links */}
-          <div className="hidden md:flex items-center gap-1">
-            <a href="/" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
-            <a href="/services" className="px-3 py-1.5 text-sm text-white bg-white/10 rounded-full transition">Services</a>
-            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
-            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Team</a>
-            <a href="/#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
+        <div
+          className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
+        >
+          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
+            Khalid Sanawer
           </div>
-          
-          {/* Contact Button */}
-          <a href="/contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+
+          <div className="hidden md:flex items-center gap-1">
+            <a
+              href="/"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Home
+            </a>
+            <div
+              className="relative"
+              onMouseEnter={() => setServicesOpen(true)}
+              onMouseLeave={() => setServicesOpen(false)}
+            >
+              <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
+                Services
+                <FaChevronDown className="w-2 h-2 text-gray-400" />
+              </button>
+              {servicesOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
+                  <a
+                    href="/vapt"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]">
+                      <FaShieldAlt className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">VAPT</div>
+                      <div className="text-xs text-gray-500">
+                        Security Testing
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="/services#webdev"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                      <FaCode className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">
+                        Web Development
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Next.js & MERN Stack
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    href="/services#video"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400">
+                      <FaVideo className="text-sm" />
+                    </span>
+                    <div>
+                      <div className="font-medium text-white text-sm">
+                        Video Production
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Premiere Pro & CapCut
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              )}
+            </div>
+            <a
+              href="/services"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Pricing
+            </a>
+            <a
+              href="/portfolio"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Portfolio
+            </a>
+            <a
+              href="/blog"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Blog
+            </a>
+            <a
+              href="/team"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              Team
+            </a>
+            <a
+              href="/#about"
+              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
+            >
+              About
+            </a>
+          </div>
+
+          <a
+            href="/contact"
+            className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
+          >
             Contact
           </a>
         </div>
@@ -112,6 +219,7 @@ export default function Services() {
           <div className="grid gap-6 sm:grid-cols-3">
             
             {/* Card 1 - Basic */}
+            <FadeUp delay={0}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)] justify-between min-h-[400px] transition-all duration-300 hover:border-white/20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/40 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10">
@@ -139,8 +247,10 @@ export default function Services() {
                 Get Started
               </a>
             </div>
+            </FadeUp>
 
             {/* Card 2 - Standard (Popular) */}
+            <FadeUp delay={0.1}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-[#7C3AED]/50 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.25)] justify-between min-h-[410px] transition-all duration-300 hover:shadow-[0_0_50px_rgba(124,58,237,0.35)]">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/60 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10 mt-1">
@@ -179,8 +289,10 @@ export default function Services() {
                 Get Started
               </a>
             </div>
+            </FadeUp>
 
             {/* Card 3 - Premium */}
+            <FadeUp delay={0.2}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)] justify-between min-h-[400px] transition-all duration-300 hover:border-white/20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/40 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10">
@@ -211,6 +323,7 @@ export default function Services() {
                 Contact Us
               </a>
             </div>
+            </FadeUp>
 
           </div>
         </div>
@@ -267,6 +380,7 @@ export default function Services() {
           <div className="grid gap-6 sm:grid-cols-3">
             
             {/* Card 1 - Starter */}
+            <FadeUp delay={0}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)] justify-between min-h-[380px] transition-all duration-300 hover:border-white/20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/40 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10">
@@ -297,8 +411,10 @@ export default function Services() {
                 Get Started
               </a>
             </div>
+            </FadeUp>
 
             {/* Card 2 - Standard (Popular) */}
+            <FadeUp delay={0.1}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-[#7C3AED]/50 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.25)] justify-between min-h-[390px] transition-all duration-300 hover:shadow-[0_0_50px_rgba(124,58,237,0.35)]">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/60 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10 mt-1">
@@ -334,8 +450,10 @@ export default function Services() {
                 Get Started
               </a>
             </div>
+            </FadeUp>
 
             {/* Card 3 - Premium */}
+            <FadeUp delay={0.2}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)] justify-between min-h-[380px] transition-all duration-300 hover:border-white/20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/40 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10">
@@ -363,6 +481,7 @@ export default function Services() {
                 Contact Us
               </a>
             </div>
+            </FadeUp>
 
           </div>
 
@@ -420,6 +539,7 @@ export default function Services() {
           <div className="grid gap-6 sm:grid-cols-3">
             
             {/* Card 1 */}
+            <FadeUp delay={0}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)] justify-between min-h-[380px] transition-all duration-300 hover:border-white/20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/40 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10">
@@ -447,8 +567,10 @@ export default function Services() {
                 Get Started
               </a>
             </div>
+            </FadeUp>
 
             {/* Card 2 - Popular */}
+            <FadeUp delay={0.1}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-[#7C3AED]/50 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.25)] justify-between min-h-[390px] transition-all duration-300 hover:shadow-[0_0_50px_rgba(124,58,237,0.35)]">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/60 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10 mt-1">
@@ -484,8 +606,10 @@ export default function Services() {
                 Get Started
               </a>
             </div>
+            </FadeUp>
 
             {/* Card 3 */}
+            <FadeUp delay={0.2}>
             <div className="relative flex flex-col rounded-2xl p-6 border border-white/10 bg-gradient-to-b from-[#7C3AED]/20 to-[#0D1120] backdrop-blur-sm overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)] justify-between min-h-[380px] transition-all duration-300 hover:border-white/20">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#7C3AED]/40 rounded-full blur-2xl pointer-events-none" />
               <div className="relative z-10">
@@ -513,6 +637,7 @@ export default function Services() {
                 Contact Us
               </a>
             </div>
+            </FadeUp>
 
           </div>
         </div>
