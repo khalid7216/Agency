@@ -146,6 +146,7 @@ const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode, delay?: nu
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -157,16 +158,16 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0A0E1A] text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
         <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-[#7C3AED]/10 blur-[120px]" />
       </div>
 
-      <nav className="sticky top-4 z-50 flex justify-center px-6">
+      <nav className="sticky top-4 z-50 flex justify-center px-4 sm:px-6 relative">
         <div
-          className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
+          className={`flex items-center justify-between w-full max-w-3xl px-4 sm:px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
         >
           <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
             Khalid Sanawer
@@ -271,31 +272,60 @@ export default function Home() {
             </a>
           </div>
 
-          <a
-            href="/contact"
-            className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
-          >
-            Contact
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href="/contact"
+              className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
+            >
+              Contact
+            </a>
+            <button
+              className="md:hidden text-gray-300 hover:text-white p-1"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              <div className="space-y-1">
+                <div className="w-5 h-0.5 bg-current" />
+                <div className="w-5 h-0.5 bg-current" />
+                <div className="w-5 h-0.5 bg-current" />
+              </div>
+            </button>
+          </div>
         </div>
+
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[#0D1120] border border-white/10 rounded-2xl p-4 z-50 space-y-2">
+            <a href="/" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Home</a>
+            <a href="/vapt" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">VAPT</a>
+            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Web Development</a>
+            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Video Production</a>
+            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Pricing</a>
+            <a href="/portfolio" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Portfolio</a>
+            <a href="/blog" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Blog</a>
+            <a href="/team" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Team</a>
+            <a href="/#about" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">About</a>
+            <a href="/contact" className="block w-full text-center px-3 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-lg transition mt-2">Contact</a>
+          </div>
+        )}
       </nav>
 
-      <section className="relative px-6 pb-14 pt-20 md:pb-20 md:pt-28">
+      <section className="relative px-4 sm:px-6 pb-14 pt-20 md:pb-20 md:pt-28">
         <div className="absolute inset-0 -z-10 opacity-[0.12] [background-image:radial-gradient(#7C3AED_1px,transparent_1px)] [background-size:26px_26px]" />
         <div className="absolute left-1/2 top-10 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-[#7C3AED]/20 blur-[110px]" />
 
-        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="text-center lg:text-left"
           >
             <p className="mb-4 text-lg font-semibold text-[#C4B5FD]">Hey, I&apos;m Khalid 👋</p>
             <div className="mb-4 inline-flex items-center rounded-full border border-[#7C3AED]/30 bg-[#7C3AED]/10 px-4 py-2 text-sm text-[#DDD6FE]">
               🟢 Open to freelance & security engagements
             </div>
 
-            <h1 className="mb-4 max-w-3xl text-5xl font-black leading-[0.95] tracking-normal text-white md:text-7xl">
+            <h1 className="mb-4 max-w-3xl text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-normal text-white mx-auto lg:mx-0">
               I Build. I Secure. I Create.
             </h1>
 
@@ -303,7 +333,7 @@ export default function Home() {
               Security is my expertise. Code is my craft. Video is my team&apos;s game.
             </p>
 
-            <div className="mb-4 flex flex-wrap gap-4">
+            <div className="mb-4 flex flex-wrap gap-4 justify-center lg:justify-start">
               <a
                 href="mailto:security@khalidsanawer.online"
                 className="rounded-xl bg-[#7C3AED] px-7 py-3.5 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]"
@@ -324,9 +354,9 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: 'easeOut', delay: 0.3 }}
           >
-          <div className="relative w-72 h-72 mx-auto">
+          <div className="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto">
             <div className="absolute -inset-4 bg-[#7C3AED]/20 blur-3xl rounded-full" />
-            <div className="relative w-72 h-72 rounded-full overflow-hidden border-2 border-[#7C3AED]/40 shadow-[0_0_40px_rgba(124,58,237,0.3)]">
+            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-[#7C3AED]/40 shadow-[0_0_40px_rgba(124,58,237,0.3)]">
               <Image
                 src="/khalid.jpg"
                 alt="Khalid Sanawer"
@@ -342,14 +372,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="services" className="px-6 py-24">
+      <section id="services" className="px-4 sm:px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl text-left">
             <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Services</p>
-            <h2 className="text-4xl font-bold md:text-5xl">Security, software, and content that ship.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Security, software, and content that ship.</h2>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
             {services.map((service, index) => {
               const Icon = service.icon;
 
@@ -381,12 +411,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-y border-white/5 bg-white/[0.025] px-6 py-16">
+      <section className="border-y border-white/5 bg-white/[0.025] px-4 sm:px-6 py-16">
         <FadeUp delay={0}>
-        <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-6 grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-left lg:text-center">
-              <div className="text-5xl font-black text-[#7C3AED] mb-2">{stat.number}</div>
+              <div className="text-4xl sm:text-5xl font-black text-[#7C3AED] mb-2">{stat.number}</div>
               <div className="mt-2 text-sm text-gray-400">{stat.label}</div>
             </div>
           ))}
@@ -394,14 +424,14 @@ export default function Home() {
         </FadeUp>
       </section>
 
-      <section id="portfolio" className="px-6 py-24">
+      <section id="portfolio" className="px-4 sm:px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl text-left">
             <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Portfolio</p>
-            <h2 className="text-4xl font-bold md:text-5xl">Selected work with real delivery behind it.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Selected work with real delivery behind it.</h2>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
             {projects.map((project, index) => (
               <FadeUp key={project.title} delay={index * 0.1}>
               <a href="/portfolio" className="block group/card h-full">
@@ -506,12 +536,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="about" className="border-y border-white/5 bg-white/[0.025] px-6 py-24">
+      <section id="about" className="border-y border-white/5 bg-white/[0.025] px-4 sm:px-6 py-24">
         <FadeUp delay={0}>
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="mx-auto grid max-w-7xl gap-12 grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">About</p>
-            <h2 className="text-4xl font-bold md:text-5xl">Security Researcher. Developer. Creator.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Security Researcher. Developer. Creator.</h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-300">
               Khalid Sanawer is a Pakistan-based security researcher and full-stack developer
               focused on practical results: finding vulnerabilities, building reliable web apps,
@@ -543,11 +573,11 @@ export default function Home() {
         </FadeUp>
       </section>
 
-      <section id="testimonials" className="border-t border-white/5 bg-[#080D1A] px-6 py-20">
+      <section id="testimonials" className="border-t border-white/5 bg-[#080D1A] px-4 sm:px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl text-left">
             <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Clients</p>
-            <h2 className="text-4xl font-bold md:text-5xl">What clients say.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">What clients say.</h2>
           </div>
 
           <div className="items-start grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
@@ -569,7 +599,7 @@ export default function Home() {
 
                 {/* MIDDLE: Review text in quotes */}
                 <div className="text-left flex-grow">
-                  <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">“</span>
+                  <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">&ldquo;</span>
                   <p className="text-gray-300 text-sm leading-relaxed italic">
                     {testimonial.review}
                   </p>
@@ -593,10 +623,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="relative px-6 py-24">
+      <section id="contact" className="relative px-4 sm:px-6 py-24">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.16),transparent_55%)]" />
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-black md:text-6xl">Ready to work together?</h2>
+          <h2 className="text-3xl sm:text-4xl font-black md:text-6xl">Ready to work together?</h2>
           <div className="mt-9 flex flex-wrap justify-center gap-4">
             <a
               href="mailto:security@khalidsanawer.online"
@@ -614,14 +644,14 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-white/5 bg-[#070B15] px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between">
+      <footer className="border-t border-white/5 bg-[#070B15] px-4 sm:px-6 py-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between text-center md:text-left">
           <div>
             <div className="text-xl font-bold text-[#7C3AED]">Khalid Sanawer</div>
             <p className="mt-2 text-sm text-gray-500">2025 Khalid Sanawer. All rights reserved.</p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-sm text-gray-400">
+          <div className="flex flex-wrap justify-center md:justify-start gap-5 text-sm text-gray-400">
             <a href="/services" className="transition hover:text-white">
               Services
             </a>
@@ -639,7 +669,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="flex gap-4 text-lg text-gray-400">
+          <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">
             <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]">
               <FaTwitter />
             </a>

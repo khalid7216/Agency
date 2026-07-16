@@ -125,6 +125,7 @@ export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -138,7 +139,7 @@ export default function Portfolio() {
   );
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0A0E1A] text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
       {/* Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
@@ -147,130 +148,81 @@ export default function Portfolio() {
       </div>
 
       {/* Navigation */}
-      <nav className="sticky top-4 z-50 flex justify-center px-6">
+      <nav className="sticky top-4 z-50 flex justify-center px-4 sm:px-6 relative">
         <div
-          className={`flex items-center justify-between w-full max-w-3xl px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
+          className={`flex items-center justify-between w-full max-w-3xl px-4 sm:px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
         >
           <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
             Khalid Sanawer
           </div>
 
           <div className="hidden md:flex items-center gap-1">
-            <a
-              href="/"
-              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
-            >
-              Home
-            </a>
-            <div
-              className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
-            >
+            <a href="/" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
+            <div className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
               <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
                 Services
                 <FaChevronDown className="w-2 h-2 text-gray-400" />
               </button>
               {servicesOpen && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
-                  <a
-                    href="/vapt"
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
-                  >
-                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]">
-                      <FaShieldAlt className="text-sm" />
-                    </span>
-                    <div>
-                      <div className="font-medium text-white text-sm">VAPT</div>
-                      <div className="text-xs text-gray-500">
-                        Security Testing
-                      </div>
-                    </div>
+                  <a href="/vapt" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
+                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]"><FaShieldAlt className="text-sm" /></span>
+                    <div><div className="font-medium text-white text-sm">VAPT</div><div className="text-xs text-gray-500">Security Testing</div></div>
                   </a>
-                  <a
-                    href="/services#webdev"
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
-                  >
-                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
-                      <FaCode className="text-sm" />
-                    </span>
-                    <div>
-                      <div className="font-medium text-white text-sm">
-                        Web Development
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        Next.js & MERN Stack
-                      </div>
-                    </div>
+                  <a href="/services#webdev" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
+                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><FaCode className="text-sm" /></span>
+                    <div><div className="font-medium text-white text-sm">Web Development</div><div className="text-xs text-gray-500">Next.js & MERN Stack</div></div>
                   </a>
-                  <a
-                    href="/services#video"
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
-                  >
-                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400">
-                      <FaVideo className="text-sm" />
-                    </span>
-                    <div>
-                      <div className="font-medium text-white text-sm">
-                        Video Production
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        Premiere Pro & CapCut
-                      </div>
-                    </div>
+                  <a href="/services#video" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
+                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400"><FaVideo className="text-sm" /></span>
+                    <div><div className="font-medium text-white text-sm">Video Production</div><div className="text-xs text-gray-500">Premiere Pro & CapCut</div></div>
                   </a>
                 </div>
               )}
             </div>
-            <a
-              href="/services"
-              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
-            >
-              Pricing
-            </a>
-            <a
-              href="/portfolio"
-              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
-            >
-              Portfolio
-            </a>
-            <a
-              href="/blog"
-              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
-            >
-              Blog
-            </a>
-            <a
-              href="/team"
-              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
-            >
-              Team
-            </a>
-            <a
-              href="/#about"
-              className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
-            >
-              About
-            </a>
+            <a href="/services" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Pricing</a>
+            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
+            <a href="/blog" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Blog</a>
+            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Team</a>
+            <a href="/#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
           </div>
 
-          <a
-            href="/contact"
-            className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
-          >
-            Contact
-          </a>
+          <div className="flex items-center gap-2">
+            <a href="/contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">Contact</a>
+            <button className="md:hidden text-gray-300 hover:text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile menu">
+              <div className="space-y-1">
+                <div className="w-5 h-0.5 bg-current" />
+                <div className="w-5 h-0.5 bg-current" />
+                <div className="w-5 h-0.5 bg-current" />
+              </div>
+            </button>
+          </div>
         </div>
+
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[#0D1120] border border-white/10 rounded-2xl p-4 z-50 space-y-2">
+            <a href="/" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Home</a>
+            <a href="/vapt" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">VAPT</a>
+            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Web Development</a>
+            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Video Production</a>
+            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Pricing</a>
+            <a href="/portfolio" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Portfolio</a>
+            <a href="/blog" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Blog</a>
+            <a href="/team" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Team</a>
+            <a href="/#about" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">About</a>
+            <a href="/contact" className="block w-full text-center px-3 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-lg transition mt-2">Contact</a>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative px-6 py-16 text-center">
+      <section className="relative px-4 sm:px-6 py-16 text-center">
         <div className="absolute inset-0 -z-10 opacity-[0.12] [background-image:radial-gradient(#7C3AED_1px,transparent_1px)] [background-size:26px_26px]" />
         <div className="absolute left-1/2 top-10 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-[#7C3AED]/20 blur-[110px]" />
 
         <div className="mx-auto max-w-3xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#7C3AED]">PORTFOLIO</p>
-          <h1 className="mb-6 text-4xl font-black md:text-6xl">Portfolio</h1>
+          <h1 className="mb-6 text-3xl sm:text-4xl font-black md:text-6xl">Portfolio</h1>
           <p className="text-lg text-gray-400 max-w-xl mx-auto">
             Practical delivery behind every project. Code, security research, and dynamic video edits that drive results.
           </p>
@@ -278,7 +230,7 @@ export default function Portfolio() {
       </section>
 
       {/* Filter Tabs Section */}
-      <section className="px-6 pb-8">
+      <section className="px-4 sm:px-6 pb-8">
         <div className="mx-auto max-w-xl flex flex-wrap justify-center gap-2">
           {categories.map((cat) => (
             <button
@@ -297,9 +249,9 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Grid Section */}
-      <section className="px-6 pb-24">
+      <section className="px-4 sm:px-6 pb-24">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
             {filteredProjects.map((project, index) => (
               <FadeUp key={project.title} delay={index * 0.1}>
               <article
@@ -309,7 +261,6 @@ export default function Portfolio() {
                 <div className="mb-6">
                   {project.title === "User Testing Blog" && (
                     <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                      {/* Browser Bar */}
                       <div className="flex items-center gap-1.5 pb-2 border-b border-white/5">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
                         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
@@ -318,7 +269,6 @@ export default function Portfolio() {
                           <span className="text-[9px] text-gray-500">usertestingblog.com</span>
                         </div>
                       </div>
-                      {/* Fake Blog Content */}
                       <div className="flex-grow flex flex-col gap-2 pt-3">
                         <div className="h-3 w-3/4 bg-[#0D1120] rounded" />
                         <div className="h-2 w-full bg-[#0D1120] rounded opacity-65" />
@@ -334,18 +284,15 @@ export default function Portfolio() {
 
                   {project.title === "Rent-a-Car Platform" && (
                     <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                      {/* Fake UI header */}
                       <div className="flex items-center justify-between pb-2 border-b border-white/5">
                         <div className="text-[10px] font-bold text-blue-400">DriveGo</div>
                         <div className="h-3 w-8 bg-[#0D1120] rounded" />
                       </div>
-                      {/* Car placeholder */}
                       <div className="flex-grow flex items-center justify-center relative">
                         <div className="flex flex-col items-center gap-2">
                           <FaCar className="text-3xl text-blue-400" />
                           <span className="text-[9px] text-gray-500 uppercase tracking-widest">Premium SUV</span>
                         </div>
-                        {/* Floating UI Card */}
                         <div className="absolute bottom-1 right-1 bg-[#0D1120] border border-white/5 rounded p-1.5 shadow-lg flex flex-col gap-1">
                           <div className="h-2 w-10 bg-blue-500/20 rounded" />
                           <span className="text-[9px] text-green-400 font-bold">$45/day</span>
@@ -356,18 +303,14 @@ export default function Portfolio() {
 
                   {project.title === "AuditWave Security Site" && (
                     <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-emerald-400 leading-tight">
-                      {/* Header */}
                       <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/5 mb-2">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
                         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
                         <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
                         <span className="text-gray-500 text-[8px] ml-2">bash - terminal</span>
                       </div>
-                      {/* Terminal lines */}
                       <div className="flex flex-col gap-1 select-none">
-                        <div>
-                          <span className="text-pink-500">auditwave@sec:~$</span> nmap -sV target.com
-                        </div>
+                        <div><span className="text-pink-500">auditwave@sec:~$</span> nmap -sV target.com</div>
                         <div className="text-gray-500">Starting Nmap 7.92 at 2026-06-27 05:20</div>
                         <div>Nmap scan report for target.com (104.244.42.1)</div>
                         <div className="text-yellow-400">PORT    STATE SERVICE</div>
@@ -455,11 +398,11 @@ export default function Portfolio() {
       </section>
 
       {/* Testimonials / Kind Words Section */}
-      <section className="border-t border-white/5 bg-[#080D1A] px-6 py-20">
+      <section className="border-t border-white/5 bg-[#080D1A] px-4 sm:px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl text-left">
             <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">KIND WORDS</p>
-            <h2 className="text-4xl font-bold md:text-5xl">What people say about the work.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">What people say about the work.</h2>
           </div>
 
           <div className="items-start grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
@@ -470,7 +413,6 @@ export default function Portfolio() {
                   i === 0 ? "md:mt-8 mt-0" : i === 1 ? "md:mt-0 mt-0" : "md:mt-8 mt-0"
                 }`}
               >
-                {/* TOP: Name + Role + Avatar on same line */}
                 <div className="flex items-center gap-3 mb-6">
                   <Image src={testimonial.avatarSrc} alt={testimonial.name} width={40} height={40} className="rounded-full object-cover shrink-0" />
                   <div className="text-left">
@@ -479,15 +421,13 @@ export default function Portfolio() {
                   </div>
                 </div>
 
-                {/* MIDDLE: Review text in quotes */}
                 <div className="text-left flex-grow">
-                  <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">“</span>
+                  <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">&ldquo;</span>
                   <p className="text-gray-300 text-sm leading-relaxed italic">
                     {testimonial.review}
                   </p>
                 </div>
 
-                {/* BOTTOM: Service tag + stars */}
                 <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
                   <div className="flex gap-0.5 text-yellow-400 text-xs">
                     {[...Array(testimonial.stars)].map((_, idx) => (
@@ -505,10 +445,10 @@ export default function Portfolio() {
       </section>
 
       {/* CTA Section */}
-      <section id="contact" className="relative px-6 py-24 border-t border-white/5 bg-white/[0.01]">
+      <section id="contact" className="relative px-4 sm:px-6 py-24 border-t border-white/5 bg-white/[0.01]">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.16),transparent_55%)]" />
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-black md:text-6xl">Ready to start a project?</h2>
+          <h2 className="text-3xl sm:text-4xl font-black md:text-6xl">Ready to start a project?</h2>
           <p className="mt-4 text-base text-gray-400 max-w-md mx-auto">
             Get in touch to secure your platform, build your application, or elevate your content.
           </p>
@@ -530,48 +470,26 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-[#070B15] px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between">
+      <footer className="border-t border-white/5 bg-[#070B15] px-4 sm:px-6 py-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between text-center md:text-left">
           <div>
             <div className="text-xl font-bold text-[#7C3AED]">Khalid Sanawer</div>
             <p className="mt-2 text-sm text-gray-500">2025 Khalid Sanawer. All rights reserved.</p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-sm text-gray-400">
-            <a href="/services" className="transition hover:text-white">
-              Services
-            </a>
-            <a href="/portfolio" className="transition hover:text-white">
-              Portfolio
-            </a>
-            <a href="/team" className="transition hover:text-white">
-              Team
-            </a>
-            <a href="/#about" className="transition hover:text-white">
-              About
-            </a>
-            <a href="/contact" className="transition hover:text-white">
-              Contact
-            </a>
+          <div className="flex flex-wrap justify-center md:justify-start gap-5 text-sm text-gray-400">
+            <a href="/services" className="transition hover:text-white">Services</a>
+            <a href="/portfolio" className="transition hover:text-white">Portfolio</a>
+            <a href="/team" className="transition hover:text-white">Team</a>
+            <a href="/#about" className="transition hover:text-white">About</a>
+            <a href="/contact" className="transition hover:text-white">Contact</a>
           </div>
 
-          <div className="flex gap-4 text-lg text-gray-400">
-            <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]">
-              <FaTwitter />
-            </a>
-            <a href="#" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]">
-              <FaLinkedin />
-            </a>
-            <a href="#" aria-label="GitHub" className="transition hover:text-[#7C3AED]">
-              <FaGithub />
-            </a>
-            <a
-              href="mailto:security@khalidsanawer.online"
-              aria-label="Email security@khalidsanawer.online"
-              className="transition hover:text-[#7C3AED]"
-            >
-              <FaEnvelope />
-            </a>
+          <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">
+            <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]"><FaTwitter /></a>
+            <a href="#" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]"><FaLinkedin /></a>
+            <a href="#" aria-label="GitHub" className="transition hover:text-[#7C3AED]"><FaGithub /></a>
+            <a href="mailto:security@khalidsanawer.online" aria-label="Email security@khalidsanawer.online" className="transition hover:text-[#7C3AED]"><FaEnvelope /></a>
           </div>
         </div>
       </footer>
