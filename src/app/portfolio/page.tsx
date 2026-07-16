@@ -14,58 +14,10 @@ import {
   FaGithub,
   FaEnvelope,
   FaStar,
+  FaImage,
 } from "react-icons/fa";
 
-const projects = [
-  {
-    title: "User Testing Blog",
-    description: "Next.js 14 client project with high-performance content delivery and modern UI.",
-    category: "web-dev",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Contentful"],
-    border: "border-t-[#7C3AED]",
-    glow: "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
-  },
-  {
-    title: "Rent-a-Car Platform",
-    description: "Full-stack car rental platform with custom booking flow, database, and admin dashboard.",
-    category: "web-dev",
-    tags: ["Next.js", "Node.js", "MongoDB", "Cloudinary"],
-    border: "border-t-blue-500",
-    glow: "shadow-[0_-4px_24px_rgba(59,130,246,0.15)] hover:shadow-[0_-4px_24px_rgba(59,130,246,0.3)]",
-  },
-  {
-    title: "AuditWave Security Site",
-    description: "Personal brand security portfolio and consulting site featuring interactive shell elements.",
-    category: "cybersecurity",
-    tags: ["Next.js", "Tailwind CSS", "Vercel", "Security"],
-    border: "border-t-pink-500",
-    glow: "shadow-[0_-4px_24px_rgba(236,72,153,0.15)] hover:shadow-[0_-4px_24px_rgba(236,72,153,0.3)]",
-  },
-  {
-    title: "FinTech API Security Audit",
-    description: "VAPT and comprehensive security review of a high-volume international payment gateway API.",
-    category: "cybersecurity",
-    tags: ["OWASP Top 10", "Burp Suite", "REST API", "Threat Modeling"],
-    border: "border-t-[#7C3AED]",
-    glow: "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
-  },
-  {
-    title: "SaaS Brand Launch Video",
-    description: "Cinematic promotional video editing, sound design, and custom motion graphics for a B2B startup launch.",
-    category: "video",
-    tags: ["Premiere Pro", "After Effects", "Motion Graphics", "Sound Design"],
-    border: "border-t-blue-500",
-    glow: "shadow-[0_-4px_24px_rgba(59,130,246,0.15)] hover:shadow-[0_-4px_24px_rgba(59,130,246,0.3)]",
-  },
-  {
-    title: "AI Animated Shorts Series",
-    description: "Viral short-form content series utilizing AI-generated avatars, captions, and trending animation styles.",
-    category: "video",
-    tags: ["CapCut Pro", "AI Animation", "Shorts/Reels", "Content Creation"],
-    border: "border-t-pink-500",
-    glow: "shadow-[0_-4px_24px_rgba(236,72,153,0.15)] hover:shadow-[0_-4px_24px_rgba(236,72,153,0.3)]",
-  },
-];
+// Projects list will be loaded dynamically from /api/projects
 
 const categories = [
   { id: "all", name: "All Work" },
@@ -121,17 +73,47 @@ const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode, delay?: nu
   </motion.div>
 );
 
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+  border: string;
+  glow: string;
+  imageUrl?: string;
+}
+
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/projects");
+        if (res.ok) {
+          const data = await res.json();
+          setProjects(data);
+        }
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
   }, []);
 
   const filteredProjects = projects.filter(
@@ -252,147 +234,213 @@ export default function Portfolio() {
       <section className="px-4 sm:px-6 pb-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-            {filteredProjects.map((project, index) => (
-              <FadeUp key={project.title} delay={index * 0.1}>
-              <article
-                className={`rounded-xl border border-white/10 ${project.border} ${project.glow} bg-white/[0.035] p-8 transition duration-300 flex flex-col justify-between`}
-              >
-                {/* Styled Preview Mockup */}
-                <div className="mb-6">
-                  {project.title === "User Testing Blog" && (
-                    <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                      <div className="flex items-center gap-1.5 pb-2 border-b border-white/5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                        <div className="h-4 flex-grow bg-[#0D1120] rounded border border-white/5 mx-2 flex items-center px-2">
-                          <span className="text-[9px] text-gray-500">usertestingblog.com</span>
-                        </div>
-                      </div>
-                      <div className="flex-grow flex flex-col gap-2 pt-3">
-                        <div className="h-3 w-3/4 bg-[#0D1120] rounded" />
-                        <div className="h-2 w-full bg-[#0D1120] rounded opacity-65" />
-                        <div className="h-2 w-5/6 bg-[#0D1120] rounded opacity-65" />
-                        <div className="h-2 w-2/3 bg-[#0D1120] rounded opacity-65" />
-                        <div className="mt-auto flex gap-2">
-                          <div className="h-4 w-12 bg-[#7C3AED]/20 rounded" />
-                          <div className="h-4 w-12 bg-[#0D1120] rounded" />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.title === "Rent-a-Car Platform" && (
-                    <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                      <div className="flex items-center justify-between pb-2 border-b border-white/5">
-                        <div className="text-[10px] font-bold text-blue-400">DriveGo</div>
-                        <div className="h-3 w-8 bg-[#0D1120] rounded" />
-                      </div>
-                      <div className="flex-grow flex items-center justify-center relative">
-                        <div className="flex flex-col items-center gap-2">
-                          <FaCar className="text-3xl text-blue-400" />
-                          <span className="text-[9px] text-gray-500 uppercase tracking-widest">Premium SUV</span>
-                        </div>
-                        <div className="absolute bottom-1 right-1 bg-[#0D1120] border border-white/5 rounded p-1.5 shadow-lg flex flex-col gap-1">
-                          <div className="h-2 w-10 bg-blue-500/20 rounded" />
-                          <span className="text-[9px] text-green-400 font-bold">$45/day</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.title === "AuditWave Security Site" && (
-                    <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-emerald-400 leading-tight">
-                      <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/5 mb-2">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                        <span className="text-gray-500 text-[8px] ml-2">bash - terminal</span>
-                      </div>
-                      <div className="flex flex-col gap-1 select-none">
-                        <div><span className="text-pink-500">auditwave@sec:~$</span> nmap -sV target.com</div>
-                        <div className="text-gray-500">Starting Nmap 7.92 at 2026-06-27 05:20</div>
-                        <div>Nmap scan report for target.com (104.244.42.1)</div>
-                        <div className="text-yellow-400">PORT    STATE SERVICE</div>
-                        <div>80/tcp  open  http  nginx/1.18.0</div>
-                        <div>443/tcp open  ssl/http nginx/1.18.0</div>
-                        <div className="text-green-500">[+] SCAN COMPLETE - 0 VULS</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.title === "FinTech API Security Audit" && (
-                    <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-[#C4B5FD] leading-tight">
-                      <div className="flex items-center justify-between pb-1.5 border-b border-white/5 mb-2 text-gray-500">
-                        <span>POST /api/v1/transfer</span>
-                        <span className="text-red-400 font-bold">401 Unauthorized</span>
-                      </div>
-                      <div className="flex-grow overflow-hidden select-none text-[8px]">
-                        <div className="text-gray-500">{"{"}</div>
-                        <div className="pl-2 text-gray-400">{"\"status\": \"error\","}</div>
-                        <div className="pl-2 text-gray-400">{"\"message\": \"JWT Token Expired\","}</div>
-                        <div className="pl-2 text-yellow-400">{"\"detail\": \"Failed signature verification\""}</div>
-                        <div className="text-gray-500">{"}"}</div>
-                        <div className="mt-2.5 text-red-400 font-bold">⚠️ VULNERABILITY FOUND: Broken Authorization</div>
-                        <div className="text-emerald-400">✓ Fixed: Implemented token verification & claims audit</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.title === "SaaS Brand Launch Video" && (
-                    <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col items-center justify-center p-4 shadow-inner">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/30 to-purple-900/30 opacity-60" />
-                      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/25 border border-blue-400 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                        <FaVideo className="text-lg ml-0.5" />
-                      </div>
-                      <div className="absolute bottom-2 left-3 right-3 flex items-center gap-2 z-10">
-                        <span className="text-[8px] text-gray-400">01:42</span>
-                        <div className="h-1 flex-grow bg-white/10 rounded overflow-hidden">
-                          <div className="h-full w-2/3 bg-blue-500" />
-                        </div>
-                        <span className="text-[8px] text-gray-400">03:00</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.title === "AI Animated Shorts Series" && (
-                    <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex items-center justify-center p-2 shadow-inner">
-                      <div className="w-24 h-full border border-white/10 bg-[#0C101F] rounded-xl flex flex-col p-1.5 relative overflow-hidden">
-                        <div className="w-8 h-2 bg-white/15 rounded-full mx-auto mb-1" />
-                        <div className="flex-grow bg-gradient-to-b from-[#7C3AED]/20 to-pink-500/10 rounded flex flex-col justify-between p-1.5 relative">
-                          <div className="text-[7px] text-pink-400 font-bold">Shorts</div>
-                          <div className="flex flex-col gap-0.5">
-                            <div className="h-1.5 w-8 bg-white/20 rounded" />
-                            <div className="h-1.5 w-12 bg-white/20 rounded" />
-                          </div>
-                          <div className="absolute right-1 bottom-6 flex flex-col gap-1.5 text-right items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-white/25" />
-                            <div className="w-1.5 h-1.5 rounded-full bg-white/25" />
-                          </div>
-                          <span className="text-[6px] text-yellow-300 font-mono tracking-widest mt-auto">AI ANIMATED</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold">{project.title}</h3>
-                  <p className="mt-3 text-sm text-gray-400">{project.description}</p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-md border border-white/10 bg-[#0A0E1A] px-2.5 py-1 text-xs text-gray-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+            {loading ? (
+              // Beautiful glowing skeleton loader
+              Array.from({ length: 3 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-xl border border-white/5 bg-white/[0.01] p-8 h-[400px] flex flex-col justify-between animate-pulse"
+                >
+                  <div className="h-48 bg-white/5 rounded-lg mb-6" />
+                  <div className="space-y-3 flex-grow">
+                    <div className="h-5 bg-white/5 rounded w-3/4" />
+                    <div className="h-3 bg-white/5 rounded w-full" />
+                    <div className="h-3 bg-white/5 rounded w-5/6" />
+                  </div>
+                  <div className="flex gap-2 mt-6">
+                    <div className="h-5 bg-white/5 rounded w-12" />
+                    <div className="h-5 bg-white/5 rounded w-16" />
                   </div>
                 </div>
-              </article>
-              </FadeUp>
-            ))}
+              ))
+            ) : filteredProjects.length === 0 ? (
+              <div className="col-span-full py-16 text-center text-gray-500">
+                <FaImage className="text-4xl mx-auto mb-3 opacity-60" />
+                <p>No projects found in this category.</p>
+              </div>
+            ) : (
+              filteredProjects.map((project, index) => (
+                <FadeUp key={project.id || project.title} delay={index * 0.05}>
+                <article
+                  className={`rounded-xl border border-white/10 ${project.border} ${project.glow} bg-white/[0.035] p-8 transition duration-300 flex flex-col justify-between h-full group`}
+                >
+                  {/* Styled Preview Mockup */}
+                  <div className="mb-6">
+                    {project.imageUrl ? (
+                      <div className="h-48 relative overflow-hidden rounded-lg border border-white/5 shadow-inner bg-[#080D1A]">
+                        <Image
+                          src={project.imageUrl}
+                          alt={project.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover group-hover:scale-[1.03] transition duration-500"
+                        />
+                      </div>
+                    ) : project.title === "User Testing Blog" ? (
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
+                        <div className="flex items-center gap-1.5 pb-2 border-b border-white/5">
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                          <div className="h-4 flex-grow bg-[#0D1120] rounded border border-white/5 mx-2 flex items-center px-2">
+                            <span className="text-[9px] text-gray-500">usertestingblog.com</span>
+                          </div>
+                        </div>
+                        <div className="flex-grow flex flex-col gap-2 pt-3">
+                          <div className="h-3 w-3/4 bg-[#0D1120] rounded" />
+                          <div className="h-2 w-full bg-[#0D1120] rounded opacity-65" />
+                          <div className="h-2 w-5/6 bg-[#0D1120] rounded opacity-65" />
+                          <div className="h-2 w-2/3 bg-[#0D1120] rounded opacity-65" />
+                          <div className="mt-auto flex gap-2">
+                            <div className="h-4 w-12 bg-[#7C3AED]/20 rounded" />
+                            <div className="h-4 w-12 bg-[#0D1120] rounded" />
+                          </div>
+                        </div>
+                      </div>
+                    ) : project.title === "Rent-a-Car Platform" ? (
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
+                        <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                          <div className="text-[10px] font-bold text-blue-400">DriveGo</div>
+                          <div className="h-3 w-8 bg-[#0D1120] rounded" />
+                        </div>
+                        <div className="flex-grow flex items-center justify-center relative">
+                          <div className="flex flex-col items-center gap-2">
+                            <FaCar className="text-3xl text-blue-400" />
+                            <span className="text-[9px] text-gray-500 uppercase tracking-widest">Premium SUV</span>
+                          </div>
+                          <div className="absolute bottom-1 right-1 bg-[#0D1120] border border-white/5 rounded p-1.5 shadow-lg flex flex-col gap-1">
+                            <div className="h-2 w-10 bg-blue-500/20 rounded" />
+                            <span className="text-[9px] text-green-400 font-bold">$45/day</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : project.title === "AuditWave Security Site" ? (
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-emerald-400 leading-tight">
+                        <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/5 mb-2">
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                          <span className="text-gray-500 text-[8px] ml-2">bash - terminal</span>
+                        </div>
+                        <div className="flex flex-col gap-1 select-none">
+                          <div><span className="text-pink-500">auditwave@sec:~$</span> nmap -sV target.com</div>
+                          <div className="text-gray-500">Starting Nmap 7.92 at 2026-06-27 05:20</div>
+                          <div>Nmap scan report for target.com (104.244.42.1)</div>
+                          <div className="text-yellow-400">PORT    STATE SERVICE</div>
+                          <div>80/tcp  open  http  nginx/1.18.0</div>
+                          <div>443/tcp open  ssl/http nginx/1.18.0</div>
+                          <div className="text-green-500">[+] SCAN COMPLETE - 0 VULS</div>
+                        </div>
+                      </div>
+                    ) : project.title === "FinTech API Security Audit" ? (
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-[#C4B5FD] leading-tight">
+                        <div className="flex items-center justify-between pb-1.5 border-b border-white/5 mb-2 text-gray-500">
+                          <span>POST /api/v1/transfer</span>
+                          <span className="text-red-400 font-bold">401 Unauthorized</span>
+                        </div>
+                        <div className="flex-grow overflow-hidden select-none text-[8px]">
+                          <div className="text-gray-500">{"{"}</div>
+                          <div className="pl-2 text-gray-400">{"\"status\": \"error\","}</div>
+                          <div className="pl-2 text-gray-400">{"\"message\": \"JWT Token Expired\","}</div>
+                          <div className="pl-2 text-yellow-400">{"\"detail\": \"Failed signature verification\""}</div>
+                          <div className="text-gray-500">{"}"}</div>
+                          <div className="mt-2.5 text-red-400 font-bold">⚠️ VULNERABILITY FOUND: Broken Authorization</div>
+                          <div className="text-emerald-400">✓ Fixed: Implemented token verification & claims audit</div>
+                        </div>
+                      </div>
+                    ) : project.title === "SaaS Brand Launch Video" ? (
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col items-center justify-center p-4 shadow-inner">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/30 to-purple-900/30 opacity-60" />
+                        <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/25 border border-blue-400 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                          <FaVideo className="text-lg ml-0.5" />
+                        </div>
+                        <div className="absolute bottom-2 left-3 right-3 flex items-center gap-2 z-10">
+                          <span className="text-[8px] text-gray-400">01:42</span>
+                          <div className="h-1 flex-grow bg-white/10 rounded overflow-hidden">
+                            <div className="h-full w-2/3 bg-blue-500" />
+                          </div>
+                          <span className="text-[8px] text-gray-400">03:00</span>
+                        </div>
+                      </div>
+                    ) : project.title === "AI Animated Shorts Series" ? (
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex items-center justify-center p-2 shadow-inner">
+                        <div className="w-24 h-full border border-white/10 bg-[#0C101F] rounded-xl flex flex-col p-1.5 relative overflow-hidden">
+                          <div className="w-8 h-2 bg-white/15 rounded-full mx-auto mb-1" />
+                          <div className="flex-grow bg-gradient-to-b from-[#7C3AED]/20 to-pink-500/10 rounded flex flex-col justify-between p-1.5 relative">
+                            <div className="text-[7px] text-pink-400 font-bold">Shorts</div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="h-1.5 w-8 bg-white/20 rounded" />
+                              <div className="h-1.5 w-12 bg-white/20 rounded" />
+                            </div>
+                            <div className="absolute right-1 bottom-6 flex flex-col gap-1.5 text-right items-center">
+                              <div className="w-1.5 h-1.5 rounded-full bg-white/25" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-white/25" />
+                            </div>
+                            <span className="text-[6px] text-yellow-300 font-mono tracking-widest mt-auto">AI ANIMATED</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Generic Fallback based on category
+                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
+                        {project.category === "cybersecurity" ? (
+                          <div className="font-mono text-[9px] text-emerald-400 leading-tight flex-grow flex flex-col justify-between">
+                            <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/5 mb-2">
+                              <div className="w-2 h-2 rounded-full bg-red-500/60" />
+                              <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
+                              <div className="w-2 h-2 rounded-full bg-green-500/60" />
+                              <span className="text-gray-500 text-[8px] ml-2">bash - audit</span>
+                            </div>
+                            <div>
+                              <span className="text-pink-500">guest@sec:~$</span> run security-audit
+                              <div className="text-yellow-400 mt-1">✓ Analyzing {project.title}</div>
+                              <div className="text-emerald-500 mt-0.5">[+] SECURE & COMPLIANT</div>
+                            </div>
+                          </div>
+                        ) : project.category === "video" ? (
+                          <div className="flex flex-col items-center justify-center h-full relative">
+                            <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/20 to-pink-900/20 opacity-60" />
+                            <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-pink-500/25 border border-pink-400 text-pink-300 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
+                              <FaVideo className="text-lg ml-0.5" />
+                            </div>
+                            <span className="text-[9px] text-gray-500 mt-2 z-10 tracking-widest uppercase">HD Video Project</span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col h-full">
+                            <div className="flex items-center gap-1.5 pb-2 border-b border-white/5">
+                              <div className="w-2 h-2 rounded-full bg-red-500/60" />
+                              <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
+                              <div className="w-2 h-2 rounded-full bg-green-500/60" />
+                              <span className="text-[8px] text-gray-500 ml-2">app.deploy</span>
+                            </div>
+                            <div className="flex-grow flex flex-col justify-center items-center gap-1.5 text-center">
+                              <FaCode className="text-2xl text-blue-400" />
+                              <span className="text-[9px] text-gray-400 font-semibold">{project.title}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-bold">{project.title}</h3>
+                    <p className="mt-3 text-sm text-gray-400">{project.description}</p>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {project.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="rounded-md border border-white/10 bg-[#0A0E1A] px-2.5 py-1 text-xs text-gray-300"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+                </FadeUp>
+              ))
+            )}
           </div>
         </div>
       </section>
