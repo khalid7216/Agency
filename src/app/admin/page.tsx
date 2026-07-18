@@ -58,6 +58,14 @@ export default function Admin() {
   const [formLoading, setFormLoading] = useState(false);
   const [configError, setConfigError] = useState<string | null>(null);
 
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [usernameInput, setUsernameInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginLoading, setLoginLoading] = useState(false);
+
   // Form State
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -87,8 +95,67 @@ export default function Admin() {
   };
 
   useEffect(() => {
-    fetchProjects();
+    const verifyAuth = async () => {
+      try {
+        const res = await fetch("/api/admin/check");
+        const data = await res.json();
+        if (data.authenticated) {
+          setIsAuthenticated(true);
+          fetchProjects();
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (err) {
+        console.error(err);
+        setIsAuthenticated(false);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    verifyAuth();
   }, []);
+
+  // Handle Login submission
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    setLoginError(null);
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: usernameInput, password: passwordInput }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      setIsAuthenticated(true);
+      fetchProjects();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Invalid credentials";
+      setLoginError(msg);
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/admin/logout", { method: "POST" });
+      if (res.ok) {
+        setIsAuthenticated(false);
+        setProjects([]);
+      }
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   // Handle image upload to Cloudinary via backend API
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -212,6 +279,105 @@ export default function Admin() {
     }
   };
 
+  // 1. Loading State
+  if (authLoading) {
+    return (
+      <main className="min-h-screen bg-[#0A0E1A] text-white flex flex-col items-center justify-center font-sans relative">
+        <div className="pointer-events-none fixed inset-0 -z-10">
+          <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
+          <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
+        </div>
+        <FaSpinner className="animate-spin text-4xl text-[#7C3AED] mb-4" />
+        <p className="text-gray-400 text-sm tracking-wide">Securing connection...</p>
+      </main>
+    );
+  }
+
+  // 2. Unauthenticated State (Login Page)
+  if (!isAuthenticated) {
+    return (
+      <main className="min-h-screen bg-[#0A0E1A] text-white flex flex-col items-center justify-center p-4 font-sans relative">
+        <div className="pointer-events-none fixed inset-0 -z-10">
+          <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
+          <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
+        </div>
+
+        <div className="w-full max-w-md bg-white/[0.02] border border-white/10 p-8 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl relative overflow-hidden">
+          {/* Top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-[#7C3AED] to-pink-500" />
+          
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-black tracking-tight text-white mb-2">Access Portal</h1>
+            <p className="text-xs text-gray-400">Authenticate to manage your agency-site dashboard.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                Username
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="admin@khalidsanawer.security.online"
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                className="w-full bg-[#0D1120] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                className="w-full bg-[#0D1120] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+              />
+            </div>
+
+            {loginError && (
+              <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-lg flex items-center gap-2">
+                <FaExclamationTriangle className="shrink-0 text-sm" />
+                <span>{loginError}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loginLoading}
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] px-4 py-3.5 text-sm font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+            >
+              {loginLoading ? (
+                <>
+                  <FaSpinner className="animate-spin text-sm" />
+                  Authenticating...
+                </>
+              ) : (
+                "Log In"
+              )}
+            </button>
+          </form>
+
+          <div className="text-center mt-6">
+            <a
+              href="/"
+              className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition"
+            >
+              <FaArrowLeft className="w-2.5 h-2.5" />
+              Back to Home
+            </a>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // 3. Authenticated State (Dashboard Page)
   return (
     <main className="min-h-screen bg-[#0A0E1A] text-white overflow-x-hidden font-sans">
       {/* Background Gradients */}
@@ -231,8 +397,16 @@ export default function Admin() {
             </a>
             <h1 className="text-lg font-bold text-[#7C3AED]">Portfolio Admin Dashboard</h1>
           </div>
-          <div className="text-xs bg-[#7C3AED]/10 border border-[#7C3AED]/30 text-[#C4B5FD] px-3 py-1 rounded-full font-mono">
-            Mode: Developer
+          <div className="flex items-center gap-3">
+            <div className="text-xs bg-[#7C3AED]/10 border border-[#7C3AED]/30 text-[#C4B5FD] px-3 py-1 rounded-full font-mono">
+              Mode: Developer
+            </div>
+            <button
+              onClick={handleLogout}
+              className="text-xs border border-white/10 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 px-3 py-1.5 rounded-full font-medium transition"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </header>

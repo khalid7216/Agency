@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
+import { checkAuth } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  // Verify admin authentication
+  if (!checkAuth()) {
+    return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
+  }
+
   // Check if credentials are set
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;

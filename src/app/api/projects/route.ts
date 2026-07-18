@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { getProjects, addProject, deleteProject } from "@/lib/projects";
+import { checkAuth } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
@@ -13,6 +16,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  // Verify admin authentication
+  if (!checkAuth()) {
+    return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
+  }
+
   try {
     const body = await req.json();
     const { title, description, category, tags, border, glow, imageUrl } = body;
@@ -47,6 +55,11 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  // Verify admin authentication
+  if (!checkAuth()) {
+    return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
+  }
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
