@@ -1,0 +1,43 @@
+---
+title: "How to Find XSS Vulnerabilities in Web Apps"
+date: "2025-06-20"
+category: "Security"
+tags: ["XSS", "Burp Suite", "OWASP"]
+excerpt: "A step-by-step guide to identifying Cross-Site Scripting vulnerabilities using manual testing and Burp Suite."
+readTime: "8 min read"
+---
+
+## What is XSS?
+
+Cross-Site Scripting (XSS) is a vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. It occurs when an application includes user-supplied data in its output without proper validation or escaping.
+
+## Types of XSS
+
+- **Reflected XSS**: The payload is reflected off a web server in an error message, search result, or HTTP response.
+- **Stored XSS**: The payload is stored on the server (e.g., in a comment or profile field) and served to every visitor.
+- **DOM-based XSS**: The vulnerability exists in client-side JavaScript rather than server-side HTML.
+
+## Setting Up Burp Suite
+
+Configure your browser to route traffic through Burp Suite's proxy (usually `127.0.0.1:8080`). Install Burp's CA certificate to intercept HTTPS traffic. Use the Target tab to map the application and the Repeater tool to manually craft and resend requests.
+
+## Manual Testing Approach
+
+Start with input fields, URL parameters, and HTTP headers. Submit simple test strings like `<script>alert(1)</script>` and watch for script execution. Check if the output is reflected anywhere in the page — in HTML attributes, JavaScript strings, or CSS.
+
+## Common XSS Payloads
+
+Try payloads like:
+- `<img src=x onerror=alert(1)>`
+- `<svg onload=alert(1)>`
+- `<input onfocus=alert(1) autofocus>`
+
+For context-specific tests, try breaking out of existing HTML attributes: `"><script>alert(1)</script>` or `' onfocus=alert(1) autofocus=`. Use Burp Intruder to automate payload testing across multiple injection points.
+
+## How to Fix XSS
+
+Output encoding is the primary defense. Encode data based on the output context: HTML entity encoding for HTML body, JavaScript encoding for script contexts, and URL encoding for URL parameters. Implement a Content Security Policy (CSP) header as a defense-in-depth measure.
+
+## Conclusion
+
+XSS remains one of the most common web vulnerabilities. With Burp Suite and a systematic manual testing approach, you can identify and fix XSS before attackers exploit them. Always validate input and encode output.

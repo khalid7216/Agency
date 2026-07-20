@@ -1,0 +1,36 @@
+---
+title: "Next.js 14 Best Practices for Production"
+date: "2025-06-25"
+category: "Development"
+tags: ["Next.js", "React", "TypeScript"]
+excerpt: "Key patterns and optimizations for building production-ready Next.js 14 applications with App Router."
+readTime: "6 min read"
+---
+
+## App Router vs Pages Router
+
+Next.js 14 introduces the App Router as the recommended approach for new projects. It uses a file-system based routing model with nested layouts, server components by default, and streaming support. The Pages Router remains supported but is no longer recommended for new projects.
+
+## Server Components by Default
+
+Components in the App Router are server components by default. They render on the server and send only the resulting HTML to the client. This reduces bundle size and improves performance. Use the `'use client'` directive only when you need interactivity — event handlers, hooks, or browser-only APIs.
+
+## Proper Error Handling
+
+Create `error.tsx` and `not-found.tsx` files at each route segment to handle errors gracefully. Error boundaries catch runtime errors and display fallback UI. The `not-found.tsx` file handles 404 cases. Combine these with `global-error.tsx` for the root layout to catch unexpected crashes.
+
+## Image Optimization
+
+Use the built-in `next/image` component for automatic image optimization. It supports lazy loading, responsive images, and WebP/AVIF format negotiation. Configure remote patterns in `next.config.mjs` for external image hosts. Always provide width, height, and alt attributes.
+
+## Environment Variables
+
+Prefix public environment variables with `NEXT_PUBLIC_` to expose them to the browser. Use `.env.local` for local development secrets and `.env.production` for production values. Access them via `process.env` — Next.js replaces them at build time for client-side code.
+
+## Deployment on Vercel
+
+Vercel is the recommended deployment platform for Next.js. It provides automatic SSL, edge functions, ISR (Incremental Static Regeneration), and preview deployments for every git branch. Configure your build settings in `vercel.json` or the Vercel dashboard.
+
+## Conclusion
+
+Next.js 14's App Router offers a powerful model for building modern web applications. By following these best practices — server components, error handling, image optimization, and proper deployment — you can build applications that are fast, maintainable, and production-ready.

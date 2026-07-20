@@ -1,149 +1,96 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import type { Metadata } from "next";
+import Link from "next/link";
 import {
-  FaShieldAlt,
-  FaCode,
-  FaVideo,
-  FaChevronDown,
-  FaCheck,
-  FaLock,
-  FaFileAlt,
   FaBug,
-  FaHandshake,
-  FaSearch,
+  FaCheck,
+  FaCode,
   FaDollarSign,
-  FaTwitter,
-  FaLinkedin,
-  FaGithub,
-  FaEnvelope,
+  FaFileAlt,
+  FaHandshake,
+  FaLock,
+  FaSearch,
+  FaShieldAlt,
 } from "react-icons/fa";
+import FadeUp from "@/components/FadeUp";
 
-const FadeUp = ({
-  children,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ duration: 0.5, ease: "easeOut", delay }}
-  >
-    {children}
-  </motion.div>
-);
+export const metadata: Metadata = {
+  title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
+  description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
+  keywords: ["VAPT testing", "Web application pentesting", "WordPress security audit", "API security assessment", "AuditWave Security", "OWASP pentest"],
+};
+
+const vaptServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Vulnerability Assessment & Penetration Testing (VAPT)",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "AuditWave Security",
+    "url": "https://khalidsanawer.online"
+  },
+  "serviceType": "Penetration Testing & Cybersecurity Audit",
+  "description": "Comprehensive security testing covering web applications, APIs, WordPress sites, and network endpoints.",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "VAPT Offerings",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Basic WordPress Audit"
+        },
+        "price": "149",
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Full Web App & API Pentest"
+        },
+        "price": "349",
+        "priceCurrency": "USD"
+      }
+    ]
+  }
+};
 
 export default function Vapt() {
-  const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(vaptServiceSchema) }}
+      />
+
+      {/* Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
         <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-[#7C3AED]/10 blur-[120px]" />
       </div>
 
-      <nav className="sticky top-4 z-50 flex justify-center px-4 sm:px-6 relative">
-        <div
-          className={`flex items-center justify-between w-full max-w-3xl px-4 sm:px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
-        >
-          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
-            Khalid Sanawer
-          </div>
-
-          <div className="hidden md:flex items-center gap-1">
-            <a href="/" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
-            <div className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
-              <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
-                Services
-                <FaChevronDown className="w-2 h-2 text-gray-400" />
-              </button>
-              {servicesOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
-                  <a href="/vapt" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]"><FaShieldAlt className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">VAPT</div><div className="text-xs text-gray-500">Security Testing</div></div>
-                  </a>
-                  <a href="/services#webdev" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><FaCode className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">Web Development</div><div className="text-xs text-gray-500">Next.js &amp; MERN Stack</div></div>
-                  </a>
-                  <a href="/services#video" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400"><FaVideo className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">Video Production</div><div className="text-xs text-gray-500">Premiere Pro &amp; CapCut</div></div>
-                  </a>
-                </div>
-              )}
-            </div>
-            <a href="/services" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Pricing</a>
-            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
-            <a href="/blog" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Blog</a>
-            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Team</a>
-            <a href="/#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <a href="/contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">Contact</a>
-            <button className="md:hidden text-gray-300 hover:text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile menu">
-              <div className="space-y-1">
-                <div className="w-5 h-0.5 bg-current" />
-                <div className="w-5 h-0.5 bg-current" />
-                <div className="w-5 h-0.5 bg-current" />
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[#0D1120] border border-white/10 rounded-2xl p-4 z-50 space-y-2">
-            <a href="/" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Home</a>
-            <a href="/vapt" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">VAPT</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Web Development</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Video Production</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Pricing</a>
-            <a href="/portfolio" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Portfolio</a>
-            <a href="/blog" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Blog</a>
-            <a href="/team" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Team</a>
-            <a href="/#about" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">About</a>
-            <a href="/contact" className="block w-full text-center px-3 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-lg transition mt-2">Contact</a>
-          </div>
-        )}
-      </nav>
-
       <section className="relative px-4 sm:px-6 pb-14 pt-20 md:pb-20 md:pt-28">
         <div className="absolute inset-0 -z-10 opacity-[0.12] [background-image:radial-gradient(#7C3AED_1px,transparent_1px)] [background-size:26px_26px]" />
         <div className="absolute left-1/2 top-10 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-[#7C3AED]/20 blur-[110px]" />
 
         <div className="mx-auto max-w-4xl text-center">
-          <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#7C3AED]">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#7C3AED]">
             VAPT SERVICES
-          </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="mb-6 text-4xl sm:text-5xl font-black md:text-7xl tracking-tight">
+          </p>
+          <h1 className="mb-6 text-4xl sm:text-5xl font-black md:text-7xl tracking-tight">
             We Secure What Others Miss.
-          </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-gray-400 max-w-2xl mx-auto mb-10">
+          </h1>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10">
             Affordable penetration testing for startups and small businesses.
             Professional security — without the enterprise price tag.
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-wrap justify-center gap-4">
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-300"><FaLock className="text-[#7C3AED]" /> NDA Protected</span>
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-300"><FaFileAlt className="text-[#7C3AED]" /> Detailed Reports</span>
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-300"><FaDollarSign className="text-[#7C3AED]" /> Budget Friendly</span>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -398,8 +345,8 @@ export default function Vapt() {
             <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl mb-6">Transparent, Budget-Friendly Pricing</h2>
             <p className="text-gray-400 max-w-xl mx-auto mb-10">No surprise fees. No enterprise contracts. Just honest security work at prices that make sense for your business.</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="/services" className="rounded-xl bg-[#7C3AED] px-8 py-4 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]">View Pricing →</a>
-              <a href="/contact" className="rounded-xl border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5">Start a Conversation</a>
+              <Link href="/services" className="rounded-xl bg-[#7C3AED] px-8 py-4 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]">View Pricing →</Link>
+              <Link href="/contact" className="rounded-xl border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5">Start a Conversation</Link>
             </div>
           </div>
         </FadeUp>
@@ -412,34 +359,12 @@ export default function Vapt() {
             <h2 className="text-3xl sm:text-4xl font-black md:text-6xl mb-6">Ready to secure your business?</h2>
             <p className="text-gray-400 max-w-lg mx-auto mb-10">Free consultation call. No commitment required. Let&apos;s talk about what needs testing.</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="/contact" className="rounded-xl bg-[#7C3AED] px-8 py-4 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]">Book Free Consultation</a>
-              <a href="/contact" className="rounded-xl border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5">View Sample Report</a>
+              <Link href="/contact" className="rounded-xl bg-[#7C3AED] px-8 py-4 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]">Book Free Consultation</Link>
+              <Link href="/contact" className="rounded-xl border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5">View Sample Report</Link>
             </div>
           </div>
         </FadeUp>
       </section>
-
-      <footer className="border-t border-white/5 bg-[#070B15] px-4 sm:px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between text-center md:text-left">
-          <div>
-            <div className="text-xl font-bold text-[#7C3AED]">Khalid Sanawer</div>
-            <p className="mt-2 text-sm text-gray-500">2025 Khalid Sanawer. All rights reserved.</p>
-          </div>
-          <div className="flex flex-wrap justify-center md:justify-start gap-5 text-sm text-gray-400">
-            <a href="/services" className="transition hover:text-white">Services</a>
-            <a href="/portfolio" className="transition hover:text-white">Portfolio</a>
-            <a href="/team" className="transition hover:text-white">Team</a>
-            <a href="/#about" className="transition hover:text-white">About</a>
-            <a href="/contact" className="transition hover:text-white">Contact</a>
-          </div>
-          <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">
-            <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]"><FaTwitter /></a>
-            <a href="#" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]"><FaLinkedin /></a>
-            <a href="#" aria-label="GitHub" className="transition hover:text-[#7C3AED]"><FaGithub /></a>
-            <a href="mailto:security@khalidsanawer.online" aria-label="Email security@khalidsanawer.online" className="transition hover:text-[#7C3AED]"><FaEnvelope /></a>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }

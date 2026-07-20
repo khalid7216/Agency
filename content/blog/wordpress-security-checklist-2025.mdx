@@ -1,0 +1,44 @@
+---
+title: "WordPress Security Checklist 2025"
+date: "2025-06-15"
+category: "Security"
+tags: ["WordPress", "VAPT", "Security"]
+excerpt: "A practical checklist covering the most common WordPress vulnerabilities and how to fix them before attackers exploit them."
+readTime: "5 min read"
+---
+
+## Why WordPress Sites Get Hacked
+
+WordPress powers over 40% of the web, making it a prime target for attackers. Most hacks are automated bots scanning for outdated plugins, weak passwords, or known vulnerabilities. The good news is that most of these attacks are preventable with basic security hygiene.
+
+## 1. Keep Everything Updated
+
+Outdated cores, plugins, and themes are the #1 entry point for attackers. Enable automatic updates for minor releases and review major updates on a staging environment before deploying. Remove any plugin or theme you are not actively using.
+
+## 2. Use Strong Admin Credentials
+
+Never use 'admin' as a username or 'admin' as a password. Use a unique username and a password manager to generate a strong 16+ character password. Enforce this for all users with editor or administrator roles.
+
+## 3. Limit Login Attempts
+
+Install a plugin like Limit Login Attempts Reloaded or Wordfence to cap failed login attempts. This blocks brute-force attacks by temporarily locking out IPs after a set number of failures.
+
+## 4. Disable XML-RPC
+
+XML-RPC is a legacy feature that allows remote access to your WordPress site. It is a common vector for brute-force and DDoS attacks. Disable it unless you specifically need it for the WordPress mobile app or Jetpack.
+
+## 5. Check File Permissions
+
+Ensure file permissions are set correctly: files should be 644 and directories should be 755. The `wp-config.php` file should be set to 600 or 440 to prevent unauthorized reading of database credentials.
+
+## 6. Install a Security Plugin
+
+Wordfence, Sucuri, and iThemes Security are reliable options. They provide firewall protection, malware scanning, login security, and real-time threat monitoring. Configure them according to your site's specific needs.
+
+## 7. Regular Backups
+
+Schedule automated offsite backups to cloud storage (Google Drive, Dropbox, or S3). Test your backups regularly by restoring them on a staging environment. A good backup is useless if you have never verified it works.
+
+## Conclusion
+
+WordPress security does not have to be complicated. Start with these seven steps and you will eliminate the majority of attack vectors. For a thorough audit, consider hiring a professional penetration tester to identify issues automated scanners miss.

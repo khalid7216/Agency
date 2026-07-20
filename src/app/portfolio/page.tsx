@@ -1,125 +1,47 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { motion } from 'framer-motion';
-import {
-  FaShieldAlt,
-  FaCode,
-  FaChevronDown,
-  FaVideo,
-  FaCar,
-  FaTwitter,
-  FaLinkedin,
-  FaGithub,
-  FaEnvelope,
-  FaStar,
-  FaImage,
-} from "react-icons/fa";
+import Link from "next/link";
+import { FaStar } from "react-icons/fa";
+import FadeUp from "@/components/FadeUp";
+import PortfolioGrid from "@/components/PortfolioGrid";
 
-// Projects list will be loaded dynamically from /api/projects
-
-const categories = [
-  { id: "all", name: "All Work" },
-  { id: "cybersecurity", name: "Cybersecurity" },
-  { id: "web-dev", name: "Web Dev" },
-  { id: "video", name: "Video Production" },
-];
+export const metadata: Metadata = {
+  title: "Portfolio & Case Studies — Security Audits, Web Apps & Media",
+  description: "Browse our real-world security penetration testing case studies, Next.js web application projects, and media productions by Khalid Sanawer.",
+  keywords: ["VAPT case studies", "Web development portfolio", "Next.js projects", "Security audit report", "Khalid Sanawer portfolio"],
+};
 
 const testimonials = [
   {
     stars: 5,
     review: "The penetration test report was incredibly detailed. Found issues we'd been missing for months. Worth every penny.",
-    initials: "MK",
     name: "Michael K.",
     role: "CTO, SaaS Startup",
     tag: "VAPT",
-    avatarWrap: "bg-[#7C3AED]/20 text-[#C4B5FD] border-[#7C3AED]/30",
     tagStyle: "bg-[#7C3AED]/10 border border-[#7C3AED]/25 text-[#C4B5FD]",
     avatarSrc: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face",
   },
   {
     stars: 5,
     review: "Delivered the Next.js project ahead of schedule. Code quality was clean and the UI looked better than our mockups.",
-    initials: "LT",
     name: "Lisa T.",
     role: "Founder, E-commerce Brand",
     tag: "Web Dev",
-    avatarWrap: "bg-blue-500/20 text-blue-300 border-blue-500/30",
     tagStyle: "bg-blue-500/10 border border-blue-500/25 text-blue-300",
     avatarSrc: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face",
   },
   {
     stars: 5,
     review: "The video editing team turned our raw footage into something we're genuinely proud to show clients. Fast and professional.",
-    initials: "RH",
     name: "Raza H.",
     role: "Marketing Lead, Dubai Agency",
     tag: "Video",
-    avatarWrap: "bg-pink-500/20 text-pink-300 border-pink-500/30",
     tagStyle: "bg-pink-500/10 border border-pink-500/25 text-pink-300",
     avatarSrc: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=100&h=100&fit=crop&crop=face",
   },
 ];
 
-const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-50px' }}
-    transition={{ duration: 0.5, ease: 'easeOut', delay }}
-  >
-    {children}
-  </motion.div>
-);
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  tags: string[];
-  border: string;
-  glow: string;
-  imageUrl?: string;
-}
-
 export default function Portfolio() {
-  const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await fetch("/api/projects");
-        if (res.ok) {
-          const data = await res.json();
-          setProjects(data);
-        }
-      } catch (err) {
-        console.error("Error fetching projects:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProjects();
-  }, []);
-
-  const filteredProjects = projects.filter(
-    (p) => activeCategory === "all" || p.category === activeCategory
-  );
-
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
       {/* Background Glows */}
@@ -128,74 +50,6 @@ export default function Portfolio() {
         <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-[#7C3AED]/10 blur-[120px]" />
       </div>
-
-      {/* Navigation */}
-      <nav className="sticky top-4 z-50 flex justify-center px-4 sm:px-6 relative">
-        <div
-          className={`flex items-center justify-between w-full max-w-3xl px-4 sm:px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
-        >
-          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
-            Khalid Sanawer
-          </div>
-
-          <div className="hidden md:flex items-center gap-1">
-            <a href="/" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
-            <div className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
-              <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
-                Services
-                <FaChevronDown className="w-2 h-2 text-gray-400" />
-              </button>
-              {servicesOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
-                  <a href="/vapt" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]"><FaShieldAlt className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">VAPT</div><div className="text-xs text-gray-500">Security Testing</div></div>
-                  </a>
-                  <a href="/services#webdev" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><FaCode className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">Web Development</div><div className="text-xs text-gray-500">Next.js & MERN Stack</div></div>
-                  </a>
-                  <a href="/services#video" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400"><FaVideo className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">Video Production</div><div className="text-xs text-gray-500">Premiere Pro & CapCut</div></div>
-                  </a>
-                </div>
-              )}
-            </div>
-            <a href="/services" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Pricing</a>
-            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
-            <a href="/blog" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Blog</a>
-            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Team</a>
-            <a href="/#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <a href="/contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">Contact</a>
-            <button className="md:hidden text-gray-300 hover:text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile menu">
-              <div className="space-y-1">
-                <div className="w-5 h-0.5 bg-current" />
-                <div className="w-5 h-0.5 bg-current" />
-                <div className="w-5 h-0.5 bg-current" />
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[#0D1120] border border-white/10 rounded-2xl p-4 z-50 space-y-2">
-            <a href="/" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Home</a>
-            <a href="/vapt" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">VAPT</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Web Development</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Video Production</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Pricing</a>
-            <a href="/portfolio" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Portfolio</a>
-            <a href="/blog" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Blog</a>
-            <a href="/team" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Team</a>
-            <a href="/#about" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">About</a>
-            <a href="/contact" className="block w-full text-center px-3 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-lg transition mt-2">Contact</a>
-          </div>
-        )}
-      </nav>
 
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 py-16 text-center">
@@ -211,237 +65,10 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Filter Tabs Section */}
-      <section className="px-4 sm:px-6 pb-8">
-        <div className="mx-auto max-w-xl flex flex-wrap justify-center gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold border transition ${
-                activeCategory === cat.id
-                  ? "bg-[#7C3AED] border-[#7C3AED] text-white shadow-[0_0_15px_rgba(124,58,237,0.3)]"
-                  : "bg-[#0D1120] border-white/5 text-gray-400 hover:text-white hover:border-white/10"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
-      </section>
-
       {/* Projects Grid Section */}
       <section className="px-4 sm:px-6 pb-24">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-            {loading ? (
-              // Beautiful glowing skeleton loader
-              Array.from({ length: 3 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-xl border border-white/5 bg-white/[0.01] p-8 h-[400px] flex flex-col justify-between animate-pulse"
-                >
-                  <div className="h-48 bg-white/5 rounded-lg mb-6" />
-                  <div className="space-y-3 flex-grow">
-                    <div className="h-5 bg-white/5 rounded w-3/4" />
-                    <div className="h-3 bg-white/5 rounded w-full" />
-                    <div className="h-3 bg-white/5 rounded w-5/6" />
-                  </div>
-                  <div className="flex gap-2 mt-6">
-                    <div className="h-5 bg-white/5 rounded w-12" />
-                    <div className="h-5 bg-white/5 rounded w-16" />
-                  </div>
-                </div>
-              ))
-            ) : filteredProjects.length === 0 ? (
-              <div className="col-span-full py-16 text-center text-gray-500">
-                <FaImage className="text-4xl mx-auto mb-3 opacity-60" />
-                <p>No projects found in this category.</p>
-              </div>
-            ) : (
-              filteredProjects.map((project, index) => (
-                <FadeUp key={project.id || project.title} delay={index * 0.05}>
-                <article
-                  className={`rounded-xl border border-white/10 ${project.border} ${project.glow} bg-white/[0.035] p-8 transition duration-300 flex flex-col justify-between h-full group`}
-                >
-                  {/* Styled Preview Mockup */}
-                  <div className="mb-6">
-                    {project.imageUrl ? (
-                      <div className="h-48 relative overflow-hidden rounded-lg border border-white/5 shadow-inner bg-[#080D1A]">
-                        <Image
-                          src={project.imageUrl}
-                          alt={project.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover group-hover:scale-[1.03] transition duration-500"
-                        />
-                      </div>
-                    ) : project.title === "User Testing Blog" ? (
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                        <div className="flex items-center gap-1.5 pb-2 border-b border-white/5">
-                          <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                          <div className="h-4 flex-grow bg-[#0D1120] rounded border border-white/5 mx-2 flex items-center px-2">
-                            <span className="text-[9px] text-gray-500">usertestingblog.com</span>
-                          </div>
-                        </div>
-                        <div className="flex-grow flex flex-col gap-2 pt-3">
-                          <div className="h-3 w-3/4 bg-[#0D1120] rounded" />
-                          <div className="h-2 w-full bg-[#0D1120] rounded opacity-65" />
-                          <div className="h-2 w-5/6 bg-[#0D1120] rounded opacity-65" />
-                          <div className="h-2 w-2/3 bg-[#0D1120] rounded opacity-65" />
-                          <div className="mt-auto flex gap-2">
-                            <div className="h-4 w-12 bg-[#7C3AED]/20 rounded" />
-                            <div className="h-4 w-12 bg-[#0D1120] rounded" />
-                          </div>
-                        </div>
-                      </div>
-                    ) : project.title === "Rent-a-Car Platform" ? (
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                        <div className="flex items-center justify-between pb-2 border-b border-white/5">
-                          <div className="text-[10px] font-bold text-blue-400">DriveGo</div>
-                          <div className="h-3 w-8 bg-[#0D1120] rounded" />
-                        </div>
-                        <div className="flex-grow flex items-center justify-center relative">
-                          <div className="flex flex-col items-center gap-2">
-                            <FaCar className="text-3xl text-blue-400" />
-                            <span className="text-[9px] text-gray-500 uppercase tracking-widest">Premium SUV</span>
-                          </div>
-                          <div className="absolute bottom-1 right-1 bg-[#0D1120] border border-white/5 rounded p-1.5 shadow-lg flex flex-col gap-1">
-                            <div className="h-2 w-10 bg-blue-500/20 rounded" />
-                            <span className="text-[9px] text-green-400 font-bold">$45/day</span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : project.title === "AuditWave Security Site" ? (
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-emerald-400 leading-tight">
-                        <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/5 mb-2">
-                          <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                          <span className="text-gray-500 text-[8px] ml-2">bash - terminal</span>
-                        </div>
-                        <div className="flex flex-col gap-1 select-none">
-                          <div><span className="text-pink-500">auditwave@sec:~$</span> nmap -sV target.com</div>
-                          <div className="text-gray-500">Starting Nmap 7.92 at 2026-06-27 05:20</div>
-                          <div>Nmap scan report for target.com (104.244.42.1)</div>
-                          <div className="text-yellow-400">PORT    STATE SERVICE</div>
-                          <div>80/tcp  open  http  nginx/1.18.0</div>
-                          <div>443/tcp open  ssl/http nginx/1.18.0</div>
-                          <div className="text-green-500">[+] SCAN COMPLETE - 0 VULS</div>
-                        </div>
-                      </div>
-                    ) : project.title === "FinTech API Security Audit" ? (
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner font-mono text-[9px] text-[#C4B5FD] leading-tight">
-                        <div className="flex items-center justify-between pb-1.5 border-b border-white/5 mb-2 text-gray-500">
-                          <span>POST /api/v1/transfer</span>
-                          <span className="text-red-400 font-bold">401 Unauthorized</span>
-                        </div>
-                        <div className="flex-grow overflow-hidden select-none text-[8px]">
-                          <div className="text-gray-500">{"{"}</div>
-                          <div className="pl-2 text-gray-400">{"\"status\": \"error\","}</div>
-                          <div className="pl-2 text-gray-400">{"\"message\": \"JWT Token Expired\","}</div>
-                          <div className="pl-2 text-yellow-400">{"\"detail\": \"Failed signature verification\""}</div>
-                          <div className="text-gray-500">{"}"}</div>
-                          <div className="mt-2.5 text-red-400 font-bold">⚠️ VULNERABILITY FOUND: Broken Authorization</div>
-                          <div className="text-emerald-400">✓ Fixed: Implemented token verification & claims audit</div>
-                        </div>
-                      </div>
-                    ) : project.title === "SaaS Brand Launch Video" ? (
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col items-center justify-center p-4 shadow-inner">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/30 to-purple-900/30 opacity-60" />
-                        <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/25 border border-blue-400 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                          <FaVideo className="text-lg ml-0.5" />
-                        </div>
-                        <div className="absolute bottom-2 left-3 right-3 flex items-center gap-2 z-10">
-                          <span className="text-[8px] text-gray-400">01:42</span>
-                          <div className="h-1 flex-grow bg-white/10 rounded overflow-hidden">
-                            <div className="h-full w-2/3 bg-blue-500" />
-                          </div>
-                          <span className="text-[8px] text-gray-400">03:00</span>
-                        </div>
-                      </div>
-                    ) : project.title === "AI Animated Shorts Series" ? (
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex items-center justify-center p-2 shadow-inner">
-                        <div className="w-24 h-full border border-white/10 bg-[#0C101F] rounded-xl flex flex-col p-1.5 relative overflow-hidden">
-                          <div className="w-8 h-2 bg-white/15 rounded-full mx-auto mb-1" />
-                          <div className="flex-grow bg-gradient-to-b from-[#7C3AED]/20 to-pink-500/10 rounded flex flex-col justify-between p-1.5 relative">
-                            <div className="text-[7px] text-pink-400 font-bold">Shorts</div>
-                            <div className="flex flex-col gap-0.5">
-                              <div className="h-1.5 w-8 bg-white/20 rounded" />
-                              <div className="h-1.5 w-12 bg-white/20 rounded" />
-                            </div>
-                            <div className="absolute right-1 bottom-6 flex flex-col gap-1.5 text-right items-center">
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/25" />
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/25" />
-                            </div>
-                            <span className="text-[6px] text-yellow-300 font-mono tracking-widest mt-auto">AI ANIMATED</span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      // Generic Fallback based on category
-                      <div className="h-48 bg-[#080D1A] relative overflow-hidden rounded-lg border border-white/5 flex flex-col p-4 shadow-inner">
-                        {project.category === "cybersecurity" ? (
-                          <div className="font-mono text-[9px] text-emerald-400 leading-tight flex-grow flex flex-col justify-between">
-                            <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/5 mb-2">
-                              <div className="w-2 h-2 rounded-full bg-red-500/60" />
-                              <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
-                              <div className="w-2 h-2 rounded-full bg-green-500/60" />
-                              <span className="text-gray-500 text-[8px] ml-2">bash - audit</span>
-                            </div>
-                            <div>
-                              <span className="text-pink-500">guest@sec:~$</span> run security-audit
-                              <div className="text-yellow-400 mt-1">✓ Analyzing {project.title}</div>
-                              <div className="text-emerald-500 mt-0.5">[+] SECURE & COMPLIANT</div>
-                            </div>
-                          </div>
-                        ) : project.category === "video" ? (
-                          <div className="flex flex-col items-center justify-center h-full relative">
-                            <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/20 to-pink-900/20 opacity-60" />
-                            <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-pink-500/25 border border-pink-400 text-pink-300 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
-                              <FaVideo className="text-lg ml-0.5" />
-                            </div>
-                            <span className="text-[9px] text-gray-500 mt-2 z-10 tracking-widest uppercase">HD Video Project</span>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col h-full">
-                            <div className="flex items-center gap-1.5 pb-2 border-b border-white/5">
-                              <div className="w-2 h-2 rounded-full bg-red-500/60" />
-                              <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
-                              <div className="w-2 h-2 rounded-full bg-green-500/60" />
-                              <span className="text-[8px] text-gray-500 ml-2">app.deploy</span>
-                            </div>
-                            <div className="flex-grow flex flex-col justify-center items-center gap-1.5 text-center">
-                              <FaCode className="text-2xl text-blue-400" />
-                              <span className="text-[9px] text-gray-400 font-semibold">{project.title}</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-bold">{project.title}</h3>
-                    <p className="mt-3 text-sm text-gray-400">{project.description}</p>
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {project.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="rounded-md border border-white/10 bg-[#0A0E1A] px-2.5 py-1 text-xs text-gray-300"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-                </FadeUp>
-              ))
-            )}
-          </div>
+          <PortfolioGrid />
         </div>
       </section>
 
@@ -455,38 +82,39 @@ export default function Portfolio() {
 
           <div className="items-start grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
             {testimonials.map((testimonial, i) => (
-              <article
-                key={i}
-                className={`flex flex-col bg-[#0D1120] rounded-2xl p-6 border border-white/5 backdrop-blur-sm hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] transition duration-300 ${
-                  i === 0 ? "md:mt-8 mt-0" : i === 1 ? "md:mt-0 mt-0" : "md:mt-8 mt-0"
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <Image src={testimonial.avatarSrc} alt={testimonial.name} width={40} height={40} className="rounded-full object-cover shrink-0" />
-                  <div className="text-left">
-                    <h4 className="font-semibold text-white text-sm">{testimonial.name}</h4>
-                    <p className="text-gray-500 text-xs">{testimonial.role}</p>
+              <FadeUp key={i} delay={i * 0.1}>
+                <article
+                  className={`flex flex-col bg-[#0D1120] rounded-2xl p-6 border border-white/5 backdrop-blur-sm hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] transition duration-300 ${
+                    i === 0 ? "md:mt-8 mt-0" : i === 1 ? "md:mt-0 mt-0" : "md:mt-8 mt-0"
+                  }`}
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <Image src={testimonial.avatarSrc} alt={testimonial.name} width={40} height={40} className="rounded-full object-cover shrink-0" />
+                    <div className="text-left">
+                      <h4 className="font-semibold text-white text-sm">{testimonial.name}</h4>
+                      <p className="text-gray-500 text-xs">{testimonial.role}</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="text-left flex-grow">
-                  <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">&ldquo;</span>
-                  <p className="text-gray-300 text-sm leading-relaxed italic">
-                    {testimonial.review}
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
-                  <div className="flex gap-0.5 text-yellow-400 text-xs">
-                    {[...Array(testimonial.stars)].map((_, idx) => (
-                      <FaStar key={idx} />
-                    ))}
+                  <div className="text-left flex-grow">
+                    <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">&ldquo;</span>
+                    <p className="text-gray-300 text-sm leading-relaxed italic">
+                      {testimonial.review}
+                    </p>
                   </div>
-                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${testimonial.tagStyle}`}>
-                    {testimonial.tag}
-                  </span>
-                </div>
-              </article>
+
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                    <div className="flex gap-0.5 text-yellow-400 text-xs">
+                      {[...Array(testimonial.stars)].map((_, idx) => (
+                        <FaStar key={idx} />
+                      ))}
+                    </div>
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${testimonial.tagStyle}`}>
+                      {testimonial.tag}
+                    </span>
+                  </div>
+                </article>
+              </FadeUp>
             ))}
           </div>
         </div>
@@ -501,12 +129,12 @@ export default function Portfolio() {
             Get in touch to secure your platform, build your application, or elevate your content.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-4">
-            <a
+            <Link
               href="/contact"
               className="rounded-xl bg-[#7C3AED] px-8 py-4 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]"
             >
               Get in Touch →
-            </a>
+            </Link>
             <a
               href="mailto:security@khalidsanawer.online?subject=Booking%20a%20Call"
               className="rounded-xl border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5"
@@ -516,31 +144,6 @@ export default function Portfolio() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-white/5 bg-[#070B15] px-4 sm:px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between text-center md:text-left">
-          <div>
-            <div className="text-xl font-bold text-[#7C3AED]">Khalid Sanawer</div>
-            <p className="mt-2 text-sm text-gray-500">2025 Khalid Sanawer. All rights reserved.</p>
-          </div>
-
-          <div className="flex flex-wrap justify-center md:justify-start gap-5 text-sm text-gray-400">
-            <a href="/services" className="transition hover:text-white">Services</a>
-            <a href="/portfolio" className="transition hover:text-white">Portfolio</a>
-            <a href="/team" className="transition hover:text-white">Team</a>
-            <a href="/#about" className="transition hover:text-white">About</a>
-            <a href="/contact" className="transition hover:text-white">Contact</a>
-          </div>
-
-          <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">
-            <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]"><FaTwitter /></a>
-            <a href="#" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]"><FaLinkedin /></a>
-            <a href="#" aria-label="GitHub" className="transition hover:text-[#7C3AED]"><FaGithub /></a>
-            <a href="mailto:security@khalidsanawer.online" aria-label="Email security@khalidsanawer.online" className="transition hover:text-[#7C3AED]"><FaEnvelope /></a>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }

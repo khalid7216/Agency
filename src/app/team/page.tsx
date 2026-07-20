@@ -1,17 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import {
-  FaShieldAlt,
-  FaCode,
-  FaVideo,
-  FaChevronDown,
-  FaEnvelope,
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-} from "react-icons/fa";
+
+export const metadata: Metadata = {
+  title: "Meet the Team — AuditWave Security & Creative Experts",
+  description: "Meet the cybersecurity specialists, Next.js developers, and video production experts behind AuditWave Security and Pixvault led by Khalid Sanawer.",
+  keywords: ["AuditWave Security team", "Khalid Sanawer", "Pixvault team", "Cybersecurity experts Pakistan"],
+};
 
 const otherMembers = [
   {
@@ -69,17 +63,6 @@ const otherMembers = [
 ];
 
 export default function Team() {
-  const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
       {/* Background Glows */}
@@ -88,82 +71,6 @@ export default function Team() {
         <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-[#7C3AED]/10 blur-[120px]" />
       </div>
-
-      {/* Navigation */}
-      <nav className="sticky top-4 z-50 flex justify-center px-4 sm:px-6 relative">
-        <div
-          className={`flex items-center justify-between w-full max-w-3xl px-4 sm:px-6 py-3 rounded-full border border-white/10 transition-all duration-300 ${scrolled ? "bg-[#0A0E1A]/90 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-[#0D1120]/80 backdrop-blur-sm"}`}
-        >
-          <div className="text-sm font-bold text-[#7C3AED] tracking-tight">
-            Khalid Sanawer
-          </div>
-
-          <div className="hidden md:flex items-center gap-1">
-            <a href="/" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Home</a>
-            <div
-              className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
-            >
-              <button className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition flex items-center gap-1">
-                Services
-                <FaChevronDown className="w-2 h-2 text-gray-400" />
-              </button>
-              {servicesOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
-                  <a href="/vapt" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center text-[#7C3AED]"><FaShieldAlt className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">VAPT</div><div className="text-xs text-gray-500">Security Testing</div></div>
-                  </a>
-                  <a href="/services#webdev" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><FaCode className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">Web Development</div><div className="text-xs text-gray-500">Next.js & MERN Stack</div></div>
-                  </a>
-                  <a href="/services#video" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition">
-                    <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400"><FaVideo className="text-sm" /></span>
-                    <div><div className="font-medium text-white text-sm">Video Production</div><div className="text-xs text-gray-500">Premiere Pro & CapCut</div></div>
-                  </a>
-                </div>
-              )}
-            </div>
-            <a href="/services" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Pricing</a>
-            <a href="/portfolio" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Portfolio</a>
-            <a href="/blog" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Blog</a>
-            <a href="/team" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">Team</a>
-            <a href="/#about" className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition">About</a>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <a href="/contact" className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]">Contact</a>
-            <button
-              className="md:hidden text-gray-300 hover:text-white p-1"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle mobile menu"
-            >
-              <div className="space-y-1">
-                <div className="w-5 h-0.5 bg-current" />
-                <div className="w-5 h-0.5 bg-current" />
-                <div className="w-5 h-0.5 bg-current" />
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[#0D1120] border border-white/10 rounded-2xl p-4 z-50 space-y-2">
-            <a href="/" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Home</a>
-            <a href="/vapt" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">VAPT</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Web Development</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Video Production</a>
-            <a href="/services" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Pricing</a>
-            <a href="/portfolio" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Portfolio</a>
-            <a href="/blog" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Blog</a>
-            <a href="/team" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Team</a>
-            <a href="/#about" className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">About</a>
-            <a href="/contact" className="block w-full text-center px-3 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-lg transition mt-2">Contact</a>
-          </div>
-        )}
-      </nav>
 
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 pt-16 pb-20 text-center">
@@ -174,13 +81,13 @@ export default function Team() {
           {/* Purple glow behind center image */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full blur-[100px] bg-[#7C3AED]/40 -z-10" />
 
-          {/* Far Left: MR (angled left) */}
+          {/* Far Left: MR */}
           <div className="relative overflow-hidden w-16 h-24 sm:w-28 sm:h-36 rounded-2xl bg-gradient-to-b from-blue-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[-12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-blue-500/50 cursor-pointer select-none">
             <span className="text-[8px] sm:text-sm opacity-50 font-normal mb-1">Editor</span>
             <Image src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" alt="Saleem Haider" fill className="object-cover" />
           </div>
 
-          {/* Mid Left: AK (angled left) */}
+          {/* Mid Left: AK */}
           <div className="relative overflow-hidden w-20 h-28 sm:w-32 sm:h-40 rounded-2xl bg-gradient-to-b from-[#7C3AED]/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[-6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-[#7C3AED]/50 cursor-pointer select-none">
             <span className="text-[8px] sm:text-xs opacity-50 font-normal mb-1">Production</span>
             <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Ali Khan" fill className="object-cover" />
@@ -192,7 +99,8 @@ export default function Team() {
               src="/khalid.jpg"
               alt="Khalid Sanawer"
               fill
-              priority
+              priority={true}
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover object-top"
             />
             <div className="absolute bottom-0 inset-x-0 bg-black/60 backdrop-blur-sm py-1 text-center text-[10px] tracking-widest font-semibold text-white">
@@ -200,13 +108,13 @@ export default function Team() {
             </div>
           </div>
 
-          {/* Mid Right: SR (angled right) */}
+          {/* Mid Right: SR */}
           <div className="relative overflow-hidden w-20 h-28 sm:w-32 sm:h-40 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
             <span className="text-[8px] sm:text-xs opacity-50 font-normal mb-1">Production</span>
             <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="Sara Raza" fill className="object-cover" />
           </div>
 
-          {/* Far Right: ZA (angled right) */}
+          {/* Far Right: ZA */}
           <div className="relative overflow-hidden w-16 h-24 sm:w-28 sm:h-36 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
             <span className="text-[8px] sm:text-sm opacity-50 font-normal mb-1">Editor</span>
             <Image src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Waniya" fill className="object-cover" />
@@ -242,6 +150,7 @@ export default function Team() {
                     src="/khalid.jpg"
                     alt="Khalid Sanawer"
                     fill
+                    priority={true}
                     sizes="128px"
                     className="object-cover object-top"
                   />
@@ -326,31 +235,6 @@ export default function Team() {
 
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-white/5 bg-[#070B15] px-4 sm:px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between text-center md:text-left">
-          <div>
-            <div className="text-xl font-bold text-[#7C3AED]">Khalid Sanawer</div>
-            <p className="mt-2 text-sm text-gray-500">2025 Khalid Sanawer. All rights reserved.</p>
-          </div>
-
-          <div className="flex flex-wrap justify-center md:justify-start gap-5 text-sm text-gray-400">
-            <a href="/services" className="transition hover:text-white">Services</a>
-            <a href="/portfolio" className="transition hover:text-white">Portfolio</a>
-            <a href="/team" className="transition hover:text-white">Team</a>
-            <a href="/#about" className="transition hover:text-white">About</a>
-            <a href="/#contact" className="transition hover:text-white">Contact</a>
-          </div>
-
-          <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">
-            <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]"><FaTwitter /></a>
-            <a href="#" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]"><FaLinkedin /></a>
-            <a href="#" aria-label="GitHub" className="transition hover:text-[#7C3AED]"><FaGithub /></a>
-            <a href="mailto:security@khalidsanawer.online" aria-label="Email security@khalidsanawer.online" className="transition hover:text-[#7C3AED]"><FaEnvelope /></a>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }

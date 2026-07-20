@@ -1,0 +1,33 @@
+---
+title: "AuditWave Security Platform Audit"
+client: "FinTech Enterprise"
+date: "2025-06-10"
+category: "cybersecurity"
+tags: ["VAPT", "Penetration Testing", "API Security", "OWASP"]
+excerpt: "Comprehensive vulnerability assessment and API penetration test for a high-traffic FinTech platform."
+context: "The client operates a payment handling platform processing thousands of transactions daily. Before launching their v2 API, they required a complete security audit to meet compliance and prevent unauthorized access."
+methodology: "We performed gray-box penetration testing following the OWASP Web Security Testing Guide (WSTG v4.2) and OWASP API Security Top 10. Automated scans were combined with extensive manual payload crafting in Burp Suite Pro."
+vulnerabilities: "Discovered 1 Critical IDOR vulnerability in payment withdrawal endpoints, 2 High-severity JWT validation bypasses, and 3 Medium-severity rate limiting oversights on authentication routes."
+remediation: "Implemented strict object-level authorization checks, cryptographic JWT signature enforcement with secret key rotation, and Redis-backed IP rate limiting."
+businessResult: "Achieved 100% remediation on all Critical and High vulnerabilities, successfully passing third-party compliance verification before public product launch."
+---
+
+## Project Context
+
+The client operates a payment handling platform processing thousands of transactions daily. Before launching their v2 API, they required a complete security audit to meet compliance and prevent unauthorized access.
+
+## Testing Methodology
+
+We performed gray-box penetration testing following the OWASP Web Security Testing Guide (WSTG v4.2) and OWASP API Security Top 10. Automated scans were combined with extensive manual payload crafting in Burp Suite Pro.
+
+## Vulnerabilities Discovered
+
+Discovered 1 Critical IDOR vulnerability in payment withdrawal endpoints, 2 High-severity JWT validation bypasses, and 3 Medium-severity rate limiting oversights on authentication routes.
+
+## Remediation & Hardening
+
+Implemented strict object-level authorization checks, cryptographic JWT signature enforcement with secret key rotation, and Redis-backed IP rate limiting.
+
+## Business Results
+
+Achieved 100% remediation on all Critical and High vulnerabilities, successfully passing third-party compliance verification before public product launch.
