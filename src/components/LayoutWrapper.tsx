@@ -9,14 +9,14 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const isAdmin = pathname?.startsWith("/admin");
 
   if (isAdmin) {
-    return <>{children}</>;
+    return <div className="bg-[#0A0E1A] min-h-screen text-white">{children}</div>;
   }
 
   return (
-    <>
+    <div className="bg-[#0A0E1A] min-h-screen text-white flex flex-col justify-between">
       <Navbar />
-      {children}
+      <div className="flex-grow">{children}</div>
       <Footer />
-    </>
+    </div>
   );
 }

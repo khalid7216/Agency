@@ -15,7 +15,7 @@ import {
   FaUpload,
   FaVideo,
 } from "react-icons/fa";
-
+import CloudinaryImagePicker from "@/components/CloudinaryImagePicker";
 
 interface Project {
   id: string;
@@ -78,6 +78,7 @@ export default function Admin() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   // Fetch projects
   const fetchProjects = async () => {
@@ -531,9 +532,18 @@ export default function Admin() {
 
               {/* Image upload area */}
               <div>
-                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                  Project Cover Image (via Cloudinary)
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Project Cover Image (via Cloudinary)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setPickerOpen(true)}
+                    className="inline-flex items-center gap-1.5 text-xs text-[#C4B5FD] hover:text-white bg-[#7C3AED]/15 hover:bg-[#7C3AED]/25 border border-[#7C3AED]/30 px-3 py-1 rounded-lg transition"
+                  >
+                    <FaImage className="text-xs" /> Choose from Library
+                  </button>
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-[1.3fr_0.7fr] gap-6 items-center">
                   <div className="relative group">
@@ -699,6 +709,15 @@ export default function Admin() {
           </section>
         </div>
       </div>
+
+      <CloudinaryImagePicker
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onSelect={(selectedUrl) => {
+          setImageUrl(selectedUrl);
+          setUploadSuccess(true);
+        }}
+      />
     </main>
   );
 }
