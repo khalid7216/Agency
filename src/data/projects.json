@@ -4,7 +4,12 @@
     "title": "User Testing Blog",
     "description": "Next.js 14 client project with high-performance content delivery and modern UI.",
     "category": "web-dev",
-    "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Contentful"],
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Contentful"
+    ],
     "border": "border-t-[#7C3AED]",
     "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
     "imageUrl": ""
@@ -14,7 +19,12 @@
     "title": "Rent-a-Car Platform",
     "description": "Full-stack car rental platform with custom booking flow, database, and admin dashboard.",
     "category": "web-dev",
-    "tags": ["Next.js", "Node.js", "MongoDB", "Cloudinary"],
+    "tags": [
+      "Next.js",
+      "Node.js",
+      "MongoDB",
+      "Cloudinary"
+    ],
     "border": "border-t-blue-500",
     "glow": "shadow-[0_-4px_24px_rgba(59,130,246,0.15)] hover:shadow-[0_-4px_24px_rgba(59,130,246,0.3)]",
     "imageUrl": ""
@@ -24,7 +34,12 @@
     "title": "AuditWave Security Site",
     "description": "Personal brand security portfolio and consulting site featuring interactive shell elements.",
     "category": "cybersecurity",
-    "tags": ["Next.js", "Tailwind CSS", "Vercel", "Security"],
+    "tags": [
+      "Next.js",
+      "Tailwind CSS",
+      "Vercel",
+      "Security"
+    ],
     "border": "border-t-pink-500",
     "glow": "shadow-[0_-4px_24px_rgba(236,72,153,0.15)] hover:shadow-[0_-4px_24px_rgba(236,72,153,0.3)]",
     "imageUrl": ""
@@ -34,7 +49,12 @@
     "title": "FinTech API Security Audit",
     "description": "VAPT and comprehensive security review of a high-volume international payment gateway API.",
     "category": "cybersecurity",
-    "tags": ["OWASP Top 10", "Burp Suite", "REST API", "Threat Modeling"],
+    "tags": [
+      "OWASP Top 10",
+      "Burp Suite",
+      "REST API",
+      "Threat Modeling"
+    ],
     "border": "border-t-[#7C3AED]",
     "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
     "imageUrl": ""
@@ -44,7 +64,12 @@
     "title": "SaaS Brand Launch Video",
     "description": "Cinematic promotional video editing, sound design, and custom motion graphics for a B2B startup launch.",
     "category": "video",
-    "tags": ["Premiere Pro", "After Effects", "Motion Graphics", "Sound Design"],
+    "tags": [
+      "Premiere Pro",
+      "After Effects",
+      "Motion Graphics",
+      "Sound Design"
+    ],
     "border": "border-t-blue-500",
     "glow": "shadow-[0_-4px_24px_rgba(59,130,246,0.15)] hover:shadow-[0_-4px_24px_rgba(59,130,246,0.3)]",
     "imageUrl": ""
@@ -54,9 +79,28 @@
     "title": "AI Animated Shorts Series",
     "description": "Viral short-form content series utilizing AI-generated avatars, captions, and trending animation styles.",
     "category": "video",
-    "tags": ["CapCut Pro", "AI Animation", "Shorts/Reels", "Content Creation"],
+    "tags": [
+      "CapCut Pro",
+      "AI Animation",
+      "Shorts/Reels",
+      "Content Creation"
+    ],
     "border": "border-t-pink-500",
     "glow": "shadow-[0_-4px_24px_rgba(236,72,153,0.15)] hover:shadow-[0_-4px_24px_rgba(236,72,153,0.3)]",
     "imageUrl": ""
+  },
+  {
+    "title": "Vaqtrix ",
+    "description": "This is the official digital storefront for our agency—a high-performance portfolio crafted using the modern web ecosystem's most powerful frameworks: React.js and Next.js.\n\nHeavily inspired by the clean, sophisticated, and clutter-free user interface (UI) aesthetic of Vaqtrix.com, this website is built to deliver a seamless user experience. It perfectly bridges the gap between striking visual minimalism and raw technical execution, serving as a live testament to our development and design capabilities.\n\n\n\n\n\n\n",
+    "category": "web-dev",
+    "tags": [
+      "next js",
+      "react js",
+      "taiwind css"
+    ],
+    "border": "border-t-[#7C3AED]",
+    "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
+    "imageUrl": "https://res.cloudinary.com/dwo1whvr8/image/upload/v1784550109/full_image_zkkvx4.jpg",
+    "id": "vaqtrix-405711"
   }
 ]
