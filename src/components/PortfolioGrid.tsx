@@ -96,12 +96,16 @@ export default function PortfolioGrid({ limit }: { limit?: number }) {
             <p>No projects found.</p>
           </div>
         ) : (
-          displayedProjects.map((project, index) => (
-            <FadeUp key={project.id || project.title} delay={index * 0.05}>
-              <a href="/portfolio" className="block group/card h-full">
-                <article
-                  className={`rounded-xl border border-white/10 ${project.border} ${project.glow} bg-white/[0.035] p-8 transition hover:-translate-y-1 hover:bg-white/[0.055] h-full flex flex-col justify-between`}
-                >
+          displayedProjects.map((project, index) => {
+            const hasCaseStudy = ["usertesting-blog", "drivego-rent-a-car", "auditwave-security-platform"].includes(project.id);
+            const href = hasCaseStudy ? `/portfolio/${project.id}` : "/portfolio";
+
+            return (
+              <FadeUp key={project.id || project.title} delay={index * 0.05}>
+                <a href={href} className="block group/card h-full">
+                  <article
+                    className={`rounded-xl border border-white/10 ${project.border} ${project.glow} bg-white/[0.035] p-8 transition hover:-translate-y-1 hover:bg-white/[0.055] h-full flex flex-col justify-between`}
+                  >
                   <div>
                     <div className="mb-6">
                       {project.imageUrl ? (
@@ -227,9 +231,10 @@ export default function PortfolioGrid({ limit }: { limit?: number }) {
                 </article>
               </a>
             </FadeUp>
-          ))
-        )}
-      </div>
+          );
+        })
+      )}
+    </div>
     </div>
   );
 }

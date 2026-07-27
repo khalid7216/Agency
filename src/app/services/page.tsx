@@ -15,6 +15,7 @@ const serviceSchema = {
   "name": "Web & Security Services",
   "provider": {
     "@type": "LocalBusiness",
+    "@id": "https://khalidsanawer.online/#organization",
     "name": "AuditWave Security",
     "url": "https://khalidsanawer.online"
   },

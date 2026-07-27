@@ -1,6 +1,6 @@
 [
   {
-    "id": "user-testing-blog",
+    "id": "usertesting-blog",
     "title": "User Testing Blog",
     "description": "Next.js 14 client project with high-performance content delivery and modern UI.",
     "category": "web-dev",
@@ -15,7 +15,7 @@
     "imageUrl": ""
   },
   {
-    "id": "rent-a-car-platform",
+    "id": "drivego-rent-a-car",
     "title": "Rent-a-Car Platform",
     "description": "Full-stack car rental platform with custom booking flow, database, and admin dashboard.",
     "category": "web-dev",
@@ -45,7 +45,7 @@
     "imageUrl": ""
   },
   {
-    "id": "fintech-api-security-audit",
+    "id": "auditwave-security-platform",
     "title": "FinTech API Security Audit",
     "description": "VAPT and comprehensive security review of a high-volume international payment gateway API.",
     "category": "cybersecurity",

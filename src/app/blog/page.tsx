@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import FadeUp from "@/components/FadeUp";
+import { getBlogPosts } from "@/lib/mdx";
 
 export const metadata: Metadata = {
   title: "Cybersecurity & Web Development Blog — AuditWave Security",
@@ -8,42 +9,14 @@ export const metadata: Metadata = {
   keywords: ["Cybersecurity blog", "WordPress security checklist", "XSS vulnerability guide", "Next.js 14 best practices", "Web security articles"],
 };
 
-const blogPosts = [
-  {
-    slug: "wordpress-security-checklist-2025",
-    title: "WordPress Security Checklist 2025",
-    excerpt: "A practical checklist covering the most common WordPress vulnerabilities and how to fix them before attackers exploit them.",
-    category: "Security",
-    date: "June 15, 2025",
-    readTime: "5 min read",
-    tags: ["WordPress", "VAPT", "Security"]
-  },
-  {
-    slug: "how-to-find-xss-in-web-apps",
-    title: "How to Find XSS Vulnerabilities in Web Apps",
-    excerpt: "A step-by-step guide to identifying Cross-Site Scripting vulnerabilities using manual testing and Burp Suite.",
-    category: "Security",
-    date: "June 20, 2025",
-    readTime: "8 min read",
-    tags: ["XSS", "Burp Suite", "OWASP"]
-  },
-  {
-    slug: "nextjs-14-best-practices",
-    title: "Next.js 14 Best Practices for Production",
-    excerpt: "Key patterns and optimizations for building production-ready Next.js 14 applications with App Router.",
-    category: "Development",
-    date: "June 25, 2025",
-    readTime: "6 min read",
-    tags: ["Next.js", "React", "TypeScript"]
-  }
-];
-
 const categoryColors: Record<string, string> = {
   Security: "bg-[#7C3AED]",
   Development: "bg-blue-500",
 };
 
 export default function Blog() {
+  const blogPosts = getBlogPosts();
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
       {/* Background Glows */}

@@ -25,6 +25,7 @@ const vaptServiceSchema = {
   "name": "Vulnerability Assessment & Penetration Testing (VAPT)",
   "provider": {
     "@type": "LocalBusiness",
+    "@id": "https://khalidsanawer.online/#organization",
     "name": "AuditWave Security",
     "url": "https://khalidsanawer.online"
   },

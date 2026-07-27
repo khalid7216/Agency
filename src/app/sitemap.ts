@@ -1,6 +1,5 @@
 import { MetadataRoute } from 'next'
-import fs from 'fs'
-import path from 'path'
+import { getBlogPosts, getAllBlogTags, getPortfolioCaseStudies } from '@/lib/mdx'
 
 const BASE_URL = 'https://khalidsanawer.online'
 
@@ -15,58 +14,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
   ]
 
-  const rootDir = process.cwd()
-  const blogDir = path.join(rootDir, 'content', 'blog')
-  const portfolioDir = path.join(rootDir, 'content', 'portfolio')
-
-  const tagsSet = new Set<string>()
-
-  if (fs.existsSync(blogDir)) {
-    const blogFiles = fs.readdirSync(blogDir).filter((file) => file.endsWith('.mdx') || file.endsWith('.md'))
-    for (const file of blogFiles) {
-      const slug = file.replace(/\.mdx?$/, '')
-      routes.push({
-        url: `${BASE_URL}/blog/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      })
-
-      try {
-        const fileContent = fs.readFileSync(path.join(blogDir, file), 'utf8')
-        const tagsMatch = fileContent.match(/tags:\s*\[(.*?)\]/)
-        if (tagsMatch && tagsMatch[1]) {
-          const tags = tagsMatch[1].split(',').map((t) => t.trim().replace(/^['"]|['"]$/g, ''))
-          tags.forEach((tag) => {
-            if (tag) tagsSet.add(encodeURIComponent(tag.toLowerCase()))
-          })
-        }
-      } catch (err) {
-        console.error(`Error reading tags for ${file}:`, err)
-      }
-    }
+  // Add blog posts dynamic routes
+  const posts = getBlogPosts()
+  for (const post of posts) {
+    routes.push({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    })
   }
 
-  tagsSet.forEach((tag) => {
+  // Add blog tags dynamic routes
+  const tags = getAllBlogTags()
+  for (const tag of tags) {
     routes.push({
-      url: `${BASE_URL}/blog/tag/${tag}`,
+      url: `${BASE_URL}/blog/tag/${encodeURIComponent(tag.toLowerCase())}`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.6,
     })
-  })
+  }
 
-  if (fs.existsSync(portfolioDir)) {
-    const portfolioFiles = fs.readdirSync(portfolioDir).filter((file) => file.endsWith('.mdx') || file.endsWith('.md'))
-    for (const file of portfolioFiles) {
-      const slug = file.replace(/\.mdx?$/, '')
-      routes.push({
-        url: `${BASE_URL}/portfolio/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      })
-    }
+  // Add portfolio case studies dynamic routes
+  const caseStudies = getPortfolioCaseStudies()
+  for (const cs of caseStudies) {
+    routes.push({
+      url: `${BASE_URL}/portfolio/${cs.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    })
   }
 
   return routes
