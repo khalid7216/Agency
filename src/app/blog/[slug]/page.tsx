@@ -26,6 +26,9 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `${post.title} — AuditWave Security Blog`,
     description: post.excerpt,
     keywords: post.tags,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,

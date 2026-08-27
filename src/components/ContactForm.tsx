@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function ContactForm() {
+function ContactFormFields() {
+  const searchParams = useSearchParams();
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [service, setService] = useState("Cybersecurity/VAPT");
@@ -10,32 +13,43 @@ export default function ContactForm() {
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const serviceParam = params.get("service");
-    const budgetParam = params.get("budget");
+    const serviceParam = searchParams.get("service");
+    const budgetParam = searchParams.get("budget");
     if (serviceParam) setService(serviceParam);
     if (budgetParam) setBudget(budgetParam);
-  }, []);
+  }, [searchParams]);
 
   const handleSubmit = async () => {
     if (!name.trim() || !email.trim() || !message.trim()) {
       alert("Please fill in all required fields.");
       return;
     }
+    
     setLoading(true);
+    setError(null);
+    
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, service, budget, message }),
       });
-      if (res.ok) setSubmitted(true);
+      
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Failed to send message. Please try again.");
+      }
     } catch (e) {
       console.error(e);
+      setError("A connection error occurred. Please check your network and try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -57,6 +71,7 @@ export default function ContactForm() {
               setService("Cybersecurity/VAPT");
               setBudget("Under $500");
               setMessage("");
+              setError(null);
             }}
             className="mt-4 rounded-xl border border-white/10 px-5 py-2 text-sm text-gray-300 transition hover:border-[#7C3AED]/40 hover:bg-white/5"
           >
@@ -108,6 +123,13 @@ export default function ContactForm() {
 
           <h2 className="text-2xl font-bold">Send a message</h2>
           <div className="space-y-4">
+            {error && (
+              <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-lg flex items-center gap-2">
+                <span className="font-bold">✗</span>
+                <span>{error}</span>
+              </div>
+            )}
+
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-gray-400 uppercase">Your Name</label>
               <input
@@ -180,5 +202,17 @@ export default function ContactForm() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ContactForm() {
+  return (
+    <Suspense fallback={
+      <div className="rounded-2xl border border-white/5 bg-[#0D1120] p-6 sm:p-8 flex flex-col items-center justify-center min-h-[300px]">
+        <div className="text-gray-400 text-sm animate-pulse">Loading secure form...</div>
+      </div>
+    }>
+      <ContactFormFields />
+    </Suspense>
   );
 }

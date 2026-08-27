@@ -26,6 +26,9 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `${cs.title} — Portfolio Case Study`,
     description: cs.excerpt,
     keywords: cs.tags,
+    alternates: {
+      canonical: `/portfolio/${cs.slug}`,
+    },
     openGraph: {
       title: cs.title,
       description: cs.excerpt,
@@ -41,8 +44,37 @@ export default function CaseStudyPage({ params }: Props) {
     notFound();
   }
 
+  const caseStudySchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": caseStudy.title,
+    "description": caseStudy.excerpt,
+    "datePublished": caseStudy.date,
+    "author": {
+      "@type": "Person",
+      "@id": "https://khalidsanawer.online/#person",
+      "name": "Khalid Sanawer",
+      "url": "https://khalidsanawer.online"
+    },
+    "publisher": {
+      "@type": "LocalBusiness",
+      "@id": "https://khalidsanawer.online/#organization",
+      "name": "AuditWave Security",
+      "url": "https://khalidsanawer.online"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://khalidsanawer.online/portfolio/${caseStudy.slug}`
+    }
+  };
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudySchema) }}
+      />
+
       {/* Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />

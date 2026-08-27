@@ -18,6 +18,9 @@ export function generateMetadata({ params }: Props): Metadata {
   return {
     title: `Posts Tagged "${tagDecoded}" — AuditWave Security Blog`,
     description: `Browse all security research articles, guides, and developer notes tagged with ${tagDecoded}.`,
+    alternates: {
+      canonical: `/blog/tag/${encodeURIComponent(tagDecoded.toLowerCase())}`,
+    },
   };
 }
 

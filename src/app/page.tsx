@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
   description: "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production by EC-Council certified security researcher Khalid Sanawer.",
   keywords: ["Security Researcher", "Penetration Testing", "VAPT", "Next.js Developer", "MERN Stack", "AuditWave Security", "Khalid Sanawer"],
+  alternates: {
+    canonical: '/',
+  },
 };
 
 const services = [
@@ -130,9 +133,20 @@ export default function Home() {
               I Build. I Secure. I Create.
             </h1>
 
-            <p className="text-base text-gray-400 mb-10 max-w-xs mx-auto lg:mx-0 leading-relaxed">
+            <p className="text-base text-gray-400 mb-6 max-w-xs mx-auto lg:mx-0 leading-relaxed">
               Security is my expertise. Code is my craft. Video is my team&apos;s game.
             </p>
+
+            <div className="mb-8 flex justify-center lg:justify-start">
+              <Image
+                src="/MERN.webp"
+                alt="MERN Stack - MongoDB, Express, React, Node.js"
+                width={160}
+                height={50}
+                priority={true}
+                className="opacity-80 hover:opacity-100 transition duration-300 object-contain"
+              />
+            </div>
 
             <div className="mb-4 flex flex-wrap gap-4 justify-center lg:justify-start">
               <a

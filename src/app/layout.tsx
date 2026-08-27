@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     images: ['/khalid.jpg'],
   },
   robots: { index: true, follow: true },
+  alternates: {
+    canonical: '/',
+  },
 };
 
 const jsonLdGraph = {

@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Portfolio & Case Studies — Security Audits, Web Apps & Media",
   description: "Browse our real-world security penetration testing case studies, Next.js web application projects, and media productions by Khalid Sanawer.",
   keywords: ["VAPT case studies", "Web development portfolio", "Next.js projects", "Security audit report", "Khalid Sanawer portfolio"],
+  alternates: {
+    canonical: '/portfolio',
+  },
 };
 
 const testimonials = [

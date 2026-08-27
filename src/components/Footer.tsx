@@ -19,9 +19,9 @@ export default function Footer() {
         </div>
 
         <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">
-          <a href="#" aria-label="Twitter" className="transition hover:text-[#7C3AED]"><FaTwitter /></a>
-          <a href="#" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]"><FaLinkedin /></a>
-          <a href="#" aria-label="GitHub" className="transition hover:text-[#7C3AED]"><FaGithub /></a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="transition hover:text-[#7C3AED]"><FaTwitter /></a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="transition hover:text-[#7C3AED]"><FaLinkedin /></a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="transition hover:text-[#7C3AED]"><FaGithub /></a>
           <a href="mailto:security@khalidsanawer.online" aria-label="Email security@khalidsanawer.online" className="transition hover:text-[#7C3AED]"><FaEnvelope /></a>
         </div>
       </div>

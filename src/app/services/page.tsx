@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
   description: "Explore transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video production by AuditWave Security.",
   keywords: ["VAPT pricing", "Web development pricing", "Penetration testing cost", "Next.js development services", "Video production services"],
+  alternates: {
+    canonical: '/services',
+  },
 };
 
 const serviceSchema = {

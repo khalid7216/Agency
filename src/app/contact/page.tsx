@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Contact & Hire — Book Security Audit or Web Project",
   description: "Get in touch with Khalid Sanawer and AuditWave Security for VAPT security testing, Next.js application development, or video production projects.",
   keywords: ["Hire security researcher", "Contact Khalid Sanawer", "Book VAPT audit", "Next.js developer for hire"],
+  alternates: {
+    canonical: '/contact',
+  },
 };
 
 export default function Contact() {
@@ -71,7 +74,9 @@ export default function Contact() {
               </a>
 
               <a 
-                href="#" 
+                href="https://linkedin.com" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-4 rounded-xl border border-white/5 bg-[#0D1120] p-5 transition hover:border-[#7C3AED]/40 hover:bg-white/[0.02]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#7C3AED]/15 text-[#C4B5FD]">
@@ -84,7 +89,9 @@ export default function Contact() {
               </a>
 
               <a 
-                href="#" 
+                href="https://github.com" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-4 rounded-xl border border-white/5 bg-[#0D1120] p-5 transition hover:border-[#7C3AED]/40 hover:bg-white/[0.02]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#7C3AED]/15 text-[#C4B5FD]">

@@ -6,8 +6,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { username, password } = body;
 
-    const expectedUsername = process.env.ADMIN_USERNAME || "admin";
-    const expectedPassword = process.env.ADMIN_PASSWORD || "admin123";
+    const expectedUsername = process.env.ADMIN_USERNAME || "Khalid Sanawer";
+    const expectedPassword = process.env.ADMIN_PASSWORD || "REMOVED";
 
     if (username === expectedUsername && password === expectedPassword) {
       setSessionCookie();

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
   description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
   keywords: ["VAPT testing", "Web application pentesting", "WordPress security audit", "API security assessment", "AuditWave Security", "OWASP pentest"],
+  alternates: {
+    canonical: '/vapt',
+  },
 };
 
 const vaptServiceSchema = {

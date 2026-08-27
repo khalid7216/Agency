@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Cybersecurity & Web Development Blog — AuditWave Security",
   description: "In-depth articles, security checklists, XSS vulnerability research, OWASP guides, and Next.js best practices by Khalid Sanawer.",
   keywords: ["Cybersecurity blog", "WordPress security checklist", "XSS vulnerability guide", "Next.js 14 best practices", "Web security articles"],
+  alternates: {
+    canonical: '/blog',
+  },
 };
 
 const categoryColors: Record<string, string> = {
