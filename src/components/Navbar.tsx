@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   FaChevronDown,
   FaCode,
@@ -45,18 +46,18 @@ export default function Navbar() {
               : "bg-[#0D1120]/80 backdrop-blur-sm"
           }`}
         >
-          <a href="/" className="text-sm font-bold text-[#7C3AED] tracking-tight">
+          <Link href="/" className="text-sm font-bold text-[#7C3AED] tracking-tight">
             Khalid Sanawer
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
-            <a
+            <Link
               href="/"
               className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
             >
               Home
-            </a>
+            </Link>
             <div
               className="relative"
               onMouseEnter={() => setServicesOpen(true)}
@@ -68,7 +69,7 @@ export default function Navbar() {
               </button>
               {servicesOpen && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-[#0D1120] border border-white/10 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden z-50">
-                  <a
+                  <Link
                     href="/vapt"
                     className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
                   >
@@ -79,8 +80,8 @@ export default function Navbar() {
                       <div className="font-medium text-white text-sm">VAPT</div>
                       <div className="text-xs text-gray-500">Security Testing</div>
                     </div>
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/services#webdev"
                     className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
                   >
@@ -95,8 +96,8 @@ export default function Navbar() {
                         Next.js & MERN Stack
                       </div>
                     </div>
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/services#video"
                     className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition"
                   >
@@ -111,49 +112,49 @@ export default function Navbar() {
                         Premiere Pro & CapCut
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
-            <a
+            <Link
               href="/services"
               className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
             >
               Pricing
-            </a>
-            <a
+            </Link>
+            <Link
               href="/portfolio"
               className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
             >
               Portfolio
-            </a>
-            <a
+            </Link>
+            <Link
               href="/blog"
               className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
             >
               Blog
-            </a>
-            <a
+            </Link>
+            <Link
               href="/team"
               className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
             >
               Team
-            </a>
-            <a
+            </Link>
+            <Link
               href="/#about"
               className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition"
             >
               About
-            </a>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">
-            <a
+            <Link
               href="/contact"
               className="px-4 py-1.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.4)]"
             >
               Contact
-            </a>
+            </Link>
 
             {/* Mobile Hamburger Button */}
             <button
@@ -192,13 +193,13 @@ export default function Navbar() {
 
             {/* Links */}
             <div className="flex-1 overflow-y-auto py-4 px-3">
-              <a
+              <Link
                 href="/"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition"
               >
                 Home
-              </a>
+              </Link>
 
               {/* Services Accordion */}
               <button
@@ -214,7 +215,7 @@ export default function Navbar() {
               </button>
               {mobileServicesOpen && (
                 <div className="ml-3 mb-1 space-y-0.5 border-l border-white/5 pl-3">
-                  <a
+                  <Link
                     href="/vapt"
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition"
@@ -223,8 +224,8 @@ export default function Navbar() {
                       <FaShieldAlt />
                     </span>
                     VAPT
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/services#webdev"
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition"
@@ -233,8 +234,8 @@ export default function Navbar() {
                       <FaCode />
                     </span>
                     Web Development
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/services#video"
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition"
@@ -243,56 +244,56 @@ export default function Navbar() {
                       <FaVideo />
                     </span>
                     Video Production
-                  </a>
+                  </Link>
                 </div>
               )}
 
-              <a
+              <Link
                 href="/services"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition"
               >
                 Pricing
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/portfolio"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition"
               >
                 Portfolio
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/blog"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition"
               >
                 Blog
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/team"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition"
               >
                 Team
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#about"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition"
               >
                 About
-              </a>
+              </Link>
             </div>
 
             {/* Bottom CTA */}
             <div className="p-4 border-t border-white/5">
-              <a
+              <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center w-full px-6 py-3 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold rounded-xl transition shadow-[0_0_20px_rgba(124,58,237,0.35)]"
               >
                 Get in Touch →
-              </a>
+              </Link>
             </div>
           </div>
         </div>

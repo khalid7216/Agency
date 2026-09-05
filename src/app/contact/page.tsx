@@ -11,9 +11,28 @@ export const metadata: Metadata = {
   },
 };
 
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "@id": "https://khalidsanawer.online/contact/#contact",
+  "url": "https://khalidsanawer.online/contact",
+  "name": "Contact & Hire — Khalid Sanawer",
+  "description": "Get in touch with Khalid Sanawer for VAPT security testing, Next.js application development, or video production projects.",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://khalidsanawer.online/#person",
+    "name": "Khalid Sanawer",
+    "email": "security@khalidsanawer.online"
+  }
+};
+
 export default function Contact() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+      />
       {/* Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />

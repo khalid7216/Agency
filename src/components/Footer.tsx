@@ -1,4 +1,5 @@
 import { FaTwitter, FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -10,12 +11,12 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap justify-center md:justify-start gap-5 text-sm text-gray-400">
-          <a href="/services" className="transition hover:text-white">Services</a>
-          <a href="/portfolio" className="transition hover:text-white">Portfolio</a>
-          <a href="/blog" className="transition hover:text-white">Blog</a>
-          <a href="/team" className="transition hover:text-white">Team</a>
-          <a href="/#about" className="transition hover:text-white">About</a>
-          <a href="/contact" className="transition hover:text-white">Contact</a>
+          <Link href="/services" className="transition hover:text-white">Services</Link>
+          <Link href="/portfolio" className="transition hover:text-white">Portfolio</Link>
+          <Link href="/blog" className="transition hover:text-white">Blog</Link>
+          <Link href="/team" className="transition hover:text-white">Team</Link>
+          <Link href="/#about" className="transition hover:text-white">About</Link>
+          <Link href="/contact" className="transition hover:text-white">Contact</Link>
         </div>
 
         <div className="flex justify-center md:justify-start gap-4 text-lg text-gray-400">

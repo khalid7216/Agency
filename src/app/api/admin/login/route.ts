@@ -6,8 +6,16 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { username, password } = body;
 
-    const expectedUsername = process.env.ADMIN_USERNAME || "Khalid Sanawer";
-    const expectedPassword = process.env.ADMIN_PASSWORD || "REMOVED";
+    const expectedUsername = process.env.ADMIN_USERNAME;
+    const expectedPassword = process.env.ADMIN_PASSWORD;
+
+    if (!expectedUsername || !expectedPassword) {
+      console.error("ADMIN_USERNAME or ADMIN_PASSWORD is not configured in environment variables.");
+      return NextResponse.json(
+        { error: "Server authentication configuration error." },
+        { status: 500 }
+      );
+    }
 
     if (username === expectedUsername && password === expectedPassword) {
       setSessionCookie();

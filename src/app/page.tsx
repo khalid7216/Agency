@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
 import PortfolioGrid from "@/components/PortfolioGrid";
+import { getProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
@@ -107,9 +108,28 @@ const testimonials = [
   },
 ];
 
-export default function Home() {
+const homeWebsiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://khalidsanawer.online/#website",
+  "url": "https://khalidsanawer.online",
+  "name": "Khalid Sanawer — Security Researcher & Full-Stack Developer",
+  "description": "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production.",
+  "publisher": {
+    "@id": "https://khalidsanawer.online/#organization"
+  },
+  "inLanguage": "en-US"
+};
+
+export default async function Home() {
+  const projects = await getProjects();
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeWebsiteSchema) }}
+      />
       {/* Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
@@ -249,7 +269,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Selected work with real delivery behind it.</h2>
           </div>
 
-          <PortfolioGrid limit={3} />
+          <PortfolioGrid initialProjects={projects} limit={3} />
 
           <div className="mt-12 flex justify-center">
             <Link

@@ -1,6 +1,8 @@
 import fs from "fs/promises";
 import path from "path";
 
+import defaultProjects from "@/data/projects.json";
+
 export interface Project {
   id: string;
   title: string;
@@ -19,17 +21,17 @@ export async function getProjects(): Promise<Project[]> {
     const data = await fs.readFile(DATA_FILE_PATH, "utf-8");
     return JSON.parse(data);
   } catch (error: unknown) {
-    // If the file does not exist, return an empty array
+    // If the file does not exist or fails to read in serverless runtime, fall back to bundled JSON
     if (
       error &&
       typeof error === "object" &&
       "code" in error &&
       error.code === "ENOENT"
     ) {
-      return [];
+      return defaultProjects as Project[];
     }
-    console.error("Error reading projects database:", error);
-    throw error;
+    console.warn("Could not read projects file from disk, using bundled fallback:", error);
+    return defaultProjects as Project[];
   }
 }
 

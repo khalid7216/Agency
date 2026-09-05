@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { FaCar, FaCode, FaImage, FaVideo } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
 
-interface Project {
+export interface Project {
   id: string;
   title: string;
   description: string;
@@ -24,13 +24,25 @@ const categories = [
   { id: "video", name: "Video Production" },
 ];
 
-export default function PortfolioGrid({ limit }: { limit?: number }) {
+export default function PortfolioGrid({
+  initialProjects = [],
+  limit,
+}: {
+  initialProjects?: Project[];
+  limit?: number;
+}) {
   const pathname = usePathname();
   const [activeCategory, setActiveCategory] = useState("all");
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [loading, setLoading] = useState(initialProjects.length === 0);
 
   useEffect(() => {
+    if (initialProjects.length > 0) {
+      setProjects(initialProjects);
+      setLoading(false);
+      return;
+    }
+
     const fetchProjects = async () => {
       try {
         const res = await fetch("/api/projects");
@@ -45,7 +57,7 @@ export default function PortfolioGrid({ limit }: { limit?: number }) {
       }
     };
     fetchProjects();
-  }, []);
+  }, [initialProjects]);
 
   const filteredProjects = projects.filter(
     (p) => activeCategory === "all" || p.category === activeCategory

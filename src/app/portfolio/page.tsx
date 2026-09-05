@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
 import PortfolioGrid from "@/components/PortfolioGrid";
+import { getProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Portfolio & Case Studies — Security Audits, Web Apps & Media",
@@ -44,9 +45,27 @@ const testimonials = [
   },
 ];
 
-export default function Portfolio() {
+const portfolioCollectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://khalidsanawer.online/portfolio/#collection",
+  "url": "https://khalidsanawer.online/portfolio",
+  "name": "Portfolio & Case Studies — Khalid Sanawer",
+  "description": "Real-world security penetration testing case studies, Next.js web application projects, and media productions.",
+  "isPartOf": {
+    "@id": "https://khalidsanawer.online/#website"
+  }
+};
+
+export default async function Portfolio() {
+  const projects = await getProjects();
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioCollectionSchema) }}
+      />
       {/* Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
@@ -71,7 +90,7 @@ export default function Portfolio() {
       {/* Projects Grid Section */}
       <section className="px-4 sm:px-6 pb-24">
         <div className="mx-auto max-w-7xl">
-          <PortfolioGrid />
+          <PortfolioGrid initialProjects={projects} />
         </div>
       </section>
 
