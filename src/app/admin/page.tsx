@@ -320,7 +320,7 @@ export default function Admin() {
               <input
                 type="text"
                 required
-                placeholder="admin@khalidsanawer.security.online"
+                placeholder="Enter username"
                 value={usernameInput}
                 onChange={(e) => setUsernameInput(e.target.value)}
                 className="w-full bg-[#0D1120] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"

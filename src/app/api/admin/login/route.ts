@@ -8,22 +8,28 @@ export async function POST(req: Request) {
 
     const expectedUsername = process.env.ADMIN_USERNAME;
     const expectedPassword = process.env.ADMIN_PASSWORD;
+    const jwtSecret = process.env.ADMIN_JWT_SECRET;
 
-    if (!expectedUsername || !expectedPassword) {
-      console.error("ADMIN_USERNAME or ADMIN_PASSWORD is not configured in environment variables.");
+    if (!expectedUsername || !expectedPassword || !jwtSecret) {
+      console.error("ADMIN_USERNAME, ADMIN_PASSWORD, or ADMIN_JWT_SECRET is not configured in environment variables.");
       return NextResponse.json(
         { error: "Server authentication configuration error." },
         { status: 500 }
       );
     }
 
-    if (username === expectedUsername && password === expectedPassword) {
+    if (
+      typeof username === "string" &&
+      typeof password === "string" &&
+      username === expectedUsername &&
+      password === expectedPassword
+    ) {
       setSessionCookie();
       return NextResponse.json({ success: true, message: "Logged in successfully" });
     }
 
     return NextResponse.json(
-      { error: "Invalid username or password" },
+      { error: "Invalid credentials" },
       { status: 401 }
     );
   } catch (error) {

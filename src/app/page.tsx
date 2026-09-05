@@ -163,6 +163,7 @@ export default async function Home() {
                 alt="MERN Stack - MongoDB, Express, React, Node.js"
                 width={160}
                 height={50}
+                sizes="(max-width: 768px) 140px, 160px"
                 priority={true}
                 className="opacity-80 hover:opacity-100 transition duration-300 object-contain"
               />

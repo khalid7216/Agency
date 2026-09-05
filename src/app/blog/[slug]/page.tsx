@@ -129,8 +129,10 @@ export default function BlogPost({ params }: Props) {
 
       {/* Article Content */}
       <article className="px-4 sm:px-6 pb-16">
-        <div className="mx-auto max-w-3xl prose prose-invert max-w-none text-gray-300 leading-relaxed">
-          <MDXRemote source={post.content} />
+        <div className="mx-auto max-w-3xl">
+          <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed prose-code:before:content-none prose-code:after:content-none">
+            <MDXRemote source={post.content} />
+          </div>
         </div>
       </article>
 

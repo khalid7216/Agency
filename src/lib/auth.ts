@@ -4,9 +4,12 @@ import { cookies } from "next/headers";
 const SESSION_COOKIE_NAME = "agency_admin_session";
 const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-// Retrieve secret or generate a fallback based on admin credentials
+// Retrieve dedicated admin JWT signing secret
 function getSessionSecret(): string {
-  const secret = process.env.CLOUDINARY_API_SECRET || process.env.ADMIN_PASSWORD || "agency_default_fallback_secret_key";
+  const secret = process.env.ADMIN_JWT_SECRET;
+  if (!secret) {
+    throw new Error("ADMIN_JWT_SECRET is not configured in environment variables.");
+  }
   return secret;
 }
 
@@ -36,16 +39,16 @@ export function verifySession(token: string): boolean {
   const expiry = parseInt(expiryStr, 10);
   if (isNaN(expiry) || expiry < Date.now()) return false;
   
-  const secret = getSessionSecret();
-  const data = `admin:${expiry}`;
-  
-  const expectedSignature = crypto
-    .createHmac("sha256", secret)
-    .update(data)
-    .digest("hex");
-  
-  // Constant-time comparison to prevent timing attacks
   try {
+    const secret = getSessionSecret();
+    const data = `admin:${expiry}`;
+    
+    const expectedSignature = crypto
+      .createHmac("sha256", secret)
+      .update(data)
+      .digest("hex");
+    
+    // Constant-time comparison to prevent timing attacks
     return crypto.timingSafeEqual(
       Buffer.from(signature, "hex"),
       Buffer.from(expectedSignature, "hex")
