@@ -1,18 +1,25 @@
 [
   {
     "id": "usertesting-blog",
-    "title": "User Testing Blog",
-    "description": "Next.js 14 client project with high-performance content delivery and modern UI.",
+    "title": "trendivoa.com",
+    "description": "\"Built the full Trendivoa website — a coupon & deals platform — from the client's Figma design. Laravel backend with a Next.js + React frontend. Implemented hero carousel, brand logo grid, and category blog sections. Site features brand-specific coupon codes (Adidas, Hard Rock, Walmart etc.) and is monetized via AdSense. Client approved final delivery.\"\n\n",
     "category": "web-dev",
     "tags": [
+      "Code",
+      "Laravel",
       "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Contentful"
+      "React",
+      "TailwindCSS"
     ],
     "border": "border-t-[#7C3AED]",
     "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
-    "imageUrl": ""
+    "imageUrl": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600&auto=format&fit=crop&q=80",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1600&auto=format&fit=crop&q=80"
+    ]
   },
   {
     "id": "drivego-rent-a-car",
@@ -27,7 +34,12 @@
     ],
     "border": "border-t-blue-500",
     "glow": "shadow-[0_-4px_24px_rgba(59,130,246,0.15)] hover:shadow-[0_-4px_24px_rgba(59,130,246,0.3)]",
-    "imageUrl": ""
+    "imageUrl": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=1600&auto=format&fit=crop&q=80",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1600&auto=format&fit=crop&q=80"
+    ]
   },
   {
     "id": "auditwave-security-site",
@@ -42,7 +54,12 @@
     ],
     "border": "border-t-pink-500",
     "glow": "shadow-[0_-4px_24px_rgba(236,72,153,0.15)] hover:shadow-[0_-4px_24px_rgba(236,72,153,0.3)]",
-    "imageUrl": ""
+    "imageUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600&auto=format&fit=crop&q=80",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1600&auto=format&fit=crop&q=80"
+    ]
   },
   {
     "id": "auditwave-security-platform",
@@ -57,7 +74,12 @@
     ],
     "border": "border-t-[#7C3AED]",
     "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
-    "imageUrl": ""
+    "imageUrl": "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1600&auto=format&fit=crop&q=80",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&auto=format&fit=crop&q=80"
+    ]
   },
   {
     "id": "saas-brand-launch-video",
@@ -72,7 +94,12 @@
     ],
     "border": "border-t-blue-500",
     "glow": "shadow-[0_-4px_24px_rgba(59,130,246,0.15)] hover:shadow-[0_-4px_24px_rgba(59,130,246,0.3)]",
-    "imageUrl": ""
+    "imageUrl": "",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&auto=format&fit=crop&q=80"
+    ]
   },
   {
     "id": "ai-animated-shorts-series",
@@ -87,20 +114,32 @@
     ],
     "border": "border-t-pink-500",
     "glow": "shadow-[0_-4px_24px_rgba(236,72,153,0.15)] hover:shadow-[0_-4px_24px_rgba(236,72,153,0.3)]",
-    "imageUrl": ""
+    "imageUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1600&auto=format&fit=crop&q=80"
+    ]
   },
   {
-    "title": "Vaqtrix ",
-    "description": "This is the official digital storefront for our agency—a high-performance portfolio crafted using the modern web ecosystem's most powerful frameworks: React.js and Next.js.\n\nHeavily inspired by the clean, sophisticated, and clutter-free user interface (UI) aesthetic of Vaqtrix.com, this website is built to deliver a seamless user experience. It perfectly bridges the gap between striking visual minimalism and raw technical execution, serving as a live testament to our development and design capabilities.\n\n\n\n\n\n\n",
+    "title": "Vaqtrix",
+    "description": "The official digital storefront for our agency—a high-performance portfolio crafted using Next.js and React. Heavily inspired by the clean, sophisticated UI aesthetic of Vaqtrix.com.",
     "category": "web-dev",
     "tags": [
-      "next js",
-      "react js",
-      "taiwind css"
+      "Next.js",
+      "React",
+      "Tailwind CSS",
+      "Cloudinary"
     ],
     "border": "border-t-[#7C3AED]",
     "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
     "imageUrl": "https://res.cloudinary.com/dwo1whvr8/image/upload/v1784550109/full_image_zkkvx4.jpg",
+    "screenshots": [
+      "https://res.cloudinary.com/dwo1whvr8/image/upload/v1784550109/full_image_zkkvx4.jpg",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1600&auto=format&fit=crop&q=80"
+    ],
     "id": "vaqtrix-405711"
   }
 ]

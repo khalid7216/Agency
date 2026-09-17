@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProjects, addProject, deleteProject } from "@/lib/projects";
+import { getProjects, addProject, updateProject, deleteProject } from "@/lib/projects";
 import { checkAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -78,5 +78,48 @@ export async function DELETE(req: Request) {
   } catch (error) {
     console.error("DELETE project API error:", error);
     return NextResponse.json({ error: "Failed to delete project." }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  // Verify admin authentication
+  if (!checkAuth()) {
+    return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
+  }
+
+  try {
+    const body = await req.json();
+    const { id, title, description, category, tags, border, glow, imageUrl } = body;
+
+    // Validation
+    if (!id || !title || !description || !category) {
+      return NextResponse.json(
+        { error: "Project ID, title, description, and category are required." },
+        { status: 400 }
+      );
+    }
+
+    const updatedProject = await updateProject(id, {
+      title,
+      description,
+      category,
+      tags: Array.isArray(tags) ? tags : [],
+      border: border || "border-t-[#7C3AED]",
+      glow: glow || "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
+      imageUrl: imageUrl || "",
+    });
+
+    if (!updatedProject) {
+      return NextResponse.json({ error: "Project not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, project: updatedProject });
+  } catch (error: unknown) {
+    console.error("PUT projects API error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to update project.";
+    return NextResponse.json(
+      { error: errorMessage },
+      { status: 500 }
+    );
   }
 }

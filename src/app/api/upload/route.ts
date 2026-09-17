@@ -59,7 +59,22 @@ export async function POST(req: Request) {
     });
   } catch (error: unknown) {
     console.error("Cloudinary upload API error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Failed to upload image to Cloudinary.";
+
+    let errorMessage = "Failed to upload image to Cloudinary.";
+    if (error && typeof error === "object") {
+      if ("message" in error && typeof (error as { message?: unknown }).message === "string") {
+        errorMessage = (error as { message: string }).message;
+      } else if (
+        "error" in error &&
+        typeof (error as { error?: unknown }).error === "object" &&
+        (error as { error: { message?: string } }).error?.message
+      ) {
+        errorMessage = (error as { error: { message: string } }).error.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     return NextResponse.json(
       { error: errorMessage },
       { status: 500 }

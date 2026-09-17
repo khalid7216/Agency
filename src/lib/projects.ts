@@ -12,6 +12,7 @@ export interface Project {
   border: string;
   glow: string;
   imageUrl?: string;
+  screenshots?: string[];
 }
 
 const DATA_FILE_PATH = path.join(process.cwd(), "src/data/projects.json");
@@ -68,6 +69,23 @@ export async function addProject(project: Omit<Project, "id">): Promise<Project>
   projects.push(newProject);
   await saveProjects(projects);
   return newProject;
+}
+
+export async function updateProject(id: string, updatedData: Partial<Omit<Project, "id">>): Promise<Project | null> {
+  const projects = await getProjects();
+  const index = projects.findIndex((p) => p.id === id);
+  
+  if (index === -1) {
+    return null;
+  }
+  
+  projects[index] = {
+    ...projects[index],
+    ...updatedData,
+  };
+  
+  await saveProjects(projects);
+  return projects[index];
 }
 
 export async function deleteProject(id: string): Promise<boolean> {

@@ -18,12 +18,20 @@ export async function POST(req: Request) {
       );
     }
 
-    if (
-      typeof username === "string" &&
-      typeof password === "string" &&
-      username === expectedUsername &&
-      password === expectedPassword
-    ) {
+    const cleanUsername = typeof username === "string" ? username.trim() : "";
+    const cleanPassword = typeof password === "string" ? password.trim() : "";
+
+    const allowedUsernames = [
+      expectedUsername.trim().toLowerCase(),
+      "khalidsanawer",
+      "khalidsanawer2@gmail.com",
+      "security@khalidsanawer.online",
+    ];
+
+    const isUsernameValid = allowedUsernames.includes(cleanUsername.toLowerCase());
+    const isPasswordValid = cleanPassword === expectedPassword.trim();
+
+    if (isUsernameValid && isPasswordValid) {
       setSessionCookie();
       return NextResponse.json({ success: true, message: "Logged in successfully" });
     }

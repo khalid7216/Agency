@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { FaCar, FaCode, FaImage, FaVideo } from "react-icons/fa";
+import { FaCar, FaCode, FaImage, FaImages, FaVideo } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
+import ProjectGalleryModal from "@/components/ProjectGalleryModal";
 
 export interface Project {
   id: string;
@@ -15,6 +15,7 @@ export interface Project {
   border: string;
   glow: string;
   imageUrl?: string;
+  screenshots?: string[];
 }
 
 const categories = [
@@ -31,10 +32,24 @@ export default function PortfolioGrid({
   initialProjects?: Project[];
   limit?: number;
 }) {
-  const pathname = usePathname();
   const [activeCategory, setActiveCategory] = useState("all");
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [loading, setLoading] = useState(initialProjects.length === 0);
+
+  // Gallery Modal state
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [initialScreenshotIndex, setInitialScreenshotIndex] = useState(0);
+
+  const handleOpenGallery = (project: Project, index: number = 0) => {
+    setSelectedProject(project);
+    setInitialScreenshotIndex(index);
+    setGalleryOpen(true);
+  };
+
+  const handleCloseGallery = () => {
+    setGalleryOpen(false);
+  };
 
   useEffect(() => {
     if (initialProjects.length > 0) {
@@ -112,19 +127,27 @@ export default function PortfolioGrid({
         ) : (
           displayedProjects.map((project, index) => {
             const hasCaseStudy = ["usertesting-blog", "drivego-rent-a-car", "auditwave-security-platform"].includes(project.id);
-            const isClickable = hasCaseStudy || pathname !== "/portfolio";
-            const href = hasCaseStudy ? `/portfolio/${project.id}` : "/portfolio";
+            const screenshotCount = project.screenshots?.length || (project.imageUrl ? 1 : 0);
 
             const cardContent = (
               <article
-                className={`rounded-xl border border-white/10 ${project.border} bg-white/[0.035] p-8 h-full flex flex-col justify-between ${
-                  isClickable
-                    ? `transition hover:-translate-y-1 hover:bg-white/[0.055] ${project.glow}`
-                    : ""
-                }`}
+                className={`rounded-xl border border-white/10 ${project.border} bg-white/[0.035] p-8 h-full flex flex-col justify-between transition hover:-translate-y-1 hover:bg-white/[0.055] ${project.glow}`}
               >
                 <div>
-                  <div className="mb-6">
+                  <div className="mb-6 relative overflow-hidden rounded-lg">
+                    {/* Hover gallery prompt overlay */}
+                    <div className="absolute inset-0 bg-[#070A14]/75 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px] z-10">
+                      <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#7C3AED] text-white shadow-[0_0_20px_rgba(124,58,237,0.5)] transform scale-95 group-hover/card:scale-100 transition-transform">
+                        <FaImages className="text-xs" />
+                        <span>View Gallery</span>
+                        {screenshotCount > 0 && (
+                          <span className="text-[10px] bg-black/40 px-1.5 py-0.2 rounded-full font-mono">
+                            {screenshotCount}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
                     {project.imageUrl ? (
                       <div className="h-48 relative overflow-hidden rounded-lg border border-white/5 shadow-inner bg-[#080D1A]">
                         <Image
@@ -132,7 +155,7 @@ export default function PortfolioGrid({
                           alt={project.title}
                           fill
                           sizes="(max-width: 768px) 100vw, 33vw"
-                          className={`object-cover ${isClickable ? "group-hover/card:scale-[1.03] transition duration-500" : ""}`}
+                          className="object-cover group-hover/card:scale-[1.03] transition duration-500"
                         />
                       </div>
                     ) : project.title === "User Testing Blog" ? (
@@ -234,12 +257,21 @@ export default function PortfolioGrid({
                   </div>
                   
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="text-xl font-bold">{project.title}</h3>
-                    {hasCaseStudy && (
-                      <span className="text-[10px] bg-[#7C3AED]/20 border border-[#7C3AED]/40 text-[#C4B5FD] px-2 py-0.5 rounded-full font-semibold shrink-0">
-                        Case Study
-                      </span>
-                    )}
+                    <h3 className="text-xl font-bold group-hover/card:text-[#C4B5FD] transition-colors">
+                      {project.title}
+                    </h3>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {screenshotCount > 0 && (
+                        <span className="inline-flex items-center gap-1 text-[10px] bg-[#7C3AED]/15 border border-[#7C3AED]/30 text-[#C4B5FD] px-2 py-0.5 rounded-full font-mono">
+                          <FaImages className="text-[9px]" /> {screenshotCount}
+                        </span>
+                      )}
+                      {hasCaseStudy && (
+                        <span className="text-[10px] bg-white/5 border border-white/10 text-gray-300 px-2 py-0.5 rounded-full font-semibold">
+                          Case Study
+                        </span>
+                      )}
+                    </div>
                   </div>
                   
                   <p className="mt-3 text-sm text-gray-400">{project.description}</p>
@@ -259,20 +291,34 @@ export default function PortfolioGrid({
 
             return (
               <FadeUp key={project.id || project.title} delay={index * 0.05}>
-                {isClickable ? (
-                  <a href={href} className="block group/card h-full">
-                    {cardContent}
-                  </a>
-                ) : (
-                  <div className="h-full">
-                    {cardContent}
-                  </div>
-                )}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleOpenGallery(project)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleOpenGallery(project);
+                    }
+                  }}
+                  className="block group/card h-full cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED] rounded-xl select-none"
+                  aria-label={`View screenshot gallery for ${project.title}`}
+                >
+                  {cardContent}
+                </div>
               </FadeUp>
             );
           })
         )}
       </div>
+
+      {/* Project Gallery Lightbox Modal */}
+      <ProjectGalleryModal
+        isOpen={galleryOpen}
+        onClose={handleCloseGallery}
+        project={selectedProject}
+        initialIndex={initialScreenshotIndex}
+      />
     </div>
   );
 }
