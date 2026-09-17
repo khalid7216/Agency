@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { FaCar, FaCode, FaImage, FaImages, FaVideo } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
 import ProjectGalleryModal from "@/components/ProjectGalleryModal";
@@ -274,7 +275,19 @@ export default function PortfolioGrid({
                     </div>
                   </div>
                   
-                  <p className="mt-3 text-sm text-gray-400">{project.description}</p>
+                  <p className="mt-3 text-sm text-gray-400 line-clamp-2 leading-relaxed">
+                    {project.description}
+                  </p>
+                  <div className="mt-3">
+                    <Link
+                      href={`/portfolio/${project.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C4B5FD] hover:text-white transition group/link"
+                    >
+                      <span>See More</span>
+                      <span className="transition-transform group-hover/link:translate-x-1">→</span>
+                    </Link>
+                  </div>
                 </div>
                 <div className="mt-8 flex flex-wrap gap-2">
                   {project.tags.map((tag: string) => (

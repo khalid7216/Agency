@@ -1,27 +1,5 @@
 [
   {
-    "id": "usertesting-blog",
-    "title": "trendivoa.com",
-    "description": "\"Built the full Trendivoa website — a coupon & deals platform — from the client's Figma design. Laravel backend with a Next.js + React frontend. Implemented hero carousel, brand logo grid, and category blog sections. Site features brand-specific coupon codes (Adidas, Hard Rock, Walmart etc.) and is monetized via AdSense. Client approved final delivery.\"\n\n",
-    "category": "web-dev",
-    "tags": [
-      "Code",
-      "Laravel",
-      "Next.js",
-      "React",
-      "TailwindCSS"
-    ],
-    "border": "border-t-[#7C3AED]",
-    "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
-    "imageUrl": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600&auto=format&fit=crop&q=80",
-    "screenshots": [
-      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1600&auto=format&fit=crop&q=80"
-    ]
-  },
-  {
     "id": "drivego-rent-a-car",
     "title": "Rent-a-Car Platform",
     "description": "Full-stack car rental platform with custom booking flow, database, and admin dashboard.",
@@ -141,5 +119,21 @@
       "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1600&auto=format&fit=crop&q=80"
     ],
     "id": "vaqtrix-405711"
+  },
+  {
+    "title": "trendivoa.com",
+    "description": "\"Built the full Trendivoa website — a coupon & deals platform — from the client's Figma design. Laravel backend with a Next.js + React frontend. Implemented hero carousel, brand logo grid, and category blog sections. Site features brand-specific coupon codes (Adidas, Hard Rock, Walmart etc.) and is monetized via AdSense. Client approved final delivery.\"",
+    "category": "web-dev",
+    "tags": [
+      "Code",
+      "Laravel",
+      "Next.js",
+      "React",
+      "TailwindCSS"
+    ],
+    "border": "border-t-[#7C3AED]",
+    "glow": "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
+    "imageUrl": "https://res.cloudinary.com/dwo1whvr8/image/upload/v1789606025/agency_portfolio/db4syqljtmpskkzc4wy1.png",
+    "id": "trendivoa-com-027524"
   }
 ]

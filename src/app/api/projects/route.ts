@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { title, description, category, tags, border, glow, imageUrl } = body;
+    const { title, description, category, tags, border, glow, imageUrl, screenshots } = body;
 
     // Validation
     if (!title || !description || !category) {
@@ -41,6 +41,7 @@ export async function POST(req: Request) {
       border: border || "border-t-[#7C3AED]",
       glow: glow || "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
       imageUrl: imageUrl || "",
+      screenshots: Array.isArray(screenshots) ? screenshots : [],
     });
 
     return NextResponse.json({ success: true, project: newProject }, { status: 201 });
@@ -89,7 +90,7 @@ export async function PUT(req: Request) {
 
   try {
     const body = await req.json();
-    const { id, title, description, category, tags, border, glow, imageUrl } = body;
+    const { id, title, description, category, tags, border, glow, imageUrl, screenshots } = body;
 
     // Validation
     if (!id || !title || !description || !category) {
@@ -107,6 +108,7 @@ export async function PUT(req: Request) {
       border: border || "border-t-[#7C3AED]",
       glow: glow || "shadow-[0_-4px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_-4px_24px_rgba(124,58,237,0.3)]",
       imageUrl: imageUrl || "",
+      screenshots: Array.isArray(screenshots) ? screenshots : [],
     });
 
     if (!updatedProject) {

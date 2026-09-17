@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -27,14 +27,27 @@ export default function ProjectGalleryModal({
   initialIndex = 0,
 }: ProjectGalleryModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Normalize screenshots list
-  const screenshots: string[] =
+  // Normalize and sanitize screenshots list (handles string arrays, object arrays, or imageUrl fallback)
+  const rawScreenshots =
     project?.screenshots && project.screenshots.length > 0
       ? project.screenshots
       : project?.imageUrl
       ? [project.imageUrl]
       : [];
+
+  const screenshots: string[] = rawScreenshots
+    .map((item: unknown) => {
+      if (typeof item === "string") return item;
+      if (item && typeof item === "object") {
+        const obj = item as Record<string, unknown>;
+        const urlStr = obj.url || obj.src || obj.secure_url;
+        return typeof urlStr === "string" ? urlStr : "";
+      }
+      return "";
+    })
+    .filter((url: string) => Boolean(url && url.trim() !== ""));
 
   const total = screenshots.length;
 
@@ -44,6 +57,27 @@ export default function ProjectGalleryModal({
       setCurrentIndex(initialIndex >= 0 && initialIndex < total ? initialIndex : 0);
     }
   }, [isOpen, initialIndex, project, total]);
+
+  // Reset scroll position to top whenever screenshot changes
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [currentIndex, project]);
+
+  // Log screenshot array values at render time for debugging & verification
+  useEffect(() => {
+    if (isOpen && project) {
+      console.log("[ProjectGalleryModal] Opened project:", {
+        id: project.id,
+        title: project.title,
+        screenshotsCount: screenshots.length,
+        screenshots,
+        currentIndex,
+        currentImage: screenshots[currentIndex >= 0 && currentIndex < screenshots.length ? currentIndex : 0],
+      });
+    }
+  }, [isOpen, project, screenshots, currentIndex]);
 
   // Navigate to Next slide
   const handleNext = useCallback(() => {
@@ -107,8 +141,8 @@ export default function ProjectGalleryModal({
         {/* Modal Container */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 10 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.96, y: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
           onClick={(e) => e.stopPropagation()}
           className="relative z-10 flex flex-col w-full h-full sm:h-auto sm:max-h-[92vh] sm:max-w-5xl rounded-none sm:rounded-2xl border-0 sm:border border-white/10 bg-[#0D1120] text-white shadow-[0_0_50px_rgba(124,58,237,0.25)] overflow-hidden"
@@ -117,7 +151,7 @@ export default function ProjectGalleryModal({
           aria-labelledby="gallery-title"
         >
           {/* Top Header Bar */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#0A0E1A]/80 backdrop-blur-md shrink-0">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#0A0E1A]/80 backdrop-blur-md shrink-0 z-20">
             <div className="flex items-center gap-3 min-w-0">
               <div className="p-2 rounded-lg bg-[#7C3AED]/15 border border-[#7C3AED]/30 text-[#C4B5FD] shrink-0">
                 <FaImages className="text-sm" />
@@ -173,35 +207,48 @@ export default function ProjectGalleryModal({
           </div>
 
           {/* Main Visual Display Area */}
-          <div className="relative flex-grow flex items-center justify-center bg-[#070A14] min-h-[300px] sm:min-h-[460px] max-h-[62vh] overflow-hidden select-none">
-            {currentImage ? (
-              <div className="relative w-full h-full flex items-center justify-center p-4">
+          <div className="relative w-full bg-[#070A14] overflow-hidden select-none flex flex-col items-center justify-center">
+            {/* Scroll hint badge */}
+            {currentImage && (
+              <div className="absolute top-3 z-20 pointer-events-none px-3 py-1 rounded-full bg-[#0A0E1A]/85 backdrop-blur-md border border-white/10 text-[10px] text-gray-300 flex items-center gap-1.5 shadow-lg">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] animate-pulse" />
+                <span>Scroll to view full page</span>
+              </div>
+            )}
+
+            {/* Scrollable Container */}
+            <div
+              ref={scrollContainerRef}
+              className="w-full max-h-[65vh] sm:max-h-[72vh] overflow-y-auto overflow-x-hidden p-3 sm:p-6 pt-10 sm:pt-12 custom-gallery-scrollbar flex flex-col items-center"
+            >
+              {currentImage ? (
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentImage + currentIndex}
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.22, ease: "easeInOut" }}
-                    className="relative w-full h-full max-h-[56vh] flex items-center justify-center"
+                    className="w-full max-w-4xl mx-auto flex flex-col items-center relative"
                   >
                     <Image
                       src={currentImage}
                       alt={`${project.title} screenshot ${currentIndex + 1}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 85vw"
-                      className="object-contain rounded-lg drop-shadow-2xl"
+                      width={1600}
+                      height={2400}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                      className="w-full h-auto rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-white/10"
                       priority
                     />
                   </motion.div>
                 </AnimatePresence>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-                <FaImages className="text-5xl mb-3 opacity-40 text-[#7C3AED]" />
-                <p className="text-sm">No preview screenshots available for this project.</p>
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col items-center justify-center py-20 text-gray-500 my-auto">
+                  <FaImages className="text-5xl mb-3 opacity-40 text-[#7C3AED]" />
+                  <p className="text-sm">No preview screenshots available for this project.</p>
+                </div>
+              )}
+            </div>
 
             {/* Navigation Arrows */}
             {total > 1 && (
@@ -209,7 +256,7 @@ export default function ProjectGalleryModal({
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full border border-white/10 bg-[#0D1120]/80 text-white hover:bg-[#7C3AED] hover:border-[#7C3AED] shadow-lg transition backdrop-blur-md group cursor-pointer"
+                  className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full border border-white/10 bg-[#0D1120]/80 text-white hover:bg-[#7C3AED] hover:border-[#7C3AED] shadow-xl transition backdrop-blur-md group cursor-pointer z-30"
                   aria-label="Previous screenshot"
                   title="Previous (Left Arrow)"
                 >
@@ -218,7 +265,7 @@ export default function ProjectGalleryModal({
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full border border-white/10 bg-[#0D1120]/80 text-white hover:bg-[#7C3AED] hover:border-[#7C3AED] shadow-lg transition backdrop-blur-md group cursor-pointer"
+                  className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full border border-white/10 bg-[#0D1120]/80 text-white hover:bg-[#7C3AED] hover:border-[#7C3AED] shadow-xl transition backdrop-blur-md group cursor-pointer z-30"
                   aria-label="Next screenshot"
                   title="Next (Right Arrow)"
                 >

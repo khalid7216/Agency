@@ -8,6 +8,7 @@ import {
   FaCode,
   FaExclamationTriangle,
   FaImage,
+  FaImages,
   FaPencilAlt,
   FaPlus,
   FaSearch,
@@ -29,6 +30,7 @@ interface Project {
   border: string;
   glow: string;
   imageUrl?: string;
+  screenshots?: string[];
 }
 
 const colorPresets = [
@@ -80,6 +82,9 @@ export default function Admin() {
   const [tagsInput, setTagsInput] = useState("");
   const [selectedPreset, setSelectedPreset] = useState("purple");
   const [imageUrl, setImageUrl] = useState("");
+  const [screenshots, setScreenshots] = useState<string[]>([]);
+  const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
+  const [screenshotUploadError, setScreenshotUploadError] = useState<string | null>(null);
 
   // Search and Filter State
   const [searchQuery, setSearchQuery] = useState("");
@@ -240,6 +245,78 @@ export default function Admin() {
     }
   };
 
+  // Multiple Screenshots Upload Handler
+  const handleScreenshotsUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingScreenshot(true);
+    setScreenshotUploadError(null);
+
+    try {
+      const fileList = Array.from(files);
+      const uploadedUrls: string[] = [];
+
+      for (const file of fileList) {
+        if (file.size > 5 * 1024 * 1024) {
+          throw new Error(`File "${file.name}" exceeds the 5MB size limit.`);
+        }
+
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+        });
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ file: base64 }),
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          if (result.configured === false) {
+            setConfigError(result.error);
+          }
+          throw new Error(result.error || `Upload failed for ${file.name}`);
+        }
+
+        if (result.url) {
+          uploadedUrls.push(result.url);
+        }
+      }
+
+      setScreenshots((prev) => [...prev, ...uploadedUrls]);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to upload screenshots.";
+      setScreenshotUploadError(msg);
+      console.error("Screenshot upload failed:", err);
+    } finally {
+      setUploadingScreenshot(false);
+      e.target.value = "";
+    }
+  };
+
+  // Remove a specific screenshot by index
+  const handleRemoveScreenshot = (indexToRemove: number) => {
+    setScreenshots((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  // Reorder screenshot earlier/later in array
+  const handleMoveScreenshot = (index: number, direction: "up" | "down") => {
+    setScreenshots((prev) => {
+      const next = [...prev];
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= next.length) return prev;
+      const temp = next[index];
+      next[index] = next[targetIndex];
+      next[targetIndex] = temp;
+      return next;
+    });
+  };
+
   // Start editing a project
   const handleStartEdit = (project: Project) => {
     setEditingProjectId(project.id);
@@ -252,8 +329,10 @@ export default function Admin() {
     );
     setSelectedPreset(matched ? matched.value : "purple");
     setImageUrl(project.imageUrl || "");
+    setScreenshots(project.screenshots && Array.isArray(project.screenshots) ? project.screenshots : []);
     setUploadSuccess(false);
     setUploadError(null);
+    setScreenshotUploadError(null);
 
     // Scroll to form if on mobile/smaller screens
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
@@ -270,8 +349,10 @@ export default function Admin() {
     setTagsInput("");
     setSelectedPreset("purple");
     setImageUrl("");
+    setScreenshots([]);
     setUploadSuccess(false);
     setUploadError(null);
+    setScreenshotUploadError(null);
   };
 
   // Submit project (Add or Update)
@@ -302,6 +383,7 @@ export default function Admin() {
         border: preset.border,
         glow: preset.glow,
         imageUrl,
+        screenshots,
       };
 
       const response = await fetch(endpoint, {
@@ -720,6 +802,123 @@ export default function Admin() {
                 {uploadError && <p className="text-xs text-red-400 mt-2">Error: {uploadError}</p>}
               </div>
 
+              {/* Project Screenshots Section */}
+              <div className="space-y-3 pt-3 border-t border-white/5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                    <FaImages className="text-[#C4B5FD]" />
+                    <span>Project Screenshots</span>
+                    <span className="text-[10px] text-gray-400 font-normal">
+                      ({screenshots.length} uploaded)
+                    </span>
+                  </label>
+                  {screenshots.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setScreenshots([])}
+                      className="text-[10px] text-red-400 hover:text-red-300 transition"
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
+                <p className="text-[11px] text-gray-400 leading-normal">
+                  Upload multiple full-page screenshots or gallery images for the project lightbox modal and detail page. Order maps to Next/Previous gallery navigation.
+                </p>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  id="screenshots-upload"
+                  onChange={handleScreenshotsUpload}
+                  disabled={uploadingScreenshot}
+                  className="hidden"
+                />
+
+                {/* Grid of uploaded screenshots thumbnails */}
+                {screenshots.length > 0 && (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5 p-3 rounded-xl border border-white/10 bg-[#0D1120] max-h-60 overflow-y-auto custom-gallery-scrollbar">
+                    {screenshots.map((url, idx) => (
+                      <div
+                        key={`${url}-${idx}`}
+                        className="relative group/thumb rounded-lg overflow-hidden border border-white/10 bg-[#070A14] aspect-video sm:aspect-square"
+                      >
+                        <Image
+                          src={url}
+                          alt={`Screenshot ${idx + 1}`}
+                          fill
+                          className="object-cover group-hover/thumb:scale-105 transition duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/75 opacity-0 group-hover/thumb:opacity-100 transition flex items-center justify-between p-1.5 backdrop-blur-[2px]">
+                          <span className="text-[9px] font-mono px-1 py-0.5 rounded bg-black/60 text-white border border-white/10">
+                            #{idx + 1}
+                          </span>
+                          <div className="flex items-center gap-1">
+                            {idx > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => handleMoveScreenshot(idx, "up")}
+                                className="p-1 rounded bg-black/60 hover:bg-[#7C3AED] text-white transition text-[9px]"
+                                title="Move left/earlier"
+                              >
+                                ←
+                              </button>
+                            )}
+                            {idx < screenshots.length - 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleMoveScreenshot(idx, "down")}
+                                className="p-1 rounded bg-black/60 hover:bg-[#7C3AED] text-white transition text-[9px]"
+                                title="Move right/later"
+                              >
+                                →
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveScreenshot(idx)}
+                              className="p-1 rounded bg-red-500/80 hover:bg-red-600 text-white transition"
+                              title="Remove screenshot"
+                            >
+                              <FaTrash className="w-2.5 h-2.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Upload Button / Dropzone for screenshots */}
+                <label
+                  htmlFor="screenshots-upload"
+                  className={`flex items-center justify-center gap-2 border-2 border-dashed border-white/10 hover:border-[#7C3AED]/50 rounded-xl p-3.5 cursor-pointer bg-[#0D1120]/50 hover:bg-[#0D1120] transition text-center group ${
+                    uploadingScreenshot ? "opacity-60 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {uploadingScreenshot ? (
+                    <>
+                      <FaSpinner className="animate-spin text-sm text-[#7C3AED]" />
+                      <span className="text-xs text-[#C4B5FD]">Uploading screenshot(s)...</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="p-1.5 rounded-lg bg-[#7C3AED]/10 text-[#C4B5FD] border border-[#7C3AED]/20 group-hover:scale-110 transition">
+                        <FaUpload className="text-xs" />
+                      </div>
+                      <span className="text-xs font-medium text-gray-200">
+                        + Add Screenshot(s) <span className="text-gray-400 font-normal">(select multiple files)</span>
+                      </span>
+                    </>
+                  )}
+                </label>
+
+                {screenshotUploadError && (
+                  <p className="text-xs text-red-400 mt-1">Error: {screenshotUploadError}</p>
+                )}
+              </div>
+
               {/* Submit button */}
               <button
                 type="submit"
@@ -920,6 +1119,11 @@ export default function Admin() {
                         {Array.isArray(project.tags) && project.tags.length > 2 && (
                           <span className="text-[10px] text-gray-500">
                             +{project.tags.length - 2}
+                          </span>
+                        )}
+                        {Array.isArray(project.screenshots) && project.screenshots.length > 0 && (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#7C3AED]/15 text-[#C4B5FD] border border-[#7C3AED]/30 flex items-center gap-1 ml-auto">
+                            <FaImages className="text-[9px]" /> {project.screenshots.length} screenshot{project.screenshots.length > 1 ? "s" : ""}
                           </span>
                         )}
                       </div>

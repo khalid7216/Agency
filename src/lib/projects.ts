@@ -100,3 +100,16 @@ export async function deleteProject(id: string): Promise<boolean> {
   await saveProjects(projects);
   return true;
 }
+
+export async function getProjectById(id: string): Promise<Project | null> {
+  const projects = await getProjects();
+  const target = id.toLowerCase().trim();
+  return (
+    projects.find(
+      (p) =>
+        p.id.toLowerCase() === target ||
+        p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") === target
+    ) || null
+  );
+}
+
