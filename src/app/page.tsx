@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  FaCode,
-  FaShieldAlt,
-  FaVideo,
-} from "react-icons/fa";
+import { FaCode, FaShieldAlt, FaVideo } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
+import AnimatedHeroText from "@/components/AnimatedHeroText";
+import AnimatedStats from "@/components/AnimatedStats";
 import PortfolioGrid from "@/components/PortfolioGrid";
+import AnimatedServices from "@/components/AnimatedServices";
+import ProcessTimeline from "@/components/ProcessTimeline";
+import BlogPreview from "@/components/BlogPreview";
+import FaqAccordion from "@/components/FaqAccordion";
+import AnimatedCTA from "@/components/AnimatedCTA";
 import { getProjects } from "@/lib/projects";
+import { getBlogPosts } from "@/lib/mdx";
 
 export const metadata: Metadata = {
   title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
@@ -33,39 +36,6 @@ export const metadata: Metadata = {
   },
 };
 
-const services = [
-  {
-    title: "Cybersecurity & VAPT",
-    icon: FaShieldAlt,
-    href: "/vapt",
-    tags: ["Web App Testing", "Network Audit", "WordPress Security"],
-    metric: "1200+ sites tested",
-    border: "border-l-[#7C3AED]",
-    iconWrap: "bg-[#7C3AED]/15 text-[#C4B5FD]",
-    layout: "items-center text-center",
-  },
-  {
-    title: "Web Development",
-    icon: FaCode,
-    href: "/services#webdev",
-    tags: ["Next.js", "MERN Stack", "REST APIs"],
-    metric: "Production-ready apps",
-    border: "border-l-blue-500",
-    iconWrap: "bg-blue-500/15 text-blue-300",
-    layout: "items-center text-center",
-  },
-  {
-    title: "Video Editing",
-    icon: FaVideo,
-    href: "/services#video",
-    tags: ["Premiere Pro", "After Effects", "CapCut"],
-    metric: "4K Production",
-    border: "border-l-pink-500",
-    iconWrap: "bg-pink-500/15 text-pink-300",
-    layout: "items-center text-center",
-  },
-];
-
 const skills = [
   {
     label: "Security",
@@ -84,6 +54,30 @@ const skills = [
   },
 ];
 
+// TODO: confirm FAQ copy before deploy
+const homepageFaqs = [
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "What makes Khalid Sanawer's services unique?",
+    answer: "A rare trifecta of verified cybersecurity credentials (EC-Council Certified, 1,200+ sites tested, HackerOne researcher) alongside senior Next.js full-stack development and 4K video editing capabilities.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "Do you handle both security testing and development for the same product?",
+    answer: "Yes. Clients frequently engage us to develop secure, high-performance web applications from scratch, or to conduct penetration tests on existing platforms to pinpoint and eliminate vulnerabilities.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "How do you protect client confidentiality during security audits?",
+    answer: "All engagements are bound by strict legal Non-Disclosure Agreements (NDAs). Findings, architectural data, and vulnerability reports are 100% confidential and never disclosed to third parties.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "What is your typical project delivery workflow?",
+    answer: "We follow a 3-step structured process: Discovery & Scoping → Testing & Build → Delivery & Support, complete with actionable reports, code reviews, and complimentary re-testing.",
+  },
+];
+
 const homeWebsiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -99,6 +93,7 @@ const homeWebsiteSchema = {
 
 export default async function Home() {
   const projects = await getProjects();
+  const posts = getBlogPosts();
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
@@ -106,153 +101,60 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeWebsiteSchema) }}
       />
-      {/* Background Glows */}
+
+      {/* Ambient Background Glows */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute left-[-8rem] top-24 h-80 w-80 rounded-full bg-[#7C3AED]/20 blur-[120px]" />
         <div className="absolute right-[-10rem] top-[38rem] h-96 w-96 rounded-full bg-[#7C3AED]/15 blur-[140px]" />
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-[#7C3AED]/10 blur-[120px]" />
       </div>
 
-      {/* Hero Section */}
-      <section className="relative px-4 sm:px-6 pb-14 pt-20 md:pb-20 md:pt-28">
-        <div className="absolute inset-0 -z-10 opacity-[0.12] [background-image:radial-gradient(#7C3AED_1px,transparent_1px)] [background-size:26px_26px]" />
-        <div className="absolute left-1/2 top-10 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-[#7C3AED]/20 blur-[110px]" />
+      {/* SECTION 1: Hero */}
+      <AnimatedHeroText />
 
-        <div className="mx-auto grid max-w-7xl items-center gap-14 grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="text-center lg:text-left">
-            <p className="mb-4 text-lg font-semibold text-[#C4B5FD]">Hey, I&apos;m Khalid 👋</p>
-            <div className="mb-4 inline-flex items-center rounded-full border border-[#7C3AED]/30 bg-[#7C3AED]/10 px-4 py-2 text-sm text-[#DDD6FE]">
-              🟢 Open to freelance & security engagements
-            </div>
+      {/* SECTION 2: Animated Stats Row (Track Record) directly below hero */}
+      <AnimatedStats projectsCount={projects.length} />
 
-            <h1 className="mb-4 max-w-3xl text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-normal text-white mx-auto lg:mx-0">
-              I Build. I Secure. I Create.
-            </h1>
-
-            <p className="text-base text-gray-400 mb-6 max-w-xs mx-auto lg:mx-0 leading-relaxed">
-              Security is my expertise. Code is my craft. Video is my team&apos;s game.
-            </p>
-
-            <div className="mb-8 flex justify-center lg:justify-start">
-              <Image
-                src="/MERN.webp"
-                alt="MERN Stack - MongoDB, Express, React, Node.js"
-                width={160}
-                height={50}
-                sizes="(max-width: 768px) 140px, 160px"
-                priority={true}
-                className="opacity-80 hover:opacity-100 transition duration-300 object-contain"
-              />
-            </div>
-
-            <div className="mb-4 flex flex-wrap gap-4 justify-center lg:justify-start">
-              <a
-                href="mailto:security@khalidsanawer.online"
-                className="rounded-xl bg-[#7C3AED] px-7 py-3.5 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]"
-              >
-                Hire Me →
-              </a>
-              <Link
-                href="/portfolio"
-                className="rounded-xl border border-white/15 px-7 py-3.5 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5"
-              >
-                View Portfolio
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto">
-              <div className="absolute -inset-4 bg-[#7C3AED]/20 blur-3xl rounded-full" />
-              <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-[#7C3AED]/40 shadow-[0_0_40px_rgba(124,58,237,0.3)]">
-                <Image
-                  src="/khalid.jpg"
-                  alt="Khalid Sanawer"
-                  fill
-                  priority={true}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-top"
-                />
-              </div>
-              <div className="absolute -bottom-5 left-1/2 w-max -translate-x-1/2 rounded-full border border-white/10 bg-[#0A0E1A]/90 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-                🟢 Available for work
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section with Link wrap */}
-      <section id="services" className="px-4 sm:px-6 py-24">
+      {/* SECTION 3: Featured Work Showcase */}
+      <section id="portfolio" className="px-4 sm:px-6 py-28 relative">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl text-left">
-            <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Services</p>
-            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Security, software, and content that ship.</h2>
-          </div>
-
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-
-              return (
-                <FadeUp key={service.title} delay={index * 0.1}>
-                  <Link href={service.href} className="block h-full group">
-                    <article
-                      className={`flex min-h-[285px] flex-col ${service.layout} rounded-xl border border-white/10 ${service.border} bg-white/[0.035] p-7 transition hover:-translate-y-1 hover:bg-white/[0.055] h-full`}
-                    >
-                      <div className={`mb-6 flex h-14 w-14 self-center items-center justify-center rounded-xl ${service.iconWrap}`}>
-                        <Icon className="text-2xl" />
-                      </div>
-                      <h3 className="text-xl font-bold">{service.title}</h3>
-                      <div className="mt-5 flex flex-wrap justify-center gap-2">
-                        {service.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-md border border-white/10 bg-[#0A0E1A] px-2.5 py-1 text-xs text-gray-300"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <p className="mt-auto pt-7 text-sm font-semibold text-[#C4B5FD]">{service.metric}</p>
-                    </article>
-                  </Link>
-                </FadeUp>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio Section */}
-      <section id="portfolio" className="px-4 sm:px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl text-left">
-            <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Portfolio</p>
-            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Selected work with real delivery behind it.</h2>
+          <div className="mb-14 max-w-2xl text-left">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#7C3AED]">Portfolio</p>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">
+              Selected work with real delivery behind it.
+            </h2>
           </div>
 
           <PortfolioGrid initialProjects={projects} limit={3} />
 
-          <div className="mt-12 flex justify-center">
+          <div className="mt-14 flex justify-center">
             <Link
               href="/portfolio"
-              className="rounded-xl border border-[#7C3AED] px-8 py-3.5 font-semibold text-[#DDD6FE] transition hover:bg-[#7C3AED]/10 hover:text-white shadow-[0_0_15px_rgba(124,58,237,0.15)] flex items-center gap-2"
+              className="rounded-xl border border-[#7C3AED] px-8 py-3.5 font-semibold text-[#DDD6FE] transition hover:bg-[#7C3AED]/10 hover:text-white shadow-[0_0_20px_rgba(124,58,237,0.15)] flex items-center gap-2"
             >
-              View All Projects →
+              <span>View All Projects</span>
+              <span>→</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="border-y border-white/5 bg-white/[0.025] px-4 sm:px-6 py-24">
+      {/* SECTION 4: Skills / Services Grid */}
+      <AnimatedServices />
+
+      {/* SECTION 5: Process / Timeline Section ("How We Work") */}
+      <ProcessTimeline />
+
+      {/* SECTION 5b: About Section & Core Skills */}
+      <section id="about" className="border-t border-white/5 bg-[#080D1A]/60 px-4 sm:px-6 py-28">
         <FadeUp delay={0}>
           <div className="mx-auto grid max-w-7xl gap-12 grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
-              <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">About</p>
-              <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Security Researcher. Developer. Creator.</h2>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-300">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#7C3AED]">About</p>
+              <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">
+                Security Researcher. Developer. Creator.
+              </h2>
+              <p className="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-gray-300">
                 Khalid Sanawer is a Pakistan-based security researcher and full-stack developer
                 focused on practical results: finding vulnerabilities, building reliable web apps,
                 and creating polished digital content. His work spans VAPT, Next.js production
@@ -265,13 +167,16 @@ export default async function Home() {
                 const Icon = skill.icon;
 
                 return (
-                  <div key={skill.label} className="rounded-xl border border-white/10 bg-[#0A0E1A] p-6">
+                  <div
+                    key={skill.label}
+                    className="rounded-2xl border border-white/10 bg-[#0A0E1A] p-6 transition-colors hover:border-[#7C3AED]/40"
+                  >
                     <div className="flex items-start gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#7C3AED]/15 text-[#C4B5FD]">
-                        <Icon />
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#7C3AED]/15 text-[#C4B5FD]">
+                        <Icon className="text-xl" />
                       </div>
                       <div>
-                        <h3 className="font-bold">{skill.label}</h3>
+                        <h3 className="font-bold text-base text-white">{skill.label}</h3>
                         <p className="mt-1 text-sm leading-6 text-gray-400">{skill.items}</p>
                       </div>
                     </div>
@@ -283,87 +188,19 @@ export default async function Home() {
         </FadeUp>
       </section>
 
-      {/* Track Record Section */}
-      <section id="track-record" className="border-t border-white/5 bg-[#080D1A] px-4 sm:px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl text-left">
-            <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Track Record</p>
-            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Verified metrics &amp; security research.</h2>
-          </div>
+      {/* SECTION 6: Blog / Journal Preview Grid */}
+      <BlogPreview posts={posts} />
 
-          {/* Part A: Stats bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FadeUp delay={0}>
-              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
-                <div className="text-3xl sm:text-4xl font-black text-[#7C3AED] mb-2">1,200+</div>
-                <div className="text-sm font-medium text-gray-300">Sites Tested</div>
-              </div>
-            </FadeUp>
-            <FadeUp delay={0.1}>
-              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
-                <div className="text-[#7C3AED] text-3xl sm:text-4xl font-black mb-2">3+</div>
-                <div className="text-sm font-medium text-gray-300">Years of Security Testing Experience</div>
-              </div>
-            </FadeUp>
-            <FadeUp delay={0.2}>
-              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
-                <div className="text-3xl sm:text-4xl font-black text-[#7C3AED] mb-2">{projects.length}</div>
-                <div className="text-sm font-medium text-gray-300">Live Projects Delivered</div>
-              </div>
-            </FadeUp>
-            <FadeUp delay={0.3}>
-              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
-                <div className="text-2xl sm:text-3xl font-black text-[#7C3AED] mb-2">EC-Council</div>
-                <div className="text-sm font-medium text-gray-300">Certified Bug Bounty Practitioner</div>
-              </div>
-            </FadeUp>
-          </div>
+      {/* SECTION 7: FAQ Accordion */}
+      <FaqAccordion
+        items={homepageFaqs}
+        title="Frequently Asked Questions"
+        subtitle="Common questions about our agency capabilities, security credentials, and engagements."
+        tag="FAQ"
+      />
 
-          {/* Part B: Vulnerability findings strip */}
-          <FadeUp delay={0.4}>
-            <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-8 text-center">
-              <h3 className="text-lg sm:text-xl font-bold text-white mb-6">
-                Vulnerabilities Identified In
-              </h3>
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
-                {["Airbnb", "Dyson", "Freshworks", "Arkose Labs", "Inditex"].map((company) => (
-                  <span
-                    key={company}
-                    className="rounded-xl border border-white/10 bg-[#0A0E1A] px-5 py-2.5 text-sm sm:text-base font-semibold text-gray-300 transition hover:border-[#7C3AED]/40 hover:text-white"
-                  >
-                    {company}
-                  </span>
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Findings identified through responsible disclosure on HackerOne
-              </p>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section id="contact" className="relative px-4 sm:px-6 py-24">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.16),transparent_55%)]" />
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl sm:text-4xl font-black md:text-6xl">Ready to work together?</h2>
-          <div className="mt-9 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
-              className="rounded-xl bg-[#7C3AED] px-8 py-4 font-semibold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:bg-[#6D28D9]"
-            >
-              Hire Me
-            </Link>
-            <a
-              href="mailto:security@khalidsanawer.online?subject=Booking%20a%20Call"
-              className="rounded-xl border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-[#7C3AED]/60 hover:bg-white/5"
-            >
-              Book a Call
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* SECTION 8: Final CTA */}
+      <AnimatedCTA />
     </main>
   );
 }

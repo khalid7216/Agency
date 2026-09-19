@@ -12,6 +12,7 @@ import {
   FaShieldAlt,
 } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
+import FaqAccordion from "@/components/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
@@ -73,6 +74,40 @@ const vaptServiceSchema = {
     ]
   }
 };
+
+// TODO: confirm FAQ copy before deploy
+const vaptFaqs = [
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "What is the difference between vulnerability assessment and penetration testing?",
+    answer: "A vulnerability assessment identifies and catalogs known security flaws across your attack surface. Penetration testing goes further by actively and safely exploiting those flaws to demonstrate real-world risk, business impact, and bypass capability.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "Do you sign a Non-Disclosure Agreement (NDA) before testing?",
+    answer: "Yes, absolutely. Every engagement begins with a legally binding NDA and a mutual testing authorization agreement. Your findings, code, and reports are 100% confidential and never disclosed to third parties.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "How long does a typical security audit or VAPT assessment take?",
+    answer: "Turnaround depends on scope: a Basic Audit of up to 5 pages takes around 3 business days, while a Full VAPT (web app and API up to 20 pages) is delivered within 7 business days.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "Is a free re-test included after our developers fix the vulnerabilities?",
+    answer: "Yes. All VAPT engagements include one complimentary re-test after remediation. We verify your fixes and issue an updated report reflecting your hardened security posture.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "Will the penetration test disrupt our production website or users?",
+    answer: "No. Testing is conducted using non-destructive methodologies designed to avoid performance degradation, data loss, or downtime. If high-impact tests are needed, they are strictly scheduled during low-traffic windows with prior approval.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "What report format do we receive at the conclusion of testing?",
+    answer: "You receive a comprehensive executive-ready and developer-friendly PDF report detailing every finding, CVSS score, reproduction steps with screenshots, and code-level remediation guidance.",
+  },
+];
 
 export default function Vapt() {
   return (
@@ -369,6 +404,14 @@ export default function Vapt() {
           </div>
         </FadeUp>
       </section>
+
+      <FaqAccordion
+        items={vaptFaqs}
+        includeSchema={true}
+        title="VAPT Security FAQs"
+        subtitle="Common questions about our penetration testing scope, methodologies, and reporting."
+        tag="SECURITY FAQ"
+      />
 
       <section className="relative px-4 sm:px-6 py-24 border-t border-white/5 bg-white/[0.01]">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.16),transparent_55%)]" />

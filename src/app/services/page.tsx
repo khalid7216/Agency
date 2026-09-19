@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FaCheck, FaCode, FaShieldAlt, FaVideo } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
+import FaqAccordion from "@/components/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
@@ -79,6 +80,40 @@ const serviceSchema = {
     ]
   }
 };
+
+// TODO: confirm FAQ copy before deploy
+const servicesFaqs = [
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "What core services does Khalid Sanawer offer?",
+    answer: "We offer end-to-end execution across three specialized disciplines: Cybersecurity & VAPT (penetration testing and vulnerability remediation), Full-Stack Web Development (Next.js, React, Node.js, MERN stack), and 4K Video Production (Premiere Pro, After Effects, and CapCut editing).",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "How does project pricing and scoping work?",
+    answer: "We believe in complete pricing transparency. Starting tiers are listed on this page ($149 for basic audits, $199 for landing pages, $79 for short-form video). Custom enterprise requirements and complex platforms are scoped collaboratively via a discovery call.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "What is your typical turnaround time for web development projects?",
+    answer: "A single-page landing page typically delivers in 5 business days, a full 5-page website with CMS/admin panel in 14 business days, and custom platforms are scheduled based on technical scope.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "Do you offer post-delivery support or warranties?",
+    answer: "Yes. Web development builds include 30 days of complimentary post-launch bug fixes and support. Security pentests include 1 free re-test after remediation.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "Can services be combined into an ongoing retainer?",
+    answer: "Yes. We frequently structure monthly retainer agreements for clients who need continuous security testing, ongoing frontend feature development, and regular video content.",
+  },
+  // TODO: confirm FAQ copy before deploy
+  {
+    question: "How do we get started with a new engagement?",
+    answer: "Reach out via the contact form or email security@khalidsanawer.online. We'll reply within 24 hours to schedule a discovery call and draft a formal scope document.",
+  },
+];
 
 export default function Services() {
   return (
@@ -372,6 +407,14 @@ export default function Services() {
           </div>
         </div>
       </section>
+
+      <FaqAccordion
+        items={servicesFaqs}
+        includeSchema={true}
+        title="Frequently Asked Questions"
+        subtitle="Clear answers regarding pricing, project workflows, delivery timelines, and technology stacks."
+        tag="SERVICES FAQ"
+      />
 
       {/* CTA Section */}
       <section className="relative px-4 sm:px-6 py-24 border-t border-white/5 bg-white/[0.01]">
