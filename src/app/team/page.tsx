@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { getMembers } from "@/lib/team";
 
 export const metadata: Metadata = {
   title: "Meet the Team — AuditWave Security & Creative Experts",
@@ -24,62 +25,16 @@ export const metadata: Metadata = {
   },
 };
 
-const otherMembers = [
-  {
-    initials: "AK",
-    name: "Ali Khan",
-    role: "Video Editor — Premiere Pro & After Effects",
-    badge: "Video Production",
-    description: "Handles cinematic video production, color grading, motion graphics, and professional edits using Premiere Pro and After Effects.",
-    tags: ["Premiere Pro", "After Effects", "Color Grading", "Motion Graphics", "4K"],
-    avatarBg: "from-[#7C3AED]/30 to-[#0D1120]",
-    borderClass: "border-t-2 border-t-blue-500",
-    hoverShadow: "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
-    imageSrc: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
-    alt: "Ali Khan",
-  },
-  {
-    initials: "SR",
-    name: "Sara Raza",
-    role: "Video Editor — Premiere Pro & After Effects",
-    badge: "Video Production",
-    description: "Specializes in brand videos, promotional content, and social media video production with professional post-production workflow.",
-    tags: ["Premiere Pro", "After Effects", "Brand Videos", "Social Media"],
-    avatarBg: "from-pink-500/30 to-[#0D1120]",
-    borderClass: "border-t-2 border-t-pink-500",
-    hoverShadow: "hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]",
-    imageSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face",
-    alt: "Sara Raza",
-  },
-  {
-    initials: "SH",
-    name: "Saleem Haider",
-    role: "CapCut Editor — AI Animated Videos",
-    badge: "Video Editor",
-    description: "Creates AI-powered animated videos and viral short-form content using CapCut. Specializes in modern trending formats.",
-    tags: ["CapCut", "AI Animation", "Short-form", "Trending Formats"],
-    avatarBg: "from-blue-500/30 to-[#0D1120]",
-    borderClass: "border-t-2 border-t-blue-500",
-    hoverShadow: "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
-    imageSrc: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face",
-    alt: "Saleem Haider",
-  },
-  {
-    initials: "W",
-    name: "Waniya",
-    role: "CapCut Editor — AI Animated Videos",
-    badge: "Video Editor",
-    description: "Produces AI animated videos and engaging short-form content optimized for social media platforms.",
-    tags: ["CapCut", "AI Animation", "Social Media", "Content Creation"],
-    avatarBg: "from-pink-500/30 to-[#0D1120]",
-    borderClass: "border-t-2 border-t-pink-500",
-    hoverShadow: "hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]",
-    imageSrc: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face",
-    alt: "Waniya",
-  },
-];
+function getInitials(name: string): string {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
-export default function Team() {
+export default async function Team() {
+  const teamMembers = await getMembers();
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0A0E1A] text-white">
       {/* Background Glows */}
@@ -93,24 +48,29 @@ export default function Team() {
       <section className="relative px-4 sm:px-6 pt-16 pb-20 text-center">
         <div className="absolute inset-0 -z-10 opacity-[0.08] [background-image:radial-gradient(#7C3AED_1px,transparent_1px)] [background-size:26px_26px]" />
         
-        {/* Fan/Arc Layout — responsive version */}
+        {/* Fan/Arc Layout — dynamic presentation */}
         <div className="flex scale-75 min-[400px]:scale-90 sm:scale-100 origin-bottom items-end justify-center gap-1 sm:gap-3 relative mb-12 max-w-sm sm:max-w-2xl mx-auto pt-12 pb-6 overflow-hidden">
           {/* Purple glow behind center image */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full blur-[100px] bg-[#7C3AED]/40 -z-10" />
 
-          {/* Far Left: MR */}
-          <div className="relative overflow-hidden w-16 h-24 sm:w-28 sm:h-36 rounded-2xl bg-gradient-to-b from-blue-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[-12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-blue-500/50 cursor-pointer select-none">
-            <span className="text-[8px] sm:text-sm opacity-50 font-normal mb-1">Editor</span>
-            <Image src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" alt="Saleem Haider" fill sizes="(max-width: 768px) 120px, 160px" className="object-cover" />
-          </div>
+          {/* Members rendered in arc around lead */}
+          {teamMembers.slice(0, 2).map((member, idx) => (
+            <div
+              key={member.id}
+              className={`relative overflow-hidden ${
+                idx === 0 ? "w-16 h-24 sm:w-28 sm:h-36 rotate-[-12deg] translate-y-8" : "w-20 h-28 sm:w-32 sm:h-40 rotate-[-6deg] translate-y-4"
+              } rounded-2xl bg-gradient-to-b from-blue-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-blue-500/50 cursor-pointer select-none`}
+            >
+              <span className="text-[8px] sm:text-xs opacity-70 font-normal mb-1 z-10 px-1 truncate max-w-full">{member.name}</span>
+              {member.imageUrl ? (
+                <Image src={member.imageUrl} alt={member.name} fill sizes="(max-width: 768px) 120px, 160px" className="object-cover" />
+              ) : (
+                <div className="text-sm sm:text-xl font-bold text-[#C4B5FD]">{getInitials(member.name)}</div>
+              )}
+            </div>
+          ))}
 
-          {/* Mid Left: AK */}
-          <div className="relative overflow-hidden w-20 h-28 sm:w-32 sm:h-40 rounded-2xl bg-gradient-to-b from-[#7C3AED]/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[-6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-[#7C3AED]/50 cursor-pointer select-none">
-            <span className="text-[8px] sm:text-xs opacity-50 font-normal mb-1">Production</span>
-            <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Ali Khan" fill sizes="(max-width: 768px) 120px, 160px" className="object-cover" />
-          </div>
-
-          {/* Center: Khalid (largest, front/center) */}
+          {/* Center: Khalid (Lead) */}
           <div className="relative w-28 h-36 sm:w-40 sm:h-48 rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(124,58,237,0.35)] rotate-0 transition-all duration-300 hover:scale-105 hover:z-20 z-10 cursor-pointer">
             <Image
               src="/khalid.jpg"
@@ -125,17 +85,22 @@ export default function Team() {
             </div>
           </div>
 
-          {/* Mid Right: SR */}
-          <div className="relative overflow-hidden w-20 h-28 sm:w-32 sm:h-40 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-2xl font-bold text-white shadow-lg rotate-[6deg] translate-y-4 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
-            <span className="text-[8px] sm:text-xs opacity-50 font-normal mb-1">Production</span>
-            <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="Sara Raza" fill sizes="(max-width: 768px) 120px, 160px" className="object-cover" />
-          </div>
-
-          {/* Far Right: ZA */}
-          <div className="relative overflow-hidden w-16 h-24 sm:w-28 sm:h-36 rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg rotate-[12deg] translate-y-8 transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none">
-            <span className="text-[8px] sm:text-sm opacity-50 font-normal mb-1">Editor</span>
-            <Image src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Waniya" fill sizes="(max-width: 768px) 120px, 160px" className="object-cover" />
-          </div>
+          {/* Members rendered in right side of arc */}
+          {teamMembers.slice(2, 4).map((member, idx) => (
+            <div
+              key={member.id}
+              className={`relative overflow-hidden ${
+                idx === 0 ? "w-20 h-28 sm:w-32 sm:h-40 rotate-[6deg] translate-y-4" : "w-16 h-24 sm:w-28 sm:h-36 rotate-[12deg] translate-y-8"
+              } rounded-2xl bg-gradient-to-b from-pink-500/30 to-[#0D1120] border border-white/5 flex flex-col items-center justify-center text-xl font-bold text-white shadow-lg transition-all duration-300 hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-20 hover:border-pink-500/50 cursor-pointer select-none`}
+            >
+              <span className="text-[8px] sm:text-xs opacity-70 font-normal mb-1 z-10 px-1 truncate max-w-full">{member.name}</span>
+              {member.imageUrl ? (
+                <Image src={member.imageUrl} alt={member.name} fill sizes="(max-width: 768px) 120px, 160px" className="object-cover" />
+              ) : (
+                <div className="text-sm sm:text-xl font-bold text-[#C4B5FD]">{getInitials(member.name)}</div>
+              )}
+            </div>
+          ))}
         </div>
 
         {/* Hero Typography */}
@@ -209,46 +174,68 @@ export default function Team() {
             </div>
           </div>
 
-          {/* Grid of Other 4 Members */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto">
-            {otherMembers.map((member) => (
-              <div
-                key={member.initials}
-                className={`bg-[#0D1120] rounded-2xl p-6 border border-white/5 ${member.borderClass} flex flex-col text-center transition-all duration-300 hover:-translate-y-1 ${member.hoverShadow}`}
-              >
-                {/* Avatar */}
-                <Image src={member.imageSrc} alt={member.alt} width={80} height={80} className="rounded-2xl object-cover mx-auto mb-4" />
+          {/* Grid of Dynamic Team Members */}
+          {teamMembers.length === 0 ? (
+            <div className="text-center py-12 text-gray-500 bg-[#0D1120] rounded-2xl border border-white/5 max-w-4xl mx-auto">
+              <p className="text-sm">No team members available.</p>
+            </div>
+          ) : (
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto">
+              {teamMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className="bg-[#0D1120] rounded-2xl p-6 border border-white/5 border-t-2 border-t-blue-500 flex flex-col text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
+                >
+                  {/* Avatar or Initials Fallback */}
+                  {member.imageUrl ? (
+                    <Image
+                      src={member.imageUrl}
+                      alt={member.name}
+                      width={80}
+                      height={80}
+                      className="rounded-2xl object-cover mx-auto mb-4 border border-white/10"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-b from-[#7C3AED]/30 to-[#0D1120] border border-white/10 flex items-center justify-center text-2xl font-bold text-[#C4B5FD] mx-auto mb-4 shadow-lg">
+                      {getInitials(member.name)}
+                    </div>
+                  )}
 
-                {/* Badge */}
-                <div>
-                  <span className="inline-block rounded-full bg-white/5 border border-white/10 px-3 py-0.5 text-xs text-gray-400 mb-3">
-                    {member.badge}
-                  </span>
-                </div>
-
-                {/* Name & Role */}
-                <h3 className="text-xl font-bold text-white">{member.name}</h3>
-                <p className="text-xs font-semibold text-gray-400 mt-1 mb-4">{member.role}</p>
-
-                {/* Description */}
-                <p className="text-sm text-gray-300 leading-relaxed mb-6 flex-grow">
-                  {member.description}
-                </p>
-
-                {/* Skill Tags */}
-                <div className="flex flex-wrap justify-center gap-1.5 mt-auto">
-                  {member.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-md border border-white/10 bg-[#0A0E1A] px-2.5 py-1 text-xs text-gray-400 hover:text-white hover:border-white/20 transition duration-200"
-                    >
-                      {tag}
+                  {/* Badge */}
+                  <div>
+                    <span className="inline-block rounded-full bg-white/5 border border-white/10 px-3 py-0.5 text-xs text-gray-400 mb-3">
+                      {member.badge || "Team Member"}
                     </span>
-                  ))}
+                  </div>
+
+                  {/* Name & Role */}
+                  <h3 className="text-xl font-bold text-white">{member.name}</h3>
+                  <p className="text-xs font-semibold text-gray-400 mt-1 mb-4">{member.role}</p>
+
+                  {/* Bio */}
+                  {member.bio && (
+                    <p className="text-sm text-gray-300 leading-relaxed mb-6 flex-grow">
+                      {member.bio}
+                    </p>
+                  )}
+
+                  {/* Skill Tags */}
+                  {member.skills && member.skills.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-1.5 mt-auto">
+                      {member.skills.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-md border border-white/10 bg-[#0A0E1A] px-2.5 py-1 text-xs text-gray-400 hover:text-white hover:border-white/20 transition duration-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
         </div>
       </section>

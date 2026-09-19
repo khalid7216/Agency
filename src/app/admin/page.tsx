@@ -18,9 +18,13 @@ import {
   FaTimes,
   FaTrash,
   FaUpload,
+  FaUser,
+  FaUserPlus,
+  FaUsers,
   FaVideo,
 } from "react-icons/fa";
 import CloudinaryImagePicker from "@/components/CloudinaryImagePicker";
+import { TeamMember } from "@/lib/team";
 
 interface Project {
   id: string;
@@ -124,6 +128,59 @@ export default function Admin() {
     }
   };
 
+  // Active Tab State
+  const [activeTab, setActiveTab] = useState<"projects" | "team">("projects");
+
+  // Team State
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamLoading, setTeamLoading] = useState(true);
+  const [teamFormLoading, setTeamFormLoading] = useState(false);
+
+  // Team Form State
+  const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
+  const [memberName, setMemberName] = useState("");
+  const [memberRole, setMemberRole] = useState("");
+  const [memberBadge, setMemberBadge] = useState("Team Member");
+  const [memberBio, setMemberBio] = useState("");
+  const [memberSkillsInput, setMemberSkillsInput] = useState("");
+  const [memberOrder, setMemberOrder] = useState<number>(1);
+  const [memberImageUrl, setMemberImageUrl] = useState("");
+
+  // Team Member Upload State
+  const [memberUploading, setMemberUploading] = useState(false);
+  const [memberUploadError, setMemberUploadError] = useState<string | null>(null);
+  const [memberUploadSuccess, setMemberUploadSuccess] = useState(false);
+  const [memberPickerOpen, setMemberPickerOpen] = useState(false);
+
+  // Team Member Search State
+  const [teamSearchQuery, setTeamSearchQuery] = useState("");
+
+  // Filtered Team Members
+  const filteredTeamMembers = teamMembers.filter((m) => {
+    const q = teamSearchQuery.toLowerCase().trim();
+    if (!q) return true;
+    return (
+      m.name.toLowerCase().includes(q) ||
+      m.role.toLowerCase().includes(q) ||
+      (m.badge && m.badge.toLowerCase().includes(q)) ||
+      (Array.isArray(m.skills) && m.skills.some((s) => s.toLowerCase().includes(q)))
+    );
+  });
+
+  // Fetch team members
+  const fetchTeamMembers = async () => {
+    try {
+      const res = await fetch("/api/team");
+      if (!res.ok) throw new Error("Failed to fetch team members");
+      const data = await res.json();
+      setTeamMembers(data);
+    } catch (err: unknown) {
+      console.error(err);
+    } finally {
+      setTeamLoading(false);
+    }
+  };
+
   useEffect(() => {
     const verifyAuth = async () => {
       try {
@@ -132,6 +189,7 @@ export default function Admin() {
         if (data.authenticated) {
           setIsAuthenticated(true);
           fetchProjects();
+          fetchTeamMembers();
         } else {
           setIsAuthenticated(false);
         }
@@ -144,6 +202,171 @@ export default function Admin() {
     };
     verifyAuth();
   }, []);
+
+  // Upload team member image handler
+  const handleMemberImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const MAX_SIZE = 10 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      setMemberUploadError(`File is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Maximum allowed size is 10 MB.`);
+      return;
+    }
+
+    setMemberUploading(true);
+    setMemberUploadError(null);
+    setMemberUploadSuccess(false);
+
+    try {
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === "string") {
+            resolve(reader.result);
+          } else {
+            reject(new Error("Failed to process selected file."));
+          }
+        };
+        reader.onerror = () => {
+          reject(new Error("File reading failed."));
+        };
+        reader.readAsDataURL(file);
+      });
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ file: base64Data }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (result.configured === false) {
+          setConfigError(result.error);
+        }
+        throw new Error(result.error || "Upload failed");
+      }
+
+      setMemberImageUrl(result.url);
+      setMemberUploadSuccess(true);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to upload image.";
+      setMemberUploadError(msg);
+      console.error("Team member image upload failed:", err);
+    } finally {
+      setMemberUploading(false);
+    }
+  };
+
+  // Start editing member
+  const handleStartEditMember = (member: TeamMember) => {
+    setEditingMemberId(member.id);
+    setMemberName(member.name);
+    setMemberRole(member.role);
+    setMemberBadge(member.badge || "Team Member");
+    setMemberBio(member.bio || "");
+    setMemberSkillsInput(member.skills ? member.skills.join(", ") : "");
+    setMemberOrder(member.order || 1);
+    setMemberImageUrl(member.imageUrl || "");
+    setMemberUploadSuccess(false);
+    setMemberUploadError(null);
+
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // Cancel edit member
+  const handleCancelEditMember = () => {
+    setEditingMemberId(null);
+    setMemberName("");
+    setMemberRole("");
+    setMemberBadge("Team Member");
+    setMemberBio("");
+    setMemberSkillsInput("");
+    setMemberOrder(teamMembers.length + 1);
+    setMemberImageUrl("");
+    setMemberUploadSuccess(false);
+    setMemberUploadError(null);
+  };
+
+  // Submit member (Add or Update)
+  const handleSubmitMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!memberName || !memberRole) {
+      alert("Please fill out Name and Role.");
+      return;
+    }
+
+    setTeamFormLoading(true);
+    const skills = memberSkillsInput
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s !== "");
+
+    try {
+      const isEditing = Boolean(editingMemberId);
+      const endpoint = "/api/team";
+      const method = isEditing ? "PUT" : "POST";
+      const payload = {
+        ...(isEditing ? { id: editingMemberId } : {}),
+        name: memberName,
+        role: memberRole,
+        badge: memberBadge || "Team Member",
+        bio: memberBio,
+        imageUrl: memberImageUrl,
+        skills,
+        order: Number(memberOrder) || 1,
+      };
+
+      const response = await fetch(endpoint, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || (isEditing ? "Failed to update team member" : "Failed to save team member"));
+      }
+
+      handleCancelEditMember();
+      await fetchTeamMembers();
+      alert(isEditing ? "Team member updated successfully!" : "Team member added successfully!");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      alert(msg);
+    } finally {
+      setTeamFormLoading(false);
+    }
+  };
+
+  // Delete member
+  const handleDeleteMember = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this team member?")) return;
+
+    try {
+      const response = await fetch(`/api/team?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to delete team member");
+      }
+
+      if (editingMemberId === id) {
+        handleCancelEditMember();
+      }
+
+      await fetchTeamMembers();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to delete.";
+      alert(msg);
+    }
+  };
 
   // Handle Login submission
   const handleLogin = async (e: React.FormEvent) => {
@@ -590,7 +813,36 @@ export default function Admin() {
           </div>
         )}
 
-        <div className="grid gap-8 grid-cols-1 lg:grid-cols-[440px_1fr] xl:grid-cols-[460px_1fr] items-start">
+        {/* Navigation Tabs (Projects vs Team Members) */}
+        <div className="flex items-center gap-3 mb-8 border-b border-white/10 pb-4">
+          <button
+            type="button"
+            onClick={() => setActiveTab("projects")}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+              activeTab === "projects"
+                ? "bg-[#7C3AED] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]"
+                : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-white/5"
+            }`}
+          >
+            <FaCode className="text-xs" />
+            Projects ({projects.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("team")}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+              activeTab === "team"
+                ? "bg-[#7C3AED] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]"
+                : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-white/5"
+            }`}
+          >
+            <FaUsers className="text-xs" />
+            Team Members ({teamMembers.length})
+          </button>
+        </div>
+
+        {activeTab === "projects" ? (
+          <div className="grid gap-8 grid-cols-1 lg:grid-cols-[440px_1fr] xl:grid-cols-[460px_1fr] items-start">
           {/* Create / Edit Project Form Section - Sticky on large screens */}
           <section className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-7 backdrop-blur-md">
             <div className="flex items-center justify-between mb-6">
@@ -1134,7 +1386,416 @@ export default function Admin() {
               </div>
             )}
           </section>
-        </div>
+          </div>
+        ) : (
+          /* Team Management Grid Section */
+          <div className="grid gap-8 grid-cols-1 lg:grid-cols-[440px_1fr] xl:grid-cols-[460px_1fr] items-start">
+            {/* Create / Edit Team Member Form Section */}
+            <section className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-7 backdrop-blur-md">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <span className="p-1.5 rounded-lg bg-[#7C3AED]/20 text-[#7C3AED]">
+                    {editingMemberId ? <FaPencilAlt className="text-sm" /> : <FaUserPlus className="text-sm" />}
+                  </span>
+                  {editingMemberId ? "Edit Team Member" : "Add Team Member"}
+                </h2>
+                {editingMemberId && (
+                  <button
+                    type="button"
+                    onClick={handleCancelEditMember}
+                    className="text-xs text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg transition"
+                  >
+                    Cancel Edit
+                  </button>
+                )}
+              </div>
+
+              <form onSubmit={handleSubmitMember} className="space-y-5">
+                {/* Full Name input */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Ali Khan"
+                    value={memberName}
+                    onChange={(e) => setMemberName(e.target.value)}
+                    className="w-full h-11 bg-[#0D1120] border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+                  />
+                </div>
+
+                {/* Role input */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                    Role / Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Senior Security Consultant & VAPT Lead"
+                    value={memberRole}
+                    onChange={(e) => setMemberRole(e.target.value)}
+                    className="w-full h-11 bg-[#0D1120] border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Badge Label Input */}
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      Badge Label
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Security & VAPT Lead"
+                      value={memberBadge}
+                      onChange={(e) => setMemberBadge(e.target.value)}
+                      className="w-full h-11 bg-[#0D1120] border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+                    />
+                  </div>
+
+                  {/* Display Order Input */}
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      Display Order
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={memberOrder}
+                      onChange={(e) => setMemberOrder(Number(e.target.value))}
+                      className="w-full h-11 bg-[#0D1120] border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+                    />
+                  </div>
+                </div>
+
+                {/* Member Bio Input */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                    Member Bio
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Brief background summary, achievements, or specialties..."
+                    value={memberBio}
+                    onChange={(e) => setMemberBio(e.target.value)}
+                    className="w-full bg-[#0D1120] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition resize-none leading-relaxed"
+                  />
+                </div>
+
+                {/* Skills Input (Comma Separated) */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                    Skills (Comma Separated)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="VAPT, Penetration Testing, OWASP Top 10"
+                    value={memberSkillsInput}
+                    onChange={(e) => setMemberSkillsInput(e.target.value)}
+                    className="w-full h-11 bg-[#0D1120] border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+                  />
+                </div>
+
+                {/* Profile Photo Upload Zone */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Profile Photo
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setMemberPickerOpen(true)}
+                      className="inline-flex items-center gap-1.5 text-xs text-[#C4B5FD] hover:text-white bg-[#7C3AED]/15 hover:bg-[#7C3AED]/25 border border-[#7C3AED]/30 px-3 py-1 rounded-lg transition"
+                    >
+                      <FaImage className="text-xs" /> Choose from Library
+                    </button>
+                  </div>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="member-photo-upload"
+                    onChange={handleMemberImageUpload}
+                    disabled={memberUploading}
+                    className="hidden"
+                  />
+
+                  {memberImageUrl ? (
+                    <div className="relative w-full h-44 rounded-xl overflow-hidden border border-white/10 bg-[#0D1120] group shadow-inner">
+                      <Image
+                        src={memberImageUrl}
+                        alt="Member photo preview"
+                        fill
+                        className="object-cover transition group-hover:scale-105 duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50 flex flex-col justify-between p-3.5 opacity-90 group-hover:opacity-100 transition">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full backdrop-blur-md">
+                            <FaCheckCircle className="text-[10px]" /> {memberUploadSuccess ? "Uploaded to Cloudinary!" : "Photo Ready"}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <label
+                              htmlFor="member-photo-upload"
+                              className="inline-flex items-center gap-1 text-xs bg-black/60 hover:bg-[#7C3AED] text-white border border-white/20 px-2.5 py-1 rounded-lg cursor-pointer transition backdrop-blur-md"
+                              title="Replace photo"
+                            >
+                              <FaUpload className="text-[10px]" /> Replace
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setMemberImageUrl("");
+                                setMemberUploadSuccess(false);
+                              }}
+                              className="p-1.5 rounded-lg bg-black/60 hover:bg-red-500/80 text-gray-300 hover:text-white border border-white/20 transition backdrop-blur-md"
+                              title="Remove photo"
+                            >
+                              <FaTrash className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-[10px] text-gray-300 truncate font-mono bg-black/60 px-2 py-1 rounded-md backdrop-blur-md border border-white/5">
+                          {memberImageUrl}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <label
+                      htmlFor="member-photo-upload"
+                      className={`flex flex-col items-center justify-center border-2 border-dashed border-white/10 hover:border-[#7C3AED]/50 rounded-xl p-6 sm:p-7 cursor-pointer bg-[#0D1120]/50 hover:bg-[#0D1120] transition text-center group ${
+                        memberUploading ? "opacity-60 cursor-not-allowed" : ""
+                      }`}
+                    >
+                      {memberUploading ? (
+                        <>
+                          <FaSpinner className="animate-spin text-2xl text-[#7C3AED] mb-2" />
+                          <p className="text-xs font-medium text-[#C4B5FD]">Uploading photo to Cloudinary...</p>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-10 h-10 rounded-full bg-[#7C3AED]/10 border border-[#7C3AED]/20 flex items-center justify-center text-[#C4B5FD] mb-2 group-hover:scale-110 group-hover:bg-[#7C3AED]/20 transition font-bold text-sm">
+                            {memberName ? memberName.slice(0, 2).toUpperCase() : <FaUser className="text-sm" />}
+                          </div>
+                          <p className="text-xs font-medium text-gray-200">
+                            Drag & drop or <span className="text-[#C4B5FD] underline decoration-dotted">browse</span> photo
+                          </p>
+                          <p className="text-[10px] text-gray-500 mt-1">Leave empty to use initials fallback</p>
+                        </>
+                      )}
+                    </label>
+                  )}
+
+                  {memberUploadError && <p className="text-xs text-red-400 mt-2">Error: {memberUploadError}</p>}
+                </div>
+
+                {/* Submit button */}
+                <button
+                  type="submit"
+                  disabled={teamFormLoading || memberUploading}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] px-4 py-3.5 text-sm font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(124,58,237,0.3)] mt-2"
+                >
+                  {teamFormLoading ? (
+                    <>
+                      <FaSpinner className="animate-spin text-sm" />
+                      {editingMemberId ? "Updating Member..." : "Saving Member..."}
+                    </>
+                  ) : editingMemberId ? (
+                    <>
+                      <FaPencilAlt className="text-xs" />
+                      Update Team Member
+                    </>
+                  ) : (
+                    <>
+                      <FaUserPlus className="text-xs" />
+                      Save & Publish Team Member
+                    </>
+                  )}
+                </button>
+              </form>
+            </section>
+
+            {/* Manage Team Members Grid */}
+            <section className="flex flex-col min-w-0 bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-7 backdrop-blur-md">
+              {/* Search Toolbar */}
+              <div className="space-y-4 mb-6">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative flex-grow">
+                    <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Search team by name, role, badge, or skill..."
+                      value={teamSearchQuery}
+                      onChange={(e) => setTeamSearchQuery(e.target.value)}
+                      className="w-full bg-[#0D1120] border border-white/10 rounded-xl pl-9 pr-8 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition"
+                    />
+                    {teamSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setTeamSearchQuery("")}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 text-xs"
+                        title="Clear search"
+                      >
+                        <FaTimes className="w-2.5 h-2.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Header with Member Count */}
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <span className="p-1.5 rounded-lg bg-[#7C3AED]/20 text-[#7C3AED]">
+                      <FaUsers className="text-sm" />
+                    </span>
+                    Team Roster
+                    <span className="text-xs font-mono font-normal bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-gray-300">
+                      {filteredTeamMembers.length}
+                      {filteredTeamMembers.length !== teamMembers.length ? ` / ${teamMembers.length}` : ""}
+                    </span>
+                  </h2>
+
+                  {teamSearchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setTeamSearchQuery("")}
+                      className="text-xs text-[#C4B5FD] hover:text-white hover:underline transition"
+                    >
+                      Reset Filter
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {teamLoading ? (
+                <div className="flex-grow flex flex-col items-center justify-center py-20 text-gray-500">
+                  <FaSpinner className="animate-spin text-3xl text-[#7C3AED] mb-3" />
+                  <p className="text-sm">Loading team members...</p>
+                </div>
+              ) : teamMembers.length === 0 ? (
+                <div className="flex-grow flex flex-col items-center justify-center py-20 text-gray-500 border border-dashed border-white/5 rounded-xl">
+                  <FaUser className="text-4xl mb-3" />
+                  <p className="text-sm">No team members found. Add one on the left!</p>
+                </div>
+              ) : filteredTeamMembers.length === 0 ? (
+                <div className="flex-grow flex flex-col items-center justify-center py-16 text-gray-500 border border-dashed border-white/5 rounded-xl text-center px-4">
+                  <FaSearch className="text-3xl mb-3 text-gray-600" />
+                  <p className="text-sm text-gray-300 font-medium">No matching team members found</p>
+                  <button
+                    type="button"
+                    onClick={() => setTeamSearchQuery("")}
+                    className="mt-3 text-xs bg-[#7C3AED]/20 text-[#C4B5FD] border border-[#7C3AED]/30 px-3 py-1.5 rounded-lg hover:bg-[#7C3AED]/30 transition"
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              ) : (
+                <div className="flex-grow overflow-y-auto max-h-[calc(100vh-14rem)] pr-1.5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredTeamMembers.map((member) => {
+                      const initials = member.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2);
+
+                      return (
+                        <div
+                          key={member.id}
+                          className={`relative flex flex-col justify-between p-4 border rounded-xl bg-[#0D1120]/50 hover:bg-[#0D1120]/80 transition group ${
+                            editingMemberId === member.id
+                              ? "border-[#7C3AED] ring-1 ring-[#7C3AED]/50 bg-[#7C3AED]/5"
+                              : "border-white/5 hover:border-white/15"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            {/* Member Avatar */}
+                            <div className="w-14 h-14 shrink-0 relative bg-[#080D1A] rounded-full border border-white/10 overflow-hidden flex items-center justify-center text-[#7C3AED] font-bold text-base shadow-inner">
+                              {member.imageUrl ? (
+                                <Image
+                                  src={member.imageUrl}
+                                  alt={member.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <span>{initials}</span>
+                              )}
+                            </div>
+
+                            {/* Member Details */}
+                            <div className="flex-grow min-w-0 pr-14">
+                              <div className="flex items-center gap-2">
+                                <h3 className="font-bold text-sm truncate text-white" title={member.name}>
+                                  {member.name}
+                                </h3>
+                                <span className="text-[10px] font-mono text-gray-500 bg-white/5 px-1.5 py-0.2 rounded border border-white/5">
+                                  #{member.order}
+                                </span>
+                              </div>
+                              <p className="text-xs text-[#C4B5FD] font-medium truncate mt-0.5" title={member.role}>
+                                {member.role}
+                              </p>
+                              {member.badge && (
+                                <span className="inline-block text-[10px] bg-[#7C3AED]/15 text-[#C4B5FD] border border-[#7C3AED]/30 px-2 py-0.5 rounded-full mt-1">
+                                  {member.badge}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Quick Edit/Delete buttons */}
+                            <div className="absolute top-3 right-3 flex items-center gap-1.5 opacity-90 sm:opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                              <button
+                                type="button"
+                                onClick={() => handleStartEditMember(member)}
+                                className="p-1.5 rounded-lg border border-white/10 bg-[#0D1120] text-gray-400 hover:text-[#C4B5FD] hover:border-[#7C3AED]/50 hover:bg-[#7C3AED]/20 transition shadow-sm"
+                                title="Edit team member"
+                              >
+                                <FaPencilAlt className="w-3 h-3" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteMember(member.id)}
+                                className="p-1.5 rounded-lg border border-white/10 bg-[#0D1120] text-gray-400 hover:text-red-400 hover:border-red-500/50 hover:bg-red-500/20 transition shadow-sm"
+                                title="Delete team member"
+                              >
+                                <FaTrash className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Member Bio */}
+                          {member.bio && (
+                            <p className="text-xs text-gray-400 mt-2.5 line-clamp-2 leading-relaxed">
+                              {member.bio}
+                            </p>
+                          )}
+
+                          {/* Skills Pills */}
+                          {Array.isArray(member.skills) && member.skills.length > 0 && (
+                            <div className="flex items-center flex-wrap gap-1.5 mt-3 pt-3 border-t border-white/5">
+                              {member.skills.map((skill) => (
+                                <span
+                                  key={skill}
+                                  className="text-[10px] text-gray-300 bg-white/5 px-2 py-0.5 rounded border border-white/5 font-medium"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </section>
+          </div>
+        )}
       </div>
 
       <CloudinaryImagePicker
@@ -1143,6 +1804,15 @@ export default function Admin() {
         onSelect={(selectedUrl) => {
           setImageUrl(selectedUrl);
           setUploadSuccess(true);
+        }}
+      />
+
+      <CloudinaryImagePicker
+        isOpen={memberPickerOpen}
+        onClose={() => setMemberPickerOpen(false)}
+        onSelect={(selectedUrl) => {
+          setMemberImageUrl(selectedUrl);
+          setMemberUploadSuccess(true);
         }}
       />
     </main>

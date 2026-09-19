@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ali-khan",
+    "name": "Ali Khan",
+    "role": "Video Editor — Premiere Pro & After Effects",
+    "badge": "Video Production",
+    "bio": "Handles cinematic video production, color grading, motion graphics, and professional edits using Premiere Pro and After Effects.",
+    "imageUrl": "",
+    "skills": [
+      "Premiere Pro",
+      "After Effects",
+      "Color Grading",
+      "Motion Graphics",
+      "4K"
+    ],
+    "order": 1
+  },
+  {
+    "id": "sara-raza",
+    "name": "Sara Raza",
+    "role": "Video Editor — Premiere Pro & After Effects",
+    "badge": "Video Production",
+    "bio": "Specializes in brand videos, promotional content, and social media video production with professional post-production workflow.",
+    "imageUrl": "",
+    "skills": [
+      "Premiere Pro",
+      "After Effects",
+      "Brand Videos",
+      "Social Media"
+    ],
+    "order": 2
+  },
+  {
+    "id": "saleem-haider",
+    "name": "Saleem Haider",
+    "role": "CapCut Editor — AI Animated Videos",
+    "badge": "Video Editor",
+    "bio": "Creates AI-powered animated videos and viral short-form content using CapCut. Specializes in modern trending formats.",
+    "imageUrl": "",
+    "skills": [
+      "CapCut",
+      "AI Animation",
+      "Short-form",
+      "Trending Formats"
+    ],
+    "order": 3
+  },
+  {
+    "id": "waniya",
+    "name": "Waniya",
+    "role": "CapCut Editor — AI Animated Videos",
+    "badge": "Video Editor",
+    "bio": "Produces AI animated videos and engaging short-form content optimized for social media platforms.",
+    "imageUrl": "",
+    "skills": [
+      "CapCut",
+      "AI Animation",
+      "Social Media",
+      "Content Creation"
+    ],
+    "order": 4
+  }
+]
