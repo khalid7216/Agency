@@ -13,14 +13,14 @@ import { getProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
-  description: "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production by EC-Council certified security researcher Khalid Sanawer.",
+  description: "VAPT penetration testing, full-stack Next.js web development, and 4K video production by EC-Council certified security researcher Khalid Sanawer in Pakistan.",
   keywords: ["Security Researcher", "Penetration Testing", "VAPT", "Next.js Developer", "MERN Stack", "AuditWave Security", "Khalid Sanawer"],
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
-    description: "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production by EC-Council certified security researcher Khalid Sanawer.",
+    description: "VAPT penetration testing, full-stack Next.js web development, and 4K video production by EC-Council certified security researcher Khalid Sanawer in Pakistan.",
     url: "https://khalidsanawer.online",
     siteName: "Khalid Sanawer",
     images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
-    description: "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production by EC-Council certified security researcher Khalid Sanawer.",
+    description: "VAPT penetration testing, full-stack Next.js web development, and 4K video production by EC-Council certified security researcher Khalid Sanawer in Pakistan.",
     images: ["/khalid.jpg"],
   },
 };

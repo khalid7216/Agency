@@ -5,14 +5,14 @@ import FadeUp from "@/components/FadeUp";
 
 export const metadata: Metadata = {
   title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
-  description: "Explore transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video production by AuditWave Security.",
+  description: "Transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video editing by AuditWave Security.",
   keywords: ["VAPT pricing", "Web development pricing", "Penetration testing cost", "Next.js development services", "Video production services"],
   alternates: {
     canonical: '/services',
   },
   openGraph: {
     title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
-    description: "Explore transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video production by AuditWave Security.",
+    description: "Transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video editing by AuditWave Security.",
     url: "https://khalidsanawer.online/services",
     siteName: "Khalid Sanawer",
     images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
-    description: "Explore transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video production by AuditWave Security.",
+    description: "Transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video editing by AuditWave Security.",
     images: ["/khalid.jpg"],
   },
 };

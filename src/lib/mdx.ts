@@ -14,6 +14,7 @@ export interface BlogPostMeta {
   category: string;
   excerpt: string;
   readTime?: string;
+  image?: string;
 }
 
 export interface BlogPostData extends BlogPostMeta {
@@ -92,6 +93,7 @@ export function getBlogPostBySlug(slug: string): BlogPostData | null {
     category: data.category || "Security",
     excerpt: data.excerpt || "",
     readTime: data.readTime || "5 min read",
+    image: data.image || data.coverImage || "https://khalidsanawer.online/khalid.jpg",
     content,
   };
 }

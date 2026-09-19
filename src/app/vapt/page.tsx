@@ -15,14 +15,14 @@ import FadeUp from "@/components/FadeUp";
 
 export const metadata: Metadata = {
   title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
-  description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
+  description: "Vulnerability assessment and penetration testing (VAPT) for web apps, APIs, and WordPress sites with OWASP-compliant reporting and zero false positives.",
   keywords: ["VAPT testing", "Web application pentesting", "WordPress security audit", "API security assessment", "AuditWave Security", "OWASP pentest"],
   alternates: {
     canonical: '/vapt',
   },
   openGraph: {
     title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
-    description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
+    description: "Vulnerability assessment and penetration testing (VAPT) for web apps, APIs, and WordPress sites with OWASP-compliant reporting and zero false positives.",
     url: "https://khalidsanawer.online/vapt",
     siteName: "Khalid Sanawer",
     images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
-    description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
+    description: "Vulnerability assessment and penetration testing (VAPT) for web apps, APIs, and WordPress sites with OWASP-compliant reporting and zero false positives.",
     images: ["/khalid.jpg"],
   },
 };

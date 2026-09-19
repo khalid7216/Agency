@@ -60,6 +60,7 @@ export default async function BlogPost({ params }: Props) {
     "@type": "BlogPosting",
     "headline": post.title,
     "description": post.excerpt,
+    "image": post.image || "https://khalidsanawer.online/khalid.jpg",
     "datePublished": post.date,
     "author": {
       "@type": "Person",

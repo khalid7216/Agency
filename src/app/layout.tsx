@@ -66,6 +66,8 @@ const jsonLdGraph = {
       "logo": "https://khalidsanawer.online/khalid.jpg",
       "image": "https://khalidsanawer.online/khalid.jpg",
       "description": "Cybersecurity VAPT audits, web application security, and secure development services.",
+      "priceRange": "$$",
+      // "telephone": "+1-xxx-xxx-xxxx", // Skipped: No real business phone number exists in codebase/content
       "founder": {
         "@id": "https://khalidsanawer.online/#person"
       },
