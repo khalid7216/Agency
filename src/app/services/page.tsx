@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/services',
   },
+  openGraph: {
+    title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
+    description: "Explore transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video production by AuditWave Security.",
+    url: "https://khalidsanawer.online/services",
+    siteName: "Khalid Sanawer",
+    images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Services & Transparent Pricing — VAPT, Web Dev & Video Production",
+    description: "Explore transparent pricing for web application penetration testing (VAPT), Next.js full-stack development, and professional video production by AuditWave Security.",
+    images: ["/khalid.jpg"],
+  },
 };
 
 const serviceSchema = {

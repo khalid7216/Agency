@@ -18,6 +18,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  openGraph: {
+    title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
+    description: "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production by EC-Council certified security researcher Khalid Sanawer.",
+    url: "https://khalidsanawer.online",
+    siteName: "Khalid Sanawer",
+    images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AuditWave Security & Full-Stack Web Development — Khalid Sanawer",
+    description: "Expert VAPT penetration testing, full-stack Next.js web application development, and 4K video production by EC-Council certified security researcher Khalid Sanawer.",
+    images: ["/khalid.jpg"],
+  },
 };
 
 const services = [

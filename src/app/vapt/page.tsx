@@ -20,6 +20,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/vapt',
   },
+  openGraph: {
+    title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
+    description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
+    url: "https://khalidsanawer.online/vapt",
+    siteName: "Khalid Sanawer",
+    images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VAPT Security Testing & Penetration Audit — AuditWave Security",
+    description: "Comprehensive vulnerability assessment and penetration testing (VAPT) for web applications, APIs, and WordPress sites. OWASP compliant reporting and zero false positives.",
+    images: ["/khalid.jpg"],
+  },
 };
 
 const vaptServiceSchema = {

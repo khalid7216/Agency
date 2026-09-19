@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next'
 import { getBlogPosts, getAllBlogTags, getPortfolioCaseStudies } from '@/lib/mdx'
+import { getProjects } from '@/lib/projects'
 
 const BASE_URL = 'https://khalidsanawer.online'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const buildDate = new Date()
 
   const routes: MetadataRoute.Sitemap = [
@@ -40,15 +41,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   }
 
+  const addedPortfolioSlugs = new Set<string>()
+
   // Add portfolio case studies dynamic routes
   const caseStudies = getPortfolioCaseStudies()
   for (const cs of caseStudies) {
+    addedPortfolioSlugs.add(cs.slug)
     routes.push({
       url: `${BASE_URL}/portfolio/${cs.slug}`,
       lastModified: cs.date ? new Date(cs.date) : buildDate,
       changeFrequency: 'weekly',
       priority: 0.7,
     })
+  }
+
+  // Add portfolio dynamic projects from projects database (deduplicated)
+  const projects = await getProjects()
+  for (const project of projects) {
+    if (!addedPortfolioSlugs.has(project.id)) {
+      addedPortfolioSlugs.add(project.id)
+      routes.push({
+        url: `${BASE_URL}/portfolio/${project.id}`,
+        lastModified: buildDate,
+        changeFrequency: 'weekly',
+        priority: 0.7,
+      })
+    }
   }
 
   return routes

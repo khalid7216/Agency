@@ -13,6 +13,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/portfolio',
   },
+  openGraph: {
+    title: "Portfolio & Case Studies — Security Audits, Web Apps & Media",
+    description: "Browse our real-world security penetration testing case studies, Next.js web application projects, and media productions by Khalid Sanawer.",
+    url: "https://khalidsanawer.online/portfolio",
+    siteName: "Khalid Sanawer",
+    images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio & Case Studies — Security Audits, Web Apps & Media",
+    description: "Browse our real-world security penetration testing case studies, Next.js web application projects, and media productions by Khalid Sanawer.",
+    images: ["/khalid.jpg"],
+  },
 };
 
 const testimonials = [

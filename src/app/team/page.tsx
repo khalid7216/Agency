@@ -8,6 +8,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/team',
   },
+  openGraph: {
+    title: "Meet the Team — AuditWave Security & Creative Experts",
+    description: "Meet the cybersecurity specialists, Next.js developers, and video production experts behind AuditWave Security and Pixvault led by Khalid Sanawer.",
+    url: "https://khalidsanawer.online/team",
+    siteName: "Khalid Sanawer",
+    images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Meet the Team — AuditWave Security & Creative Experts",
+    description: "Meet the cybersecurity specialists, Next.js developers, and video production experts behind AuditWave Security and Pixvault led by Khalid Sanawer.",
+    images: ["/khalid.jpg"],
+  },
 };
 
 const otherMembers = [

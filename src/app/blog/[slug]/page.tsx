@@ -28,13 +28,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: post.excerpt,
     keywords: post.tags,
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: `/blog/${slug}`,
     },
     openGraph: {
-      title: post.title,
+      title: `${post.title} — AuditWave Security Blog`,
       description: post.excerpt,
       type: "article",
-      url: `https://khalidsanawer.online/blog/${post.slug}`,
+      url: `https://khalidsanawer.online/blog/${slug}`,
+      siteName: "Khalid Sanawer",
+      images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} — AuditWave Security Blog`,
+      description: post.excerpt,
+      images: ["/khalid.jpg"],
     },
   };
 }

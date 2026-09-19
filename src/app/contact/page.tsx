@@ -9,6 +9,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/contact',
   },
+  openGraph: {
+    title: "Contact & Hire — Book Security Audit or Web Project",
+    description: "Get in touch with Khalid Sanawer and AuditWave Security for VAPT security testing, Next.js application development, or video production projects.",
+    url: "https://khalidsanawer.online/contact",
+    siteName: "Khalid Sanawer",
+    images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact & Hire — Book Security Audit or Web Project",
+    description: "Get in touch with Khalid Sanawer and AuditWave Security for VAPT security testing, Next.js application development, or video production projects.",
+    images: ["/khalid.jpg"],
+  },
 };
 
 const contactSchema = {

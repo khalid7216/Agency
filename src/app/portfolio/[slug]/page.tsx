@@ -37,6 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = caseStudy?.excerpt || project?.description || "Project details & screenshots";
   const tags = caseStudy?.tags || project?.tags || [];
 
+  const imageUrl = project?.imageUrl || "/khalid.jpg";
+
   return {
     title: `${title} — Portfolio Case Study`,
     description,
@@ -45,9 +47,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/portfolio/${slug}`,
     },
     openGraph: {
-      title,
+      title: `${title} — Portfolio Case Study`,
       description,
+      url: `https://khalidsanawer.online/portfolio/${slug}`,
+      siteName: "Khalid Sanawer",
+      images: [{ url: imageUrl, width: 1200, height: 630 }],
       type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — Portfolio Case Study`,
+      description,
+      images: [imageUrl],
     },
   };
 }

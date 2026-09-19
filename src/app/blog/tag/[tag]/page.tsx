@@ -16,11 +16,28 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;
   const tagDecoded = decodeURIComponent(tag);
+  const title = `Posts Tagged "${tagDecoded}" — AuditWave Security Blog`;
+  const description = `Browse all security research articles, guides, and developer notes tagged with ${tagDecoded}.`;
+  const canonicalUrl = `/blog/tag/${encodeURIComponent(tagDecoded.toLowerCase())}`;
   return {
-    title: `Posts Tagged "${tagDecoded}" — AuditWave Security Blog`,
-    description: `Browse all security research articles, guides, and developer notes tagged with ${tagDecoded}.`,
+    title,
+    description,
     alternates: {
-      canonical: `/blog/tag/${encodeURIComponent(tagDecoded.toLowerCase())}`,
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://khalidsanawer.online${canonicalUrl}`,
+      siteName: "Khalid Sanawer",
+      images: [{ url: "/khalid.jpg", width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/khalid.jpg"],
     },
   };
 }
