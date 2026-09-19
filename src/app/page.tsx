@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   FaCode,
   FaShieldAlt,
-  FaStar,
   FaVideo,
 } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
@@ -67,13 +66,6 @@ const services = [
   },
 ];
 
-const stats = [
-  { number: "1200+", label: "Sites Tested" },
-  { number: "10+", label: "Global Brands" },
-  { number: "4+", label: "Years Experience" },
-  { number: "EC-Council", label: "Certified" },
-];
-
 const skills = [
   {
     label: "Security",
@@ -89,36 +81,6 @@ const skills = [
     label: "Tools",
     icon: FaVideo,
     items: "Premiere Pro, After Effects, CapCut",
-  },
-];
-
-const testimonials = [
-  {
-    stars: 5,
-    review: "Khalid identified critical vulnerabilities in our WordPress site that we had no idea about. Professional, fast, and thorough.",
-    name: "James M.",
-    role: "Website Owner, Finland",
-    tag: "VAPT",
-    tagStyle: "bg-[#7C3AED]/10 border border-[#7C3AED]/25 text-[#C4B5FD]",
-    avatarSrc: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    stars: 5,
-    review: "The blog platform he built for us was clean, fast, and delivered on time. Really understood what we needed.",
-    name: "Sarah R.",
-    role: "Product Manager, UK",
-    tag: "Web Dev",
-    tagStyle: "bg-blue-500/10 border border-blue-500/25 text-blue-300",
-    avatarSrc: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    stars: 5,
-    review: "Our brand video campaign got amazing engagement. The team's editing quality is top-notch and the turnaround was quick.",
-    name: "Ahmed K.",
-    role: "Marketing Director, UAE",
-    tag: "Video",
-    tagStyle: "bg-pink-500/10 border border-pink-500/25 text-pink-300",
-    avatarSrc: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=100&h=100&fit=crop&crop=face",
   },
 ];
 
@@ -262,20 +224,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-y border-white/5 bg-white/[0.025] px-4 sm:px-6 py-16">
-        <FadeUp delay={0}>
-          <div className="mx-auto grid max-w-7xl gap-6 grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-left lg:text-center">
-                <div className="text-4xl sm:text-5xl font-black text-[#7C3AED] mb-2">{stat.number}</div>
-                <div className="mt-2 text-sm text-gray-400">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </FadeUp>
-      </section>
-
       {/* Portfolio Section */}
       <section id="portfolio" className="px-4 sm:px-6 py-24">
         <div className="mx-auto max-w-7xl">
@@ -335,51 +283,63 @@ export default async function Home() {
         </FadeUp>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="border-t border-white/5 bg-[#080D1A] px-4 sm:px-6 py-20">
+      {/* Track Record Section */}
+      <section id="track-record" className="border-t border-white/5 bg-[#080D1A] px-4 sm:px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl text-left">
-            <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Clients</p>
-            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">What clients say.</h2>
+            <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">Track Record</p>
+            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">Verified metrics &amp; security research.</h2>
           </div>
 
-          <div className="items-start grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
-            {testimonials.map((testimonial, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <article
-                  className={`flex flex-col bg-[#0D1120] rounded-2xl p-6 border border-white/5 backdrop-blur-sm hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] transition duration-300 ${
-                    i === 0 ? "md:mt-8 mt-0" : i === 1 ? "md:mt-0 mt-0" : "md:mt-8 mt-0"
-                  }`}
-                >
-                  <div className="flex items-center gap-3 mb-6">
-                    <Image src={testimonial.avatarSrc} alt={testimonial.name} width={40} height={40} className="rounded-full object-cover shrink-0" />
-                    <div className="text-left">
-                      <h4 className="font-semibold text-white text-sm">{testimonial.name}</h4>
-                      <p className="text-gray-500 text-xs">{testimonial.role}</p>
-                    </div>
-                  </div>
-
-                  <div className="text-left flex-grow">
-                    <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">&ldquo;</span>
-                    <p className="text-gray-300 text-sm leading-relaxed italic">
-                      {testimonial.review}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
-                    <div className="flex gap-0.5 text-yellow-400 text-xs">
-                      {[...Array(testimonial.stars)].map((_, idx) => (
-                        <FaStar key={idx} />
-                      ))}
-                    </div>
-                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${testimonial.tagStyle}`}>
-                      {testimonial.tag}
-                    </span>
-                  </div>
-                </article>
-              </FadeUp>
-            ))}
+          {/* Part A: Stats bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <FadeUp delay={0}>
+              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
+                <div className="text-3xl sm:text-4xl font-black text-[#7C3AED] mb-2">1,200+</div>
+                <div className="text-sm font-medium text-gray-300">Sites Tested</div>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.1}>
+              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
+                <div className="text-[#7C3AED] text-3xl sm:text-4xl font-black mb-2">3+</div>
+                <div className="text-sm font-medium text-gray-300">Years of Security Testing Experience</div>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
+                <div className="text-3xl sm:text-4xl font-black text-[#7C3AED] mb-2">{projects.length}</div>
+                <div className="text-sm font-medium text-gray-300">Live Projects Delivered</div>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.3}>
+              <div className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/[0.035] p-6 h-full transition hover:border-[#7C3AED]/40 hover:bg-white/[0.055]">
+                <div className="text-2xl sm:text-3xl font-black text-[#7C3AED] mb-2">EC-Council</div>
+                <div className="text-sm font-medium text-gray-300">Certified Bug Bounty Practitioner</div>
+              </div>
+            </FadeUp>
           </div>
+
+          {/* Part B: Vulnerability findings strip */}
+          <FadeUp delay={0.4}>
+            <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-8 text-center">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-6">
+                Vulnerabilities Identified In
+              </h3>
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
+                {["Airbnb", "Dyson", "Freshworks", "Arkose Labs", "Inditex"].map((company) => (
+                  <span
+                    key={company}
+                    className="rounded-xl border border-white/10 bg-[#0A0E1A] px-5 py-2.5 text-sm sm:text-base font-semibold text-gray-300 transition hover:border-[#7C3AED]/40 hover:text-white"
+                  >
+                    {company}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs sm:text-sm text-gray-500">
+                Findings identified through responsible disclosure on HackerOne
+              </p>
+            </div>
+          </FadeUp>
         </div>
       </section>
 

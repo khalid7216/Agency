@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { FaStar } from "react-icons/fa";
 import FadeUp from "@/components/FadeUp";
 import PortfolioGrid from "@/components/PortfolioGrid";
 import { getProjects } from "@/lib/projects";
@@ -28,36 +26,6 @@ export const metadata: Metadata = {
     images: ["/khalid.jpg"],
   },
 };
-
-const testimonials = [
-  {
-    stars: 5,
-    review: "The penetration test report was incredibly detailed. Found issues we'd been missing for months. Worth every penny.",
-    name: "Michael K.",
-    role: "CTO, SaaS Startup",
-    tag: "VAPT",
-    tagStyle: "bg-[#7C3AED]/10 border border-[#7C3AED]/25 text-[#C4B5FD]",
-    avatarSrc: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    stars: 5,
-    review: "Delivered the Next.js project ahead of schedule. Code quality was clean and the UI looked better than our mockups.",
-    name: "Lisa T.",
-    role: "Founder, E-commerce Brand",
-    tag: "Web Dev",
-    tagStyle: "bg-blue-500/10 border border-blue-500/25 text-blue-300",
-    avatarSrc: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    stars: 5,
-    review: "The video editing team turned our raw footage into something we're genuinely proud to show clients. Fast and professional.",
-    name: "Raza H.",
-    role: "Marketing Lead, Dubai Agency",
-    tag: "Video",
-    tagStyle: "bg-pink-500/10 border border-pink-500/25 text-pink-300",
-    avatarSrc: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=100&h=100&fit=crop&crop=face",
-  },
-];
 
 const portfolioCollectionSchema = {
   "@context": "https://schema.org",
@@ -101,58 +69,24 @@ export default async function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Grid Section */}
-      <section className="px-4 sm:px-6 pb-24">
-        <div className="mx-auto max-w-7xl">
-          <PortfolioGrid initialProjects={projects} />
-        </div>
+      {/* Transition Banner Section */}
+      <section className="border-y border-white/5 bg-[#080D1A] px-4 sm:px-6 py-12 text-center">
+        <FadeUp delay={0}>
+          <div className="mx-auto max-w-3xl">
+            <h2 className="text-2xl sm:text-3xl font-bold md:text-4xl text-white mb-3">
+              The Work Speaks for Itself
+            </h2>
+            <p className="text-base text-gray-400">
+              Explore our full collection of verified security audits, full-stack web applications, and video productions in the project grid below.
+            </p>
+          </div>
+        </FadeUp>
       </section>
 
-      {/* Testimonials / Kind Words Section */}
-      <section className="border-t border-white/5 bg-[#080D1A] px-4 sm:px-6 py-20">
+      {/* Projects Grid Section */}
+      <section className="px-4 sm:px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl text-left">
-            <p className="mb-3 text-sm font-semibold uppercase text-[#7C3AED]">KIND WORDS</p>
-            <h2 className="text-3xl sm:text-4xl font-bold md:text-5xl">What people say about the work.</h2>
-          </div>
-
-          <div className="items-start grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
-            {testimonials.map((testimonial, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <article
-                  className={`flex flex-col bg-[#0D1120] rounded-2xl p-6 border border-white/5 backdrop-blur-sm hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] transition duration-300 ${
-                    i === 0 ? "md:mt-8 mt-0" : i === 1 ? "md:mt-0 mt-0" : "md:mt-8 mt-0"
-                  }`}
-                >
-                  <div className="flex items-center gap-3 mb-6">
-                    <Image src={testimonial.avatarSrc} alt={testimonial.name} width={40} height={40} className="rounded-full object-cover shrink-0" />
-                    <div className="text-left">
-                      <h4 className="font-semibold text-white text-sm">{testimonial.name}</h4>
-                      <p className="text-gray-500 text-xs">{testimonial.role}</p>
-                    </div>
-                  </div>
-
-                  <div className="text-left flex-grow">
-                    <span className="text-[#7C3AED] text-4xl font-black leading-none block mb-2">&ldquo;</span>
-                    <p className="text-gray-300 text-sm leading-relaxed italic">
-                      {testimonial.review}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
-                    <div className="flex gap-0.5 text-yellow-400 text-xs">
-                      {[...Array(testimonial.stars)].map((_, idx) => (
-                        <FaStar key={idx} />
-                      ))}
-                    </div>
-                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${testimonial.tagStyle}`}>
-                      {testimonial.tag}
-                    </span>
-                  </div>
-                </article>
-              </FadeUp>
-            ))}
-          </div>
+          <PortfolioGrid initialProjects={projects} />
         </div>
       </section>
 
