@@ -5,7 +5,7 @@ import { getBlogPostsByTag, getAllBlogTags } from "@/lib/mdx";
 import FadeUp from "@/components/FadeUp";
 
 interface Props {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
 }
 
 export function generateStaticParams() {
@@ -13,8 +13,9 @@ export function generateStaticParams() {
   return tags.map((tag) => ({ tag }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const tagDecoded = decodeURIComponent(params.tag);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { tag } = await params;
+  const tagDecoded = decodeURIComponent(tag);
   return {
     title: `Posts Tagged "${tagDecoded}" — AuditWave Security Blog`,
     description: `Browse all security research articles, guides, and developer notes tagged with ${tagDecoded}.`,
@@ -24,8 +25,9 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function BlogTagPage({ params }: Props) {
-  const tagDecoded = decodeURIComponent(params.tag);
+export default async function BlogTagPage({ params }: Props) {
+  const { tag } = await params;
+  const tagDecoded = decodeURIComponent(tag);
   const posts = getBlogPostsByTag(tagDecoded);
 
   if (posts.length === 0) {

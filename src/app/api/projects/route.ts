@@ -17,7 +17,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   // Verify admin authentication
-  if (!checkAuth()) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
   }
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   // Verify admin authentication
-  if (!checkAuth()) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
   }
 
@@ -84,7 +84,7 @@ export async function DELETE(req: Request) {
 
 export async function PUT(req: Request) {
   // Verify admin authentication
-  if (!checkAuth()) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
   }
 

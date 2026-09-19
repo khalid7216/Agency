@@ -3,7 +3,7 @@ import { removeSessionCookie } from "@/lib/auth";
 
 export async function POST() {
   try {
-    removeSessionCookie();
+    await removeSessionCookie();
     return NextResponse.json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     console.error("Logout API Error:", error);

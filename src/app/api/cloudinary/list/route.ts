@@ -24,7 +24,7 @@ interface CloudinarySearchResponse {
 }
 
 export async function GET() {
-  if (!checkAuth()) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: "Unauthorized access. Please login first." }, { status: 401 });
   }
 

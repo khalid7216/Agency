@@ -58,10 +58,11 @@ export function verifySession(token: string): boolean {
   }
 }
 
-export function setSessionCookie() {
+export async function setSessionCookie() {
   const token = signSession();
+  const cookieStore = await cookies();
   
-  cookies().set(SESSION_COOKIE_NAME, token, {
+  cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -70,12 +71,13 @@ export function setSessionCookie() {
   });
 }
 
-export function removeSessionCookie() {
-  cookies().delete(SESSION_COOKIE_NAME);
+export async function removeSessionCookie() {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
-export function checkAuth(): boolean {
-  const cookieStore = cookies();
+export async function checkAuth(): Promise<boolean> {
+  const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME);
   
   if (!sessionCookie || !sessionCookie.value) {

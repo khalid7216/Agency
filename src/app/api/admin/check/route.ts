@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const authenticated = checkAuth();
+    const authenticated = await checkAuth();
     return NextResponse.json({ authenticated });
   } catch (error) {
     console.error("Check Auth API Error:", error);

@@ -8,7 +8,7 @@ import ProjectDetailGallery from "@/components/ProjectDetailGallery";
 import { FaCheck, FaExclamationTriangle, FaShieldAlt } from "react-icons/fa";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -23,8 +23,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const caseStudy = getPortfolioCaseStudyBySlug(params.slug);
-  const project = await getProjectById(params.slug);
+  const { slug } = await params;
+  const caseStudy = getPortfolioCaseStudyBySlug(slug);
+  const project = await getProjectById(slug);
 
   if (!caseStudy && !project) {
     return {
@@ -41,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     keywords: tags,
     alternates: {
-      canonical: `/portfolio/${params.slug}`,
+      canonical: `/portfolio/${slug}`,
     },
     openGraph: {
       title,
@@ -52,8 +53,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
-  const caseStudy = getPortfolioCaseStudyBySlug(params.slug);
-  const project = await getProjectById(params.slug);
+  const { slug } = await params;
+  const caseStudy = getPortfolioCaseStudyBySlug(slug);
+  const project = await getProjectById(slug);
 
   if (!caseStudy && !project) {
     notFound();
@@ -102,7 +104,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://khalidsanawer.online/portfolio/${params.slug}`
+      "@id": `https://khalidsanawer.online/portfolio/${slug}`
     }
   };
 

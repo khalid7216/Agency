@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const isPasswordValid = cleanPassword === expectedPassword.trim();
 
     if (isUsernameValid && isPasswordValid) {
-      setSessionCookie();
+      await setSessionCookie();
       return NextResponse.json({ success: true, message: "Logged in successfully" });
     }
 

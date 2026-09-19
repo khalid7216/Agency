@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   FaArrowLeft,
   FaCheckCircle,
@@ -521,13 +522,13 @@ export default function Admin() {
           </form>
 
           <div className="text-center mt-6">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition"
             >
               <FaArrowLeft className="w-2.5 h-2.5" />
               Back to Home
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -546,12 +547,12 @@ export default function Admin() {
       <header className="border-b border-white/5 bg-[#0D1120]/80 backdrop-blur-md sticky top-0 z-30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="/portfolio"
               className="p-2 rounded-full border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 transition"
             >
               <FaArrowLeft className="w-3.5 h-3.5" />
-            </a>
+            </Link>
             <h1 className="text-lg font-bold text-[#7C3AED]">Portfolio Admin Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
