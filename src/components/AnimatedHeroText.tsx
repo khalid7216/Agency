@@ -109,26 +109,10 @@ export default function AnimatedHeroText() {
           {/* Subtitle */}
           <motion.p
             variants={fadeUpVariants}
-            className="text-base sm:text-lg text-gray-400 mb-6 max-w-md mx-auto lg:mx-0 leading-relaxed font-normal"
+            className="text-base sm:text-lg text-gray-400 mb-8 max-w-md mx-auto lg:mx-0 leading-relaxed font-normal"
           >
             Security is my expertise. Code is my craft. Video is my team&apos;s game.
           </motion.p>
-
-          {/* MERN Stack Badge */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="mb-8 flex justify-center lg:justify-start"
-          >
-            <Image
-              src="/MERN.webp"
-              alt="MERN Stack - MongoDB, Express, React, Node.js"
-              width={160}
-              height={50}
-              sizes="(max-width: 768px) 140px, 160px"
-              priority={true}
-              className="opacity-80 hover:opacity-100 transition duration-300 object-contain"
-            />
-          </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
